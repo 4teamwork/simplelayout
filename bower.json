@@ -1,0 +1,26 @@
+{
+    "name": "simplelayout",
+    "version": "1.0.0",
+    "devDependencies": {
+        "jquery": ">1.6",
+        "jquery-ui": "1.11.2"
+    },
+    "homepage": "https://github.com/4teamwork/simplelayout-mockup",
+    "authors": [
+        "Kevin Bieri <k.bieri@4teamwork.ch>"
+    ],
+    "description": "Layoutmanagemnet for plone contenttypes",
+    "main": "index.html",
+    "moduleType": [
+        "amd",
+        "node"
+    ],
+    "license": "MIT",
+    "ignore": [
+        "**/.*",
+        "node_modules",
+        "bower_components",
+        "test",
+        "tests"
+    ]
+}

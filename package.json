@@ -1,0 +1,39 @@
+{
+    "name": "simplelayout",
+    "version": "1.0.0",
+    "description": "Layoutingsystem for plone contenttypes.",
+    "devDependencies": {
+        "chai": "^1.9.1",
+        "grunt": "^0.4.5",
+        "grunt-cli": "~0.1.13",
+        "grunt-contrib-uglify": "^0.4.0",
+        "grunt-contrib-watch": "^0.6.1",
+        "grunt-mocha": "^0.4.10",
+        "jqueryui-browser": "1.10.2-1",
+        "jsdom": "^0.10.5",
+        "mocha": "^1.19.0",
+        "requirejs": "~2.1.11",
+        "sinon": "1.10.1"
+    },
+    "main": "index.html",
+    "directories": {
+        "test": "tests"
+    },
+    "scripts": {
+        "test": "grunt"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git@github.com:4teamwork/simplelayout-mockup.git"
+    },
+    "keywords": [
+        "simplelayout",
+        "plone"
+    ],
+    "author": "Kevin Bieri",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/4teamwork/simplelayout-mockup/issues"
+    },
+    "homepage": "https://github.com/4teamwork/simplelayout-mockup"
+}
