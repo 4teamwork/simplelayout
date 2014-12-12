@@ -1,0 +1,14 @@
+.simplelayout {
+  width: 500px;
+  height: 500px;
+  background: red;
+  .sl-block {
+    width: 100px;
+    height: 100px;
+    float: left;
+    background: black;
+    img {
+      width: 100%;
+    }
+  }
+}
