@@ -1,14 +1,18 @@
 .simplelayout {
-  width: 500px;
-  height: 500px;
-  background: red;
+  min-height: 500px;
+  background: #f00;
+  z-index: 0;
+  position: relative;
+
   .sl-block {
-    width: 100px;
-    height: 100px;
-    float: left;
-    background: black;
+    background: #fff;
+    position: absolute;
+    height: auto;
+    &.ui-draggable-dragging, &.ui-resizing {
+      box-shadow: 0 0 70px 0 rgba(0,0,0,.75);
+    }
     img {
-      width: 100%;
+      width: 80%;
     }
   }
 }
