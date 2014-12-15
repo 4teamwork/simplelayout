@@ -3,7 +3,10 @@ define(["jquery", "config"], function($, CONFIG) {
     var utils = {};
 
     utils.getGrid = function() {
-        return CONFIG.contentwidth / CONFIG.columns;
+        var grid = {};
+        grid.x = CONFIG.contentwidth / CONFIG.columns;
+        grid.y = 20;
+        return grid;
     };
 
     utils.getImageGrid = function() {
