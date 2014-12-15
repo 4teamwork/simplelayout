@@ -19,7 +19,7 @@ define(["jquery", "config"], function($, CONFIG) {
                 formData.append('file', file);
 
                 var xhr = new XMLHttpRequest();
-                xhr.open('POST', context_url + '/ajax-upload');
+                xhr.open('POST', CONFIG.uploader.uploadURL);
                 xhr.onload = function() {
                     progress.value(0);
                 };
@@ -28,20 +28,24 @@ define(["jquery", "config"], function($, CONFIG) {
                     xhr.upload.onprogress = function(event) {
                         if (event.lengthComputable) {
                             var complete = (event.loaded / event.total * 100 | 0);
-                            $(dropzone).trigger('progress', [{'progress' : complete}]);
+                            dropzone.trigger('progress', [{
+                                'progress': complete
+                            }]);
                         }
                     };
                 }
                 xhr.onreadystatechange = function() {
                     if (xhr.readyState == 4 && xhr.status == 200) {
-                        dropzone.className = 'done';
+                        dropzone.attr('class', 'done');
                         done = true;
-                        $(dropzone).trigger('done');
+                        dropzone.trigger('done');
 
                     } else if (xhr.readyState == 4 && xhr.status != 200) {
-                        dropzone.className = 'fail';
+                        dropzone.attr('class', 'fail');
                         fail = true;
-                        $(dropzone).trigger('fail', [{'statusText' : xhr.statusText}]);
+                        dropzone.trigger('fail', [{
+                            'statusText': xhr.statusText
+                        }]);
                     }
                 };
                 xhr.send(formData);
@@ -53,46 +57,52 @@ define(["jquery", "config"], function($, CONFIG) {
                 $(document).on('dragenter', function(event) {
                     dragging++;
                     event.preventDefault();
+                    dropzone.trigger('active');
                 }).on('drop', function(event) {
                     event.preventDefault();
                     $target = $(event.target);
-                    if (!($target.is($(dropzone)) || $target.parent().is($(dropzone)))) {
+                    if (!($target.is(dropzone) || $target.parent().is(dropzone))) {
                         reset();
                     }
                 }).on('dragleave', function(event) {
                     dragging--;
                     if (dragging === 0) {
-                        reset();
+                        if (!fail) {
+                            reset();
+                        }
+                        dropzone.trigger('inactive');
                     }
                 }).on('dragover', function(event) {
                     event.preventDefault();
                 });
 
-                $(dropzone).on('dragover', function(event) {
+                dropzone.on('dragover', function(event) {
                     done ? this.className = 'done hover' : this.className = 'hover';
                     fail ? this.className = 'fail hover' : this.className = 'hover';
                     event.preventDefault();
+                    dropzone.trigger('entered');
                 }).on('dragleave', function() {
                     done ? this.className = 'done' : this.className = '';
                     fail ? this.className = 'fail' : this.className = '';
+                    dropzone.trigger('left');
                 }).on('drop', function(event) {
                     $(this).className = '';
                     readfile(event.dataTransfer.files[0]);
                     event.preventDefault();
-                    $(dropzone).trigger('uploadStart');
+                    dropzone.trigger('uploadStart');
                 });
             }
         },
         unbindEvents = function() {
-            $(dropzone).off('dragover').off('dragleave').off('drop');
+            dropzone.off('dragover').off('dragleave').off('drop');
             $(document).off('dragenter').off('dragleave').off('drop');
         },
-        init = function(dropzone) {
+        init = function(selector) {
             if (!selector) {
                 throw "InvalidArgumentException: " + selector;
             }
             $.event.props.push("dataTransfer");
-            dropzone = document.getElementById(selector);
+            dropzone = $(selector);
             tests.filereader = !!window.FileReader;
             tests.dnd = 'draggable' in document.createElement('span');
             tests.formdata = !!window.FormData;
@@ -101,10 +111,11 @@ define(["jquery", "config"], function($, CONFIG) {
                 $dragAndDropHint.hide();
             }
             bindEvents();
+            return dropzone;
         },
         reset = function(soft) {
-            $(dropzone).trigger('cancel');
-            dropzone.className = '';
+            dropzone.trigger('cancel');
+            dropzone.attr('class', '');
             bindEvents();
             done = false;
             fail = false;
