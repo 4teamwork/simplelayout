@@ -18,8 +18,7 @@ define(["jquery", "config", "jqueryui/draggable"], function($, CONFIG, UI) {
         // TODO: lod components from URL
       }
       $.each(components, function(idx, el) {
-        // TODO: allow template
-        var component = $('<a>').addClass('list-group-item').text(el.title).attr('data-type', el.type);
+        var component = $('<a>').addClass('list-group-item tb-component').text(el.title).attr('data-type', el.type);
         element.append(component);
       });
     },
