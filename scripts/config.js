@@ -7,7 +7,7 @@ define(function() {
   //Defines the selector for the blocks
   CONFIG.blocks = '.sl-block';
   //Number of column
-  CONFIG.columns = 2;
+  CONFIG.columns = 4;
   //Number of images within a column
   CONFIG.images = 2;
   //Defines the selector for the widgetcontent
@@ -60,9 +60,9 @@ define(function() {
    */
 
   CONFIG.templates = {};
-  CONFIG.templates.textblock = '<div class="sl-block" data-uuid="FAKEUID"><div class="block-view-wrapper">Im a textblock</div></div>';
+  CONFIG.templates.textblock = '<div class="sl-block" data-uuid="FAKEUID"><div class="block-view-wrapper">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</div></div>';
   CONFIG.templates.imageblock = '<div class="sl-block" data-uuid="FAKEUID"><div class="block-view-wrapper"><div class="sl-img-wrapper"><img src="images/test.jpg" /></div></div></div>';
-  CONFIG.templates.listingblock = '<div class="sl-block" data-uuid="FAKEUID"><div class="block-view-wrapper"><table><tr><td>listingblock</td></tr></table></div></div>';
+  CONFIG.templates.listingblock = '<div class="sl-block" data-uuid="FAKEUID"><div class="block-view-wrapper"><table class="data"><tr><th>Entry Header 1</th><th>Entry Header 2</th><th>Entry Header 3</th><th>Entry Header 4</th></tr<tr><td>Entry First Line 1</td><td>Entry First Line 2</td><td>Entry First Line 3</td><td>Entry First Line 4</td></tr><tr><td>Entry Line 1</td><td>Entry Line 2</td><td>Entry Line 3</td><td>Entry Line 4</td></tr><tr><td>Entry Last Line 1</td><td>Entry Last Line 2</td><td>Entry Last Line 3</td><td>Entry Last Line 4</td></tr></table></div></div>';
 
   return CONFIG;
 
