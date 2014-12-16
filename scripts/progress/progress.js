@@ -70,20 +70,12 @@ define(["jquery", "config"], function($, CONFIG) {
             hide();
             curValue = 0;
             value(curValue);
-        },
-        show = function() {
-            element.style.display = 'block';
-        },
-        hide = function() {
-            element.style.display = 'none';
         };
 
     progress.init = init;
     progress.value = value;
     progress.done = done;
     progress.reset = reset;
-    progress.show = show;
-    progress.hide = hide;
     progress.failure = failure;
 
     return progress;
