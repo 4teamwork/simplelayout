@@ -1,45 +1,46 @@
   #dropzone {
-      display: none;
-      background-color: rgba(0, 0, 0, 0.1);
-      border-radius: 5px;
-      margin: 20px;
-      padding: 200px;
-      position: relative;
-      border: 3px dotted rgba(0, 0, 0, 0.3);
-      &.hover {
-          box-shadow: 0 0px 10px 0px rgba(0, 0, 0, 0.5);
-          #ftw-file-upload {
-              transform: rotate(360deg);
-          }
-      }
-      &.done {
-          #ftw-file-upload {
-              display: none;
-          }
-          &.hover {
-              box-shadow: 0 0px 10px 0px rgba(0, 0, 0, 0.5);
-          }
-      }
-      &.uploading {
-          border: none;
-          #ftw-file-upload {
-              display: none;
-          }
-      }
-      &.fail {
-          #ftw-file-upload {
-              display: none;
-          }
-      }
+    display: none;
+    background-color: rgba(0, 0, 0, .1);
+    border-radius: 5px;
+    margin: 20px;
+    padding: 200px;
+    position: relative;
+    border: 3px dotted rgba(0, 0, 0, .3);
+    &.hover {
+      box-shadow: 0 0 10px 0 rgba(0, 0, 0, .5);
       #ftw-file-upload {
-          display: block;
-          box-shadow: none;
-          border: none;
-          transition: transform 0.2s ease-in-out;
+        transform: rotate(360deg);
       }
-      img {
-          border: 5px solid #FFFFFF;
-          box-shadow: 0px 0px 0px 4px #000000;
-          width: 100px;
+    }
+    &.done {
+      #ftw-file-upload {
+        display: none;
       }
+      &.hover {
+        box-shadow: 0 0 10px 0 rgba(0, 0, 0, .5);
+      }
+    }
+    &.uploading {
+      border: none;
+      #ftw-file-upload {
+        display: none;
+      }
+    }
+    &.fail {
+      #ftw-file-upload {
+        display: none;
+      }
+    }
+    #ftw-file-upload {
+      display: block;
+      box-shadow: none;
+      border: none;
+      transition: transform 0.2s ease-in-out;
+    }
+    img {
+      border: 5px solid #fff;
+      box-shadow: 0 0 0 4px #000;
+      width: 100px;
+    }
   }
+
