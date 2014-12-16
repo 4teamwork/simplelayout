@@ -1,6 +1,7 @@
 define(["jquery", "config", "app/simplelayout.utils", "jqueryui/draggable", "jqueryui/resizable"], function($, CONFIG, utils) {
 
-  var dragSettings = {
+  var block = null,
+  dragSettings = {
       zIndex: 100
     },
     resizeSettings = {
@@ -8,7 +9,7 @@ define(["jquery", "config", "app/simplelayout.utils", "jqueryui/draggable", "jqu
       grid: [utils.getGrid().x, utils.getGrid().y],
       resize: function(e, ui) {
         $(ui.element).addClass('ui-resizing');
-        pckry.layout();
+        block.trigger('resize');
       },
       stop: function(e, ui) {
         $(ui.element).removeClass('ui-resizing');
@@ -20,7 +21,7 @@ define(["jquery", "config", "app/simplelayout.utils", "jqueryui/draggable", "jqu
     if (!body) {
       throw "InvalidArgumentException: " + body;
     }
-    var block = $(body);
+    block = $(body);
     block.draggable(dragSettings);
     block.resizable(resizeSettings);
     return block;

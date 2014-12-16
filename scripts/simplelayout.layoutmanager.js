@@ -25,7 +25,9 @@ define(["jquery", "config", "app/simplelayout.blockbuilder", "app/simplelayout.u
       layout.droppable(dropSettings);
       pckry.on('dragItemPositioned', function(pckryInstance, draggedItem) {
         //fitPosition(draggedItem);
-        window.setTimeout(function() {pckry.layout()}, 100);
+        window.setTimeout(function() {
+          pckry.layout();
+        }, 100);
       });
     },
     unbindEvents = function() {
@@ -45,6 +47,9 @@ define(["jquery", "config", "app/simplelayout.blockbuilder", "app/simplelayout.u
     generateBlock = function(component) {
       var type = component.attr('data-type');
       var block = builder.build(type);
+      block.on('resize', function() {
+        pckry.layout();
+      });
       block.css('width', utils.getGrid().x);
       return block;
     },
