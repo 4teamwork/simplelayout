@@ -26,6 +26,7 @@ define(function() {
   ];
   CONFIG.transitionDuration = 0;
   CONFIG.gutter = 0;
+  CONFIG.dropzonecolor = 'rgba(178, 194, 240, 0.5)';
 
   /*
     Defines config for uploader and progressbar
@@ -62,7 +63,7 @@ define(function() {
    */
 
   CONFIG.templates = {};
-  CONFIG.templates.textblock = '<div class="sl-block" data-uuid="FAKEUID"><div class="block-view-wrapper">NR:</div></div>';
+  CONFIG.templates.textblock = '<div class="sl-block" data-uuid="FAKEUID"><div class="block-view-wrapper">I am a Block</div></div>';
   CONFIG.templates.imageblock = '<div class="sl-block" data-uuid="FAKEUID"><div class="block-view-wrapper"><div class="sl-img-wrapper"><img src="images/test.jpg" /></div></div></div>';
   CONFIG.templates.listingblock = '<div class="sl-block" data-uuid="FAKEUID"><div class="block-view-wrapper"><table class="data"><tr><th>Entry Header 1</th><th>Entry Header 2</th><th>Entry Header 3</th><th>Entry Header 4</th></tr<tr><td>Entry First Line 1</td><td>Entry First Line 2</td><td>Entry First Line 3</td><td>Entry First Line 4</td></tr><tr><td>Entry Line 1</td><td>Entry Line 2</td><td>Entry Line 3</td><td>Entry Line 4</td></tr><tr><td>Entry Last Line 1</td><td>Entry Last Line 2</td><td>Entry Last Line 3</td><td>Entry Last Line 4</td></tr></table></div></div>';
 
