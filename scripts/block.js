@@ -9,12 +9,11 @@ define(["jquery", "config", "app/simplelayout.utils", "jqueryui/draggable", "jqu
     resizeSettings = {
       handles: "se",
       grid: [utils.getGrid().x, utils.getGrid().y],
-      resize: function(e, ui) {
-        $(ui.element).addClass('ui-resizing');
-        block.trigger('resize');
+      start : function(e, ui) {
+        $(ui.element).css('z-index', 2);
       },
       stop: function(e, ui) {
-        $(ui.element).removeClass('ui-resizing');
+        $(ui.element).css('z-index', 1);
       },
       minWidth: utils.getGrid().x
     };
