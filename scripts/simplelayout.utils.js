@@ -5,7 +5,7 @@ define(["jquery", "config"], function($, CONFIG) {
     utils.getGrid = function() {
         var grid = {};
         grid.x = CONFIG.contentwidth / CONFIG.columns;
-        grid.y = 20;
+        grid.y = 10;
         return grid;
     };
 
