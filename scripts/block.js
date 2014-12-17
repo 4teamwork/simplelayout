@@ -2,7 +2,9 @@ define(["jquery", "config", "app/simplelayout.utils", "jqueryui/draggable", "jqu
 
   var block = null,
   dragSettings = {
-      zIndex: 100
+      zIndex: 100,
+      containment : 'parent',
+      cursor : 'pointer'
     },
     resizeSettings = {
       handles: "se",
