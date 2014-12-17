@@ -7,7 +7,10 @@ define(["jquery", "config", "jqueryui/draggable"], function($, CONFIG, UI) {
     },
     dragSettings = {
       helper: "clone",
-      start: function(e, ui){dragComponent(e, ui);}
+      start: function(e, ui) {
+        dragComponent(e, ui);
+      },
+      cursor: "pointer"
     },
     loadComponents = function(path) {
       var components;
@@ -33,7 +36,7 @@ define(["jquery", "config", "jqueryui/draggable"], function($, CONFIG, UI) {
     };
 
   toolbox.init = function(selector, path) {
-    if(!selector) {
+    if (!selector) {
       throw "InvalidArgumentException (selector): " + selector;
     }
     element = $(selector);
