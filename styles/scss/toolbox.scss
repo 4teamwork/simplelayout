@@ -4,5 +4,15 @@
   right: 20px;
   top: 20px;
   z-index: 2;
+  a {
+    width: 100%;
+    &.ui-draggable-dragging {
+      box-shadow: 0 0 70px 0 rgba(0, 0, 0, .75);
+      background-color: #ffa500;
+    }
+    &:hover {
+      cursor: pointer;
+    }
+  }
 }
 
