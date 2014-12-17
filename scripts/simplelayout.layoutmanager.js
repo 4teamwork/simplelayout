@@ -2,21 +2,22 @@ define(["jquery", "config", "app/simplelayout.blockbuilder", "app/simplelayout.u
 
   var layoutmanager = {},
     layout = null,
-    dpckry = null,
+    pckry = null,
     currentBlock = null,
     newPosition = null,
     originalOffset = null,
     once = null,
+    canvas = null,
+    ctx = null,
     layoutSettings = {
       itemSelector: CONFIG.blocks,
       columnWidth: utils.getGrid().x,
-      //rowHeight : utils.getGrid().y,
       gutter: CONFIG.gutter,
       transitionDuration: CONFIG.transitionDuration + "ms"
     },
     dropSettings = {
       drop: function(e, ui) {
-        dropBlock(e, ui);
+        dropBlock();
       },
       over: function(e, ui) {
         placeBlock(e, ui);
@@ -30,7 +31,7 @@ define(["jquery", "config", "app/simplelayout.blockbuilder", "app/simplelayout.u
       layout.droppable(dropSettings);
       pckry.on('dragItemPositioned', function(pckryInstance, draggedItem) {
         if (once) {
-          if(draggedItem.hasToFix){
+          if (draggedItem.hasToFix) {
             fixPosition();
           }
           rearrange();
@@ -38,12 +39,16 @@ define(["jquery", "config", "app/simplelayout.blockbuilder", "app/simplelayout.u
         }
 
       });
+      pckry.on('layoutComplete', function(pckryInstance, laidOutItems) {
+        drawSpaces();
+      });
     },
     unbindEvents = function() {
       if (layout.droppable('instance')) {
         layout.droppable('destroy');
       }
       pckry.off('dragItemPositioned');
+      pckry.off('layoutComplete');
     },
     placeBlock = function(e, ui) {
       if ($(ui.draggable).hasClass('tb-component')) {
@@ -51,52 +56,54 @@ define(["jquery", "config", "app/simplelayout.blockbuilder", "app/simplelayout.u
         layout.append(currentBlock);
         pckry.appended(currentBlock);
         pckry.bindUIDraggableEvents(currentBlock);
-        if(currentBlock.offset().top > parseInt($(window).height()) - 200) {
-          window.scrollTo(0,document.body.scrollHeight);
-        }
       }
     },
     generateBlock = function(component) {
       var type = component.attr('data-type');
       var block = builder.build(type);
+      var offsetTopRect;
+      var draggedElement;
       block.on('resize', function() {
         pckry.layout();
       });
       block.on('dragstop', function(e) {
-        var sortedSpaces = pckry.packer.spaces.sort(function(a, b) {
-          return a.height - b.height;
-        });
-        var draggedElement = $(this);
-        if(sortedSpaces[0].height === Number.POSITIVE_INFINITY) {
-          sortedSpaces[0].y = draggedElement.offset().top;
-          sortedSpaces[0].x = draggedElement.offset().left;
+        draggedElement.css('z-index', 1);
+        offsetRect = getOffsetRect();
+        if (offsetRect.height === Number.POSITIVE_INFINITY) {
+          offsetRect.y = draggedElement.offset().top;
+          offsetRect.x = draggedElement.offset().left;
         }
         newPosition = {
           el: this,
-          x: sortedSpaces[0].x,
-          y: sortedSpaces[0].y
+          x: offsetRect.x,
+          y: draggedElement.offset().top - offsetRect.height
         };
-        if(draggedElement.offset().top === originalOffset.top) {
+        // Element is not dragged in y direction
+        if (draggedElement.offset().top === originalOffset.top) {
           draggedElement[0].hasToFix = false;
         }
-        else if (draggedElement.offset().left + draggedElement.width() === CONFIG.contentwidth || draggedElement.offset().top !== originalOffset.top || draggedElement.offset().left === 0) {
+        // A dragItemPositioned event will be fired manually when element is dragged arround the borders
+        else if (originalOffset.left + draggedElement.width() === CONFIG.contentwidth || originalOffset.top !== originalOffset.top || originalOffset.left === 0) {
           draggedElement[0].hasToFix = true;
         }
         pckry.trigger('dragItemPositioned', [pckry, draggedElement[0]]);
       });
       block.on('dragstart', function(e) {
+        draggedElement = $(this);
+        draggedElement.css('z-index', 2);
         once = true;
-        originalOffset = $(this).offset();
+        originalOffset = draggedElement.offset();
       });
       block.css('width', utils.getGrid().x);
       return block;
     },
-    dropBlock = function(e, ui) {
+    dropBlock = function() {
       currentBlock = null;
     },
     cancel = function(e, ui) {
       if (currentBlock) {
-        currentBlock.remove();
+        pckry.remove(currentBlock[0]);
+        rearrange();
       }
     },
     fixPosition = function() {
@@ -107,9 +114,31 @@ define(["jquery", "config", "app/simplelayout.blockbuilder", "app/simplelayout.u
         pckry.layout();
       }, CONFIG.transitionDuration * 2);
     },
+    drawSpaces = function() {
+      canvas.width = pckry.size.width;
+      canvas.height = pckry.size.height;
+      ctx.clearRect(0, 0, pckry.size.width, pckry.size.height);
+      var spaces = pckry.packer.spaces;
+      ctx.fillStyle = CONFIG.dropzonecolor;
+      for (var i = 0, len = spaces.length; i < len; i++) {
+        var space = spaces[i];
+        var height = Math.min(space.height, canvas.height - space.y);
+        ctx.fillRect(space.x, space.y, space.width, height);
+      }
+    },
+    getOffsetRect = function() {
+      sortedSpaces = pckry.packer.spaces.sort(function(a, b) {
+        return a.height - b.height;
+      });
+      return sortedSpaces[0];
+    },
     setUp = function() {
       layout.css('width', CONFIG.contentwidth);
       pckry = new Packery(layout[0], layoutSettings);
+      canvas = document.createElement('canvas');
+      layout.append(canvas);
+      ctx = canvas.getContext('2d');
+      rearrange();
       bindEvents();
     };
 
