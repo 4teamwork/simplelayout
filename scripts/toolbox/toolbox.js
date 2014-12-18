@@ -1,37 +1,37 @@
-define(["jquery", "config", "jqueryui/draggable"], function($, CONFIG, UI) {
+define(["jquery", "config", "jqueryui/draggable", "jqueryui/sortable"], function($, CONFIG, UI) {
   var toolbox = {},
-    element = null,
-    components = null,
-    dragComponent = function(e, ui) {
-      element.trigger('start');
-    },
     dragSettings = {
       helper: "clone",
-      start: function(e, ui) {
-        dragComponent(e, ui);
-      },
       cursor: "pointer"
     },
     loadComponents = function(path) {
-      var components;
       if (!path) {
-        components = CONFIG.toolbox.components;
+        toolbox.components = CONFIG.toolbox.components;
+        toolbox.layouts = CONFIG.toolbox.layouts;
       } else {
         var componentRequest = $.get(path);
         // TODO: lod components from URL
       }
-      $.each(components, function(idx, el) {
+      $.each(toolbox.components, function(idx, el) {
         var component = $('<a>').addClass('list-group-item tb-component').text(el.title).attr('data-type', el.type);
-        element.append(component);
+        var icon = $('<i>').addClass(el.icon);
+        component.prepend(icon);
+        toolbox.append(component);
+      });
+      $.each(toolbox.layouts, function(idx, el) {
+        var layout = $('<a>').addClass('list-group-item tb-layout').text(el.columns + " - Spalten Layout").attr('data-columns', el.columns);
+        var icon = $('<i>').addClass(el.icon);
+        layout.prepend(icon);
+        toolbox.append(layout);
       });
     },
     bindEvents = function() {
       unbindEvents();
-      element.children('a').draggable(dragSettings);
+      toolbox.children('a').draggable(dragSettings);
     },
     unbindEvents = function() {
-      if (element.children('a').draggable('instance')) {
-        element.children('a').draggable('destroy');
+      if (toolbox.children('a').draggable('instance')) {
+        toolbox.children('a').draggable('destroy');
       }
     };
 
@@ -39,11 +39,10 @@ define(["jquery", "config", "jqueryui/draggable"], function($, CONFIG, UI) {
     if (!selector) {
       throw "InvalidArgumentException (selector): " + selector;
     }
-    element = $(selector);
-    element.addClass('list-group toolbox');
+    toolbox = $(selector);
+    toolbox.addClass('list-group tb-toolbox');
     loadComponents(path);
     bindEvents();
-    return element;
   };
 
   return toolbox;

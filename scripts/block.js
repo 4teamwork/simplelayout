@@ -1,15 +1,10 @@
-define(["jquery", "config", "app/simplelayout.utils", "jqueryui/draggable", "jqueryui/resizable"], function($, CONFIG, utils) {
+define(["jquery", "config", "app/simplelayout.utils", "jqueryui/resizable"], function($, CONFIG, utils) {
 
   var block = null,
-  dragSettings = {
-      zIndex: 100,
-      containment : 'parent',
-      cursor : 'pointer'
-    },
-    resizeSettings = {
-      handles: "se",
+    resizableSettings = {
+      handles: "s",
       grid: [utils.getGrid().x, utils.getGrid().y],
-      start : function(e, ui) {
+      start: function(e, ui) {
         $(ui.element).css('z-index', 2);
       },
       stop: function(e, ui) {
@@ -22,9 +17,9 @@ define(["jquery", "config", "app/simplelayout.utils", "jqueryui/draggable", "jqu
     if (!body) {
       throw "InvalidArgumentException: " + body;
     }
+
     block = $(body);
-    block.draggable(dragSettings);
-    block.resizable(resizeSettings);
+    block.resizable(resizableSettings);
     return block;
   };
 

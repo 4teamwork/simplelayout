@@ -47,15 +47,32 @@ define(function() {
   CONFIG.toolbox.components = [];
   CONFIG.toolbox.components.push({
     "type" : "listingblock",
-    "title": "Listingblock"
+    "title": "Listingblock",
+    "icon" : "glyphicon glyphicon-list-alt"
   });
   CONFIG.toolbox.components.push({
     "type" : "textblock",
-    "title": "Textblock"
+    "title": "Textblock",
+    "icon" : "glyphicon glyphicon-align-left"
   });
   CONFIG.toolbox.components.push({
     "type" : "imageblock",
-    "title": "Imageblock"
+    "title": "Imageblock",
+    "icon" : "glyphicon glyphicon-film"
+  });
+
+  CONFIG.toolbox.layouts = [];
+  CONFIG.toolbox.layouts.push({
+    "columns" : 1,
+    "icon" : "glyphicon glyphicon-th"
+  });
+  CONFIG.toolbox.layouts.push({
+    "columns" : 2,
+    "icon" : "glyphicon glyphicon-th"
+  });
+  CONFIG.toolbox.layouts.push({
+    "columns" : 4,
+    "icon" : "glyphicon glyphicon-th"
   });
 
   /*
