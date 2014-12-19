@@ -8,13 +8,19 @@
     width: 100%;
     &.ui-draggable-dragging {
       box-shadow: 0 0 70px 0 rgba(0, 0, 0, .75);
-      background-color: #ffa500;
+      background-color: #edfbff;
     }
     &:hover {
       cursor: pointer;
     }
     i {
       padding-right: 5px;
+    }
+    &.trash {
+      text-align: center;
+      i {
+        font-size: 30px;
+      }
     }
   }
 }

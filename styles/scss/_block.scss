@@ -1,9 +1,13 @@
 .sl-block {
   z-index: 1;
   width: 100%;
-  padding: 5px;
+  padding: 5px 5px 10px 5px;
   background-color: #fff;
   border: 1px solid rgba(0, 0, 0, .1);
+  opacity: 1;
+  &.ui-sortable-helper {
+  opacity: .9;
+  }
   .ui-resizable-s {
     display: inline-block;
     font-family: 'Glyphicons Halflings';
@@ -13,7 +17,8 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     font-size: 8px;
-    background-color: lightblue;
+    background-color: #add8e6;
+    bottom: 0;
     &:before {
       content: "\e114";
       position: absolute;
