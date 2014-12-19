@@ -5,13 +5,11 @@ define(['jquery', 'config', 'app/simplelayout.blockbuilder', 'jqueryui/droppable
     currentBlock = null,
     currentColumn = null,
     sortableSettings = {
-      connectWith: ['.sl-column'],
-      items: '.sl-block',
+      connectWith: '.sl-column',
       placeholder: "placeholder",
       forcePlaceholderSize: true,
       tolerance: 'pointer',
-      distance: 1,
-      dropOnEmpty : true
+      distance: 1
     },
     droppableSettings = {
       drop: function() {
@@ -43,7 +41,7 @@ define(['jquery', 'config', 'app/simplelayout.blockbuilder', 'jqueryui/droppable
     dropBlock = function() {
       currentBlock = null;
       currentColumn = null;
-      bindEvents();
+      layout.children('.sl-column').sortable('refresh');
     },
     cancel = function() {
       if (currentBlock) {
@@ -62,7 +60,7 @@ define(['jquery', 'config', 'app/simplelayout.blockbuilder', 'jqueryui/droppable
     bindEvents = function() {
       unbindEvents();
       layout.droppable(droppableSettings);
-      layout.sortable(sortableSettings);
+      layout.children('.sl-column').sortable(sortableSettings);
     },
     unbindEvents = function() {
       if (layout.sortable('instance')) {
