@@ -10,11 +10,13 @@ requirejs.config({
     }
 });
 
-require(['jquery','app/progress/progress','app/uploader/uploader', 'app/toolbox/toolbox', 'app/simplelayout'], function($, progress, uploader, toolbox, simplelayout){
+require(['jquery', 'app/toolbox/toolbox', 'app/simplelayout/Simplelayout'], function($, Toolbox, Simplelayout){
   $(document).ready(function() {
-    var pr = progress.init('#progress');
-    var up = uploader.init('#dropzone').on('active', function(){$(this).show();}).on('inactive', function(){$(this).hide();}).on('cancel', function(){$(this).hide();});
-    var tb = toolbox.init('#toolbox');
-    var sl = simplelayout.init('#simplelayout');
+    var toolbox = new Toolbox();
+    toolbox.loadComponents('http://localhost:8080/scripts/toolbox/components.json');
+    var sl = new Simplelayout('#simplelayout');
+    sl.init();
+    var sl2 = new Simplelayout('#simplelayout2');
+    sl.init();
   });
 });
