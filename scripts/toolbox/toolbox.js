@@ -1,72 +1,78 @@
-define(["jquery", "config", "jqueryui/draggable", "jqueryui/sortable", "jqueryui/droppable"], function($, CONFIG, UI) {
-  var toolbox = {},
-    dragSettings = {
+define(["jquery", "config", "app/simplelayout/templateHelper", "jqueryui/draggable", "jqueryui/sortable", "jqueryui/droppable"], function($, CONFIG, tmplHelper) {
+
+  'use strict';
+
+  function Toolbox() {
+
+    if (!(this instanceof Toolbox)) {
+      throw new TypeError("Toolbox constructor cannot be called as a function.");
+    }
+
+    var element = null;
+
+    var DRAG_SETTINGS = {
       helper: "clone",
       cursor: "pointer"
-    },
-    trashDropSettings = {
-      over : function(e, ui) {
+    };
+
+    var DROP_SETTINGS = {
+      accept: '.sl-layout, .sl-block',
+      tolerance: 'touch',
+      over: function(e, ui) {
         ui.draggable.addClass('deleted');
-      },
-      drop : function(e, ui) {
-        if(ui.draggable.children('.sl-column').length === 0) {
-          ui.draggable.remove();
+        if (ui.draggable.find('.sl-block').length > 0) {
+          ui.draggable.addClass('cancelDeletion');
         }
       },
-      out : function(e, ui) {
+      drop: function(e, ui) {
+        if (ui.draggable.find('.sl-block').length === 0) {
+          ui.draggable.remove();
+        }
         ui.draggable.removeClass('deleted');
-      }
-    },
-    loadComponents = function(path) {
-      if (!path) {
-        toolbox.components = CONFIG.toolbox.components;
-        toolbox.layouts = CONFIG.toolbox.layouts;
-      } else {
-        var componentRequest = $.get(path);
-        // TODO: lod components from URL
-      }
-      $.each(toolbox.components, function(idx, el) {
-        var component = $('<a>').addClass('list-group-item tb-component tb-draggable').text(el.title).attr('data-type', el.type);
-        var icon = $('<i>').addClass(el.icon);
-        component.prepend(icon);
-        toolbox.append(component);
-      });
-      $.each(toolbox.layouts, function(idx, el) {
-        var layout = $('<a>').addClass('list-group-item tb-layout tb-draggable').text(el.columns + " - Spalten Layout").attr('data-columns', el.columns);
-        var icon = $('<i>').addClass(el.icon);
-        layout.prepend(icon);
-        toolbox.append(layout);
-      });
-      var trash = $('<a>').addClass('list-group-item trash tb-droppable');
-      var icon = $('<i>').addClass('glyphicon glyphicon-trash');
-      trash.append(icon);
-
-      toolbox.append(trash);
-    },
-    bindEvents = function() {
-      unbindEvents();
-      toolbox.children('.tb-draggable').draggable(dragSettings);
-      toolbox.children('.tb-droppable').droppable(trashDropSettings);
-    },
-    unbindEvents = function() {
-      if (toolbox.children('.tb-draggable').draggable('instance')) {
-        toolbox.children('.tb-draggable').draggable('destroy');
-      }
-      if (toolbox.children('.tb-droppable').draggable('instance')) {
-        toolbox.children('.tb-droppable').draggable('destroy');
+        ui.draggable.removeClass('cancelDeletion');
+      },
+      out: function(e, ui) {
+        ui.draggable.removeClass('deleted');
+        ui.draggable.removeClass('cancelDeletion');
       }
     };
 
-  toolbox.init = function(selector, path) {
-    if (!selector) {
-      throw "InvalidArgumentException (selector): " + selector;
+    function build(components) {
+      $.when(tmplHelper.getTemplate("toolbox")).done(function() {
+        var element = $($.templates.toolbox.render(components));
+        bindEvents(element);
+        $('body').append(element);
+      });
     }
-    toolbox = $(selector);
-    toolbox.addClass('list-group tb-toolbox');
-    loadComponents(path);
-    bindEvents();
-  };
 
-  return toolbox;
+    function bindEvents(element) {
+      unbindEvents(element);
+      element.children('.tb-draggable').draggable(DRAG_SETTINGS);
+      element.children('.tb-droppable').droppable(DROP_SETTINGS);
+    }
+
+    function unbindEvents(element) {
+      if (element.children('.tb-draggable').draggable('instance')) {
+        element.children('.tb-draggable').draggable('destroy');
+      }
+      if (element.children('.tb-droppable').draggable('instance')) {
+        element.children('.tb-droppable').draggable('destroy');
+      }
+    }
+
+    return {
+      loadComponents: function(path) {
+        var componentRequest = $.getJSON(path);
+        componentRequest.done(function(data) {
+          build(data);
+        });
+        componentRequest.fail(function(statusMessage) {
+          throw "RequstException: " + statusMessage;
+        });
+      }
+    };
+
+  }
+  return Toolbox;
 
 });
