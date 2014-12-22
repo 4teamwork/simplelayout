@@ -1,0 +1,21 @@
+{
+  "blocks": [{
+    "type": "listingblock",
+    "title": "Listingblock",
+    "icon": "glyphicon glyphicon-list-alt"
+  }, {
+    "type": "textblock",
+    "title": "Textblock",
+    "icon": "glyphicon glyphicon-align-left"
+  }],
+  "layouts": [{
+    "columns": 1,
+    "icon": "glyphicon glyphicon-th"
+  }, {
+    "columns": 2,
+    "icon": "glyphicon glyphicon-th"
+  }, {
+    "columns": 4,
+    "icon": "glyphicon glyphicon-th"
+  }]
+}
