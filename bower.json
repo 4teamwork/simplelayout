@@ -1,28 +1,29 @@
 {
-    "name": "simplelayout",
-    "version": "1.0.0",
-    "devDependencies": {
-        "jquery": ">1.6",
-        "jquery-ui": "1.11.2",
-        "bootstrap" : "3.3.1",
-        "jsrender" : "1.0.0-beta"
-    },
-    "homepage": "https://github.com/4teamwork/simplelayout-mockup",
-    "authors": [
-        "Kevin Bieri <k.bieri@4teamwork.ch>"
-    ],
-    "description": "Layoutmanagemnet for plone contenttypes",
-    "main": "index.html",
-    "moduleType": [
-        "amd",
-        "node"
-    ],
-    "license": "GPL2",
-    "ignore": [
-        "**/.*",
-        "node_modules",
-        "bower_components",
-        "test",
-        "tests"
-    ]
+  "name": "simplelayout",
+  "version": "1.0.0",
+  "devDependencies": {
+    "chai": "~1.8.1",
+    "mocha": "~1.18",
+    "sinonjs": "~1.7.3"
+  },
+  "dependencies": {
+    "jquery": ">1.6",
+    "jquery-ui": "1.11.2",
+    "bootstrap": "3.3.1",
+    "jsrender": "1.0.0-beta",
+    "requirejs": "2.1.9",
+    "mocha": "~2.0.1",
+    "chai": "~1.10.0"
+  },
+  "homepage": "https://github.com/4teamwork/simplelayout-mockup",
+  "authors": [
+    "Kevin Bieri <k.bieri@4teamwork.ch>"
+  ],
+  "description": "Layoutmanagemnet for plone contenttypes",
+  "main": "index.html",
+  "moduleType": [
+    "amd",
+    "node"
+  ],
+  "license": "GPL2"
 }
