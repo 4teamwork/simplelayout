@@ -2,7 +2,7 @@
   "name": "simplelayout",
   "version": "1.0.0",
   "devDependencies": {
-    "chai": "~1.8.1",
+    "chai": "~1.10.0",
     "mocha": "~1.18",
     "sinonjs": "~1.7.3"
   },
@@ -11,9 +11,7 @@
     "jquery-ui": "1.11.2",
     "bootstrap": "3.3.1",
     "jsrender": "1.0.0-beta",
-    "requirejs": "2.1.9",
-    "mocha": "~2.0.1",
-    "chai": "~1.10.0"
+    "requirejs": "2.1.9"
   },
   "homepage": "https://github.com/4teamwork/simplelayout-mockup",
   "authors": [
