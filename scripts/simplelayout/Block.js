@@ -1,49 +1,32 @@
-define(["jquery", "app/simplelayout/utils", "app/simplelayout/templateHelper", "jqueryui/resizable"], function($, utils, tmplHelper) {
+define(["jquery", "app/simplelayout/utils", "jqueryui/resizable"], function($, utils) {
 
   'use strict';
 
   function Block(type) {
 
     if (!(this instanceof Block)) {
-      throw new TypeError("Layoutmanager constructor cannot be called as a function.");
+      throw new TypeError("Block constructor cannot be called as a function.");
     }
+
     if (!type) {
-      throw new TypeError("type must be defined");
+      throw new ReferenceError("Type must be defined.");
     }
 
-    var RESIZABLE_SETTINGS = {
-      handles: "s",
-      grid: [utils.getGrid().x, 1],
-      start: function(e, ui) {
-        $(ui.element).css('z-index', 2);
-      },
-      stop: function(e, ui) {
-        $(ui.element).css('z-index', 1);
-      },
-      resize : function(e ,ui) {
-      }
-    };
-
-    function bindEvents(element) {
-      unbindEvents(element);
-      element.resizable(RESIZABLE_SETTINGS);
-    }
-
-    function unbindEvents(element) {
-      if (element.resizable('instance')) {
-        element.resizable('destroy');
-      }
-    }
-
+    var template = $.templates("<div data-type='{{:type}}' class='sl-block'>{{:data}}</div>");
 
     return {
-      create: function(data, fn) {
+      getElement: function() {
+        return this.element;
+      },
+
+      create: function(_data) {
         var that = this;
-        $.when(tmplHelper.getTemplate(type)).done(function() {
-          var element = $($.templates[type].render(data));
-          bindEvents(element);
-          fn(element);
-        });
+        var data = {
+          'data': _data
+        };
+        data.type = type;
+        this.element = $(template.render(data));
+        return this.element;
       }
     };
 
