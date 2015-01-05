@@ -1,24 +1,21 @@
-requirejs.config({
-    baseUrl: 'bower_components',
-    paths: {
-        app: "../scripts",
-        jquery : "jquery/dist/jquery",
-        jqueryui : "jquery-ui/ui",
-        renderer : "jsrender/jsrender",
-        packery : "packery/dist/packery.pkgd.min",
-        config : "../scripts/config",
-        hallo : "../../scripts/hallo"
-    }
-});
+suite('Glue (event-interaction between block layout and layoutmanager)', function() {
+  'use strict';
 
-describe('Simplelayout Test', function() {
- it('Should be hallo', function(done) {
-   console.log("dinne");
-   require([
-     'hallo'
-   ], function(hallo) {
-     chai.assert.equal(hallo.hallo(), "hallo");
-     done();
-   });
- });
+  var Layoutmanager;
+  var Layout;
+  var Block;
+  var Toolbox;
+
+  setup(function(done) {
+    require(['app/simplelayout/Layoutmanager', 'app/simplelayout/Layout', 'app/simplelayout/Block','app/simplelayout/Toolbox'], function(_Layoutmanager, _Layout, _Block, _Toolbox) {
+      Layout = _Layout;
+      Layoutmanager = _Layoutmanager;
+      Block = _Block;
+      Toolbox = _Toolbox;
+      done();
+    });
+  });
+
+
+
 });
