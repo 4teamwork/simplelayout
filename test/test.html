@@ -12,22 +12,34 @@
     each time a resource is required (1 to get the paths
     and a second time to actually require the desired file).
   -->
+  <script type="text/javascript">
+    if(window.location.href.indexOf('?refresh') > 0) {
+      window.setInterval(function() {
+        window.location.reload();
+      }, 2000)
+    }
+  </script>
 </head>
 <body>
   <div id="mocha"></div>
+  <div id="simplelayout"></div>
   <script type="text/javascript">
   // Set as test mode for proper configuration.
   window._TEST_MODE = true;
 
-  mocha.setup('bdd');
+  mocha.setup('tdd');
   </script>
 
+
   <!-- Include the actual tests. -->
-  <script type="text/javascript" src="peter.test.js"></script>
+  <script type="text/javascript" src="testsetup.js"></script>
+  <script type="text/javascript" src="toolbox.test.js"></script>
+  <script type="text/javascript" src="layout.test.js"></script>
+  <script type="text/javascript" src="block.test.js"></script>
+  <script type="text/javascript" src="layoutmanager.test.js"></script>
 
 
   <script type="text/javascript">
-    console.log("hans");
   // Only tests run in real browser, injected script run if options.run == true
   if (navigator.userAgent.indexOf('PhantomJS') < 0) {
     mocha.run();
