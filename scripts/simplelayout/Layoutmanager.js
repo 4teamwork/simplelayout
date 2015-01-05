@@ -1,47 +1,18 @@
-define(["jquery", "config", "app/simplelayout/Layout", "jqueryui/droppable", "jqueryui/sortable"], function($, CONFIG, Layout) {
+define(["jquery", "app/simplelayout/Layout", "jqueryui/droppable", "jqueryui/sortable"], function($, Layout) {
 
   'use strict';
 
-  function Layoutmanager(element) {
+  function Layoutmanager(options) {
 
     if (!(this instanceof Layoutmanager)) {
       throw new TypeError("Layoutmanager constructor cannot be called as a function.");
     }
-    if (!element) {
-      throw new TypeError("element must be defined");
-    }
 
-    var currentLayout = null;
+    options = $.extend({
+      width : '100%'
+    }, options || {});
 
-
-    var DROP_SETTINGS = {
-      accept: ".tb-layout",
-      over: placeLayout,
-      out: cancel,
-      drop: dropLayout
-    };
-
-    var SORTABLE_SETTINGS = {
-      connectWith: '.sl-simplelayout',
-      items: '.sl-layout',
-      placeholder: "placeholder",
-      forcePlaceholderSize: true,
-    };
-
-    function cancel() {
-      if (currentLayout) {
-        currentLayout.remove();
-      }
-    }
-
-    function placeLayout(e, ui) {
-      addLayout(ui.draggable.attr('data-columns'));
-    }
-
-    function dropLayout() {
-      currentLayout = null;
-      element.sortable('refresh');
-    }
+    var element = $("<div>").addClass('sl-simplelayout').css('width', options.width);
 
     function bindEvents(element) {
       unbindEvents(element);
@@ -63,13 +34,42 @@ define(["jquery", "config", "app/simplelayout/Layout", "jqueryui/droppable", "jq
       element.append(currentLayout);
     }
 
-    return {
-      addLayout: addLayout,
+    var layouts = [];
 
-      observe: function() {
-        element.css('width', CONFIG.contentwidth);
-        bindEvents(element);
+    return {
+      insertLayout: function(layout) {
+        if (this.currentLayout) {
+          throw new Error('Layout already inserted.');
+        }
+        this.currentLayout = layout;
+        element.append(layout.getElement());
+      },
+
+      commitLayout: function() {
+        layouts.push(this.currentLayout);
+        this.currentLayout = null;
+      },
+
+      rollbackLayout: function() {
+        if (!this.currentLayout) {
+          throw new Error('No layout inserted.');
+        }
+        this.currentLayout.getElement().remove();
+        this.currentLayout = null;
+      },
+
+      attachTo: function(target) {
+        target.append(element);
+      },
+
+      getElement : function() {
+        return element;
+      },
+
+      getLayouts : function() {
+        return layouts;
       }
+
     };
 
   }
