@@ -1,4 +1,4 @@
-define(['jquery', 'app/simplelayout/Block', 'jqueryui/droppable', 'jqueryui/sortable'], function($, Block) {
+define(['jquery', 'app/simplelayout/Column', 'renderer'], function($, Column) {
 
   'use strict';
 
@@ -10,46 +10,49 @@ define(['jquery', 'app/simplelayout/Block', 'jqueryui/droppable', 'jqueryui/sort
       throw new TypeError("columns must be defined");
     }
 
+    var layoutId = 0;
+
+    var template = $.templates("<div class='sl-layout'></div>");
+
     return {
+
+      committed : false,
+
+      columns : {},
+
       getElement: function() {
-        if(this.element) {
-          return this.element;
-        }
-        this.element = $('<div>').addClass('sl-layout');
-        var columnWidth = 100 / columns + "%";
-        for (var i = 0; i < columns; i++) {
-          var column = $('<div>').addClass('sl-column').width(columnWidth);
-          this.element.append(column);
-        }
         return this.element;
       },
 
-      insertBlockAt : function(options) {
-        if(this.transactionOptions) {
-          throw new Error('Block already inserted.');
+      create : function() {
+        this.element = $(template.render());
+        var columnWidth = 100 / columns + "%";
+        for (var i = 0; i < columns; i++) {
+          var column = new Column(columnWidth);
+          this.columns[i] = column;
+          column.create();
+          column.getElement().data('column-id', i);
+          column.getElement().data('layout-id', layoutId);
+          this.element.append(column.getElement());
         }
-        this.transactionOptions = options;
-        var column = this.getElement().children('.sl-column')[options.column];
-        if(!column) {
-          throw new ReferenceError('Column ' + options.column + ' does not exist');
-        }
-        $(column).append(options.block.getElement());
       },
 
-      rollbackBlock : function() {
-        if(!this.transactionOptions) {
-          throw new Error('No block inserted.');
-        }
-        this.transactionOptions.block.getElement().remove();
-        this.transactionOptions = null;
+      getColumns: function() {
+        return this.columns;
       },
 
-      commitBlock : function() {
-        this.transactionOptions = null;
+      insertBlock : function(columnId, blocktype) {
+        var column = this.columns[columnId];
+        return column.insertBlock(blocktype);
       },
 
-      getColumns : function() {
-        return this.getElement().find('.sl-column');
+      deleteBlock : function(columnId, blockId) {
+        var column = this.columns[columnId];
+        column.deleteBlock(blockId);
+      },
+
+      commitBlocks : function(columnId) {
+        this.getColumns()[columnId].commitBlocks();
       }
 
     };
