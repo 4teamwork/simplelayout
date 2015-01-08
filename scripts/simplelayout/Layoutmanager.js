@@ -1,62 +1,20 @@
-define(["jquery", "app/simplelayout/Layout", "jqueryui/droppable", "jqueryui/sortable"], function($, Layout) {
+define(["jquery", "app/simplelayout/Layout", "app/simplelayout/Block"], function($, Layout, Block) {
 
   'use strict';
 
-  function Layoutmanager(options) {
+  function Layoutmanager() {
 
     if (!(this instanceof Layoutmanager)) {
       throw new TypeError("Layoutmanager constructor cannot be called as a function.");
     }
 
-    options = $.extend({
-      width : '100%'
-    }, options || {});
+    var element = $("<div>").addClass('sl-simplelayout');
 
-    var element = $("<div>").addClass('sl-simplelayout').css('width', options.width);
-
-    function bindEvents(element) {
-      unbindEvents(element);
-      element.droppable(DROP_SETTINGS);
-      element.sortable(SORTABLE_SETTINGS);
-    }
-
-    function unbindEvents(element) {
-      if (element.droppable('instance')) {
-        element.droppable('destroy');
-      }
-      if (element.sortable('instance')) {
-        element.sortable('destroy');
-      }
-    }
-
-    function addLayout(columns) {
-      currentLayout = new Layout(columns).create();
-      element.append(currentLayout);
-    }
-
-    var layouts = [];
+    var layoutId = 0;
 
     return {
-      insertLayout: function(layout) {
-        if (this.currentLayout) {
-          throw new Error('Layout already inserted.');
-        }
-        this.currentLayout = layout;
-        element.append(layout.getElement());
-      },
 
-      commitLayout: function() {
-        layouts.push(this.currentLayout);
-        this.currentLayout = null;
-      },
-
-      rollbackLayout: function() {
-        if (!this.currentLayout) {
-          throw new Error('No layout inserted.');
-        }
-        this.currentLayout.getElement().remove();
-        this.currentLayout = null;
-      },
+      layouts : {},
 
       attachTo: function(target) {
         target.append(element);
@@ -66,8 +24,54 @@ define(["jquery", "app/simplelayout/Layout", "jqueryui/droppable", "jqueryui/sor
         return element;
       },
 
+      insertLayout: function(columns) {
+        var id = layoutId;
+        var layout = new Layout(columns);
+        layout.create();
+        layout.getElement().data('layout-id', id);
+        element.append(layout.getElement());
+        this.layouts[id] = layout;
+        layoutId ++;
+        return id;
+      },
+
+      deleteLayout : function(layoutId) {
+        this.layouts[layoutId].getElement().remove();
+        delete this.layouts[layoutId];
+      },
+
+      commitLayouts: function() {
+        for(var key in this.layouts) {
+          this.layouts[key].committed = true;
+        }
+      },
+
+      getCommittedLayouts : function() {
+        var committedLayouts = {};
+        for(var key in this.layouts) {
+          if(this.layouts[key].committed) {
+            committedLayouts[key] = this.layouts[key];
+          }
+        }
+        return committedLayouts;
+      },
+
       getLayouts : function() {
-        return layouts;
+        return this.layouts;
+      },
+
+      insertBlock : function(layoutId, columnId, blocktype) {
+        var layout = this.layouts[layoutId];
+        return layout.insertBlock(columnId, blocktype);
+      },
+
+      deleteBlock : function(layoutId, columnId, blockId) {
+        var layout = this.layouts[layoutId];
+        layout.deleteBlock(columnId, blockId);
+      },
+
+      commitBlocks : function(layoutId, columnId) {
+        this.getLayouts()[layoutId].commitBlocks(columnId);
       }
 
     };
