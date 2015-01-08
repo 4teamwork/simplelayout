@@ -1,4 +1,4 @@
-define(["jquery", "app/simplelayout/utils", "jqueryui/resizable"], function($, utils) {
+define(["jquery", 'renderer'], function($) {
 
   'use strict';
 
@@ -15,6 +15,11 @@ define(["jquery", "app/simplelayout/utils", "jqueryui/resizable"], function($, u
     var template = $.templates("<div data-type='{{:type}}' class='sl-block'>{{:data}}</div>");
 
     return {
+
+      committed : false,
+
+      type : type,
+
       getElement: function() {
         return this.element;
       },
