@@ -1,26 +1,6 @@
 define(function() {
   var CONFIG = {};
 
-  /*
-    Defines confog for blocks
-   */
-  //Defines the selector for the blocks
-  CONFIG.blocks = '.sl-block';
-  //Number of column
-  CONFIG.columns = 4;
-  //Number of images within a column
-  CONFIG.images = 2;
-  //Widgetcontent requires a static with for calculating the columnwidths
-  CONFIG.contentwidth = 960;
-  //Defines allowed Filetypes for upload
-  CONFIG.allowedFileTypes = [
-    'jpg',
-    'jpeg',
-    'png',
-    'gif',
-    'pdf'
-  ];
-
   CONFIG.dropzonecolor = 'rgba(178, 194, 240, 0.5)';
 
   /*
