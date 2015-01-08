@@ -7,16 +7,11 @@
   <script type="text/javascript" src="../bower_components/requirejs/require.js"></script>
   <link rel="stylesheet" href="../bower_components/mocha/mocha.css" />
 
-  <!--
-    Directly include config file to avoid nested requires
-    each time a resource is required (1 to get the paths
-    and a second time to actually require the desired file).
-  -->
   <script type="text/javascript">
     if(window.location.href.indexOf('?refresh') > 0) {
       window.setInterval(function() {
         window.location.reload();
-      }, 2000)
+      }, 5000)
     }
   </script>
 </head>
@@ -30,14 +25,15 @@
   mocha.setup('tdd');
   </script>
 
-
   <!-- Include the actual tests. -->
   <script type="text/javascript" src="testsetup.js"></script>
-  <script type="text/javascript" src="toolbox.test.js"></script>
-  <script type="text/javascript" src="layout.test.js"></script>
   <script type="text/javascript" src="block.test.js"></script>
+  <script type="text/javascript" src="column.test.js"></script>
+  <script type="text/javascript" src="layout.test.js"></script>
   <script type="text/javascript" src="layoutmanager.test.js"></script>
-
+  <script type="text/javascript" src="toolbox.test.js"></script>
+  <script type="text/javascript" src="eventRecorder.test.js"></script>
+  <script type="text/javascript" src="simplelayout.test.js"></script>
 
   <script type="text/javascript">
   // Only tests run in real browser, injected script run if options.run == true

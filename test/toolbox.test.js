@@ -21,17 +21,9 @@ suite('Toolbox', function() {
     toolbox.attachTo(target);
 
     var addedNodes = $.map(target.children(), function(e) {
-      return [{
-        tag: e.tagName,
-        id: e.id,
-        classes: e.className
-      }];
+      return [{tag: e.tagName, id: e.id, classes: e.className}];
     });
-    assert.deepEqual(addedNodes, [{
-      tag: "DIV",
-      id: "sl-toolbox",
-      classes: "list-group sl-toolbox"
-    }]);
+    assert.deepEqual(addedNodes, [{tag: "DIV", id: "sl-toolbox", classes: "list-group sl-toolbox"}]);
   });
 
   suite('components', function() {
@@ -85,86 +77,4 @@ suite('Toolbox', function() {
     });
   });
 
-  suite('trash', function() {
-
-    var Layoutmanager;
-    var Layout;
-    var Block;
-
-    setup(function(done) {
-      require(['app/simplelayout/Layoutmanager', 'app/simplelayout/Layout', 'app/simplelayout/Block'], function(_Layoutmanager, _Layout, _Block) {
-        Layout = _Layout;
-        Layoutmanager = _Layoutmanager;
-        Block = _Block;
-        done();
-      });
-    });
-
-    test('can delete a block', function() {
-      var toolbox = new Toolbox();
-      var layoutManagerTarget = $('<div></div>');
-      var target = $("<div></div>");
-      toolbox.attachTo(target);
-      var layoutmanager = new Layoutmanager();
-      layoutmanager.attachTo(target);
-      var layout = new Layout(4);
-      layoutmanager.insertLayout(layout);
-      layoutmanager.commitLayout();
-      var textblock = new Block('textblock');
-      textblock.create('I am a block');
-      layout.insertBlockAt({
-        block: textblock,
-        column: 0
-      });
-      layout.commitBlock();
-      toolbox.deleteComponent(textblock);
-
-      var addedNodes = layoutManagerTarget.find('.sl-block');
-
-      assert(addedNodes.length === 0);
-    });
-
-    test('can delete a layout', function() {
-      var toolbox = new Toolbox();
-      var layoutManagerTarget = $('<div></div>');
-      var target = $("<div></div>");
-      toolbox.attachTo(target);
-      var layoutmanager = new Layoutmanager();
-      layoutmanager.attachTo(target);
-      var layout = new Layout(4);
-      layoutmanager.insertLayout(layout);
-      layoutmanager.commitLayout();
-      toolbox.deleteComponent(layout);
-
-      var addedNodes = layoutManagerTarget.find('.sl-block');
-
-      assert(addedNodes.length === 0);
-    });
-
-    test('deleting non empty layout raises exception', function() {
-      var toolbox = new Toolbox();
-      var layoutManagerTarget = $('<div></div>');
-      var target = $("<div></div>");
-      toolbox.attachTo(target);
-      var layoutmanager = new Layoutmanager();
-      layoutmanager.attachTo(layoutManagerTarget);
-      var layout = new Layout(4);
-      layoutmanager.insertLayout(layout);
-      layoutmanager.commitLayout();
-      var textblock = new Block('textblock');
-      textblock.create('I am a block');
-      layout.insertBlockAt({
-        block: textblock,
-        column: 0
-      });
-      layout.commitBlock();
-
-      var addedNodes = layoutManagerTarget.find('.sl-block');
-
-      assert.throw(function() {
-        toolbox.deleteComponent(layout);
-      }, Error, "Layout is not empty");
-    });
-
-  });
 });
