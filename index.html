@@ -15,7 +15,24 @@
   <link rel="stylesheet" href="bower_components/jquery-ui/themes/base/resizable.css" />
   <link rel="stylesheet" href="bower_components/jquery-ui/themes/base/sortable.css" />
   <link rel="stylesheet" href="bower_components/jquery-ui/themes/ui-lightness/jquery-ui.min.css" />
-  <script data-main="scripts/main" src="node_modules/requirejs/require.js"></script>
+  <script src="bower_components/jquery/dist/jquery.min.js"></script>
+  <script src="bower_components/jquery-ui/jquery-ui.min.js"></script>
+  <script src="bower_components/jsrender/jsrender.min.js"></script>
+  <script src="dist/simplelayout.js"></script>
+  <script>
+  $(document).ready(function() {
+    var target = $('body');
+
+    var simplelayout = new Simplelayout();
+    var toolbox = new Toolbox({
+      layouts: [1, 2, 4]
+    });
+
+    simplelayout.attachTo(target);
+    toolbox.attachTo(target);
+    simplelayout.attachToolbox(toolbox);
+  });
+  </script>
 </head>
 
 <body>
