@@ -4,7 +4,7 @@ suite('Toolbox', function() {
   var Toolbox;
 
   setup(function(done) {
-    require(['app/toolbox/Toolbox'], function(_Toolbox) {
+    require(['toolbox/Toolbox'], function(_Toolbox) {
       Toolbox = _Toolbox;
       done();
     });
