@@ -6,6 +6,7 @@ node_modules
 
 ### Grunt ###
 .grunt
+dist
 
 ### SCSS ###
 *.map
