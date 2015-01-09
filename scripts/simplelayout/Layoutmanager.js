@@ -1,4 +1,4 @@
-define(["jquery", "app/simplelayout/Layout", "app/simplelayout/Block"], function($, Layout, Block) {
+define(["simplelayout/Layout"], function(Layout) {
 
   'use strict';
 

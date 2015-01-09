@@ -1,4 +1,4 @@
-define(['jquery', 'app/toolbox/Toolbox', 'app/simplelayout/Layoutmanager', 'app/simplelayout/utils', 'app/simplelayout/Eventrecorder','jqueryui/draggable', 'jqueryui/sortable', 'jqueryui/droppable', 'jqueryui/resizable'], function($, Toolbox, Layoutmanager, utils, Eventrecorder) {
+define(['toolbox/Toolbox', 'simplelayout/Layoutmanager', 'simplelayout/Eventrecorder'], function(Toolbox, Layoutmanager, Eventrecorder) {
 
   'use strict';
 
@@ -15,8 +15,7 @@ define(['jquery', 'app/toolbox/Toolbox', 'app/simplelayout/Layoutmanager', 'app/
     var toolbox;
 
     var BLOCK_RESIZABLE_SETTINGS = {
-      handles: "s",
-      grid: [utils.getGrid().x, utils.getGrid().y]
+      handles: "s"
     };
 
     var TOOLBOX_DRAGGABLE_SETTINGS = {
@@ -162,6 +161,7 @@ define(['jquery', 'app/toolbox/Toolbox', 'app/simplelayout/Layoutmanager', 'app/
       if(layoutmanager.getElement().droppable('instance')) {
         layoutmanager.getElement().droppable('destroy');
       }
+
       if(layoutmanager.getElement().sortable('instance')) {
         layoutmanager.getElement().sortable('destroy');
       }

@@ -1,4 +1,4 @@
-define(['jquery', 'app/simplelayout/Column', 'renderer'], function($, Column) {
+define(['simplelayout/Column'], function(Column) {
 
   'use strict';
 

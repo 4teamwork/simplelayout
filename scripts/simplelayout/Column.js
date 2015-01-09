@@ -1,4 +1,4 @@
-define(['jquery', 'app/simplelayout/Block', 'renderer'], function($, Block) {
+define(['simplelayout/Block'], function(Block) {
 
   'use strict';
 
