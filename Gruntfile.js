@@ -17,18 +17,27 @@ module.exports = function(grunt) {
     requirejs: {
       compile: {
         options: {
-          almond : true,
+          almond: true,
           baseUrl: 'scripts',
           mainConfigFile: 'scripts/config.js',
           findNestedDependencies: true,
           name: '../node_modules/almond/almond',
-          include : ['simplelayout/Simplelayout', 'toolbox/Toolbox'],
+          include: ['simplelayout/Simplelayout', 'toolbox/Toolbox'],
           out: 'dist/simplelayout.js',
-          optimize : 'none',
           wrap: {
             startFile: "build/start.frag",
             endFile: "build/end.frag"
           },
+        }
+      }
+    },
+    sass: {
+      dist: {
+        options: {
+          style: 'expanded'
+        },
+        files: {
+          'dist/main.css': 'main.scss'
         }
       }
     }
@@ -36,7 +45,8 @@ module.exports = function(grunt) {
 
   grunt.loadNpmTasks('grunt-mocha');
   grunt.loadNpmTasks('grunt-contrib-requirejs');
+  grunt.loadNpmTasks('grunt-contrib-sass');
 
   grunt.registerTask('test', ['mocha']);
-  grunt.registerTask('build', ['requirejs']);
+  grunt.registerTask('build', ['requirejs', 'sass']);
 };

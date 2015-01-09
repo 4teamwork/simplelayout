@@ -11,7 +11,8 @@
     "grunt-contrib-requirejs": "~0.4.1",
     "grunt-lib-phantomjs": "~0.3",
     "grunt-mocha": "~0.4.11",
-    "almond" : "0.3.0"
+    "almond" : "0.3.0",
+    "grunt-contrib-sass" : "0.8.1"
   },
   "main": "index.html",
   "directories": {
