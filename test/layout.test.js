@@ -2,12 +2,10 @@ suite('Layout', function() {
   'use strict';
 
   var Layout;
-  var Block;
 
   setup(function(done) {
-    require(['app/simplelayout/Layout', 'app/simplelayout/Block'], function(_Layout, _Block) {
+    require(['simplelayout/Layout'], function(_Layout) {
       Layout = _Layout;
-      Block = _Block;
       done();
     });
   });

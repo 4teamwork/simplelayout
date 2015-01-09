@@ -7,8 +7,7 @@ suite('Layoutmanager', function() {
   var target;
 
   setup(function(done) {
-    require(['app/simplelayout/Layoutmanager', 'app/simplelayout/Layout'], function(_Layoutmanager, _Layout) {
-      Layout = _Layout;
+    require(['simplelayout/Layoutmanager'], function(_Layoutmanager) {
       Layoutmanager = _Layoutmanager;
       layoutmanager = new Layoutmanager();
       target = $('<div></div>');

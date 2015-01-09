@@ -4,7 +4,7 @@ suite('Column', function() {
   var Column;
 
   setup(function(done) {
-    require(['app/simplelayout/Column'], function(_Column) {
+    require(['simplelayout/Column'], function(_Column) {
       Column = _Column;
       done();
     });

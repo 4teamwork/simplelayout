@@ -5,7 +5,7 @@ suite('Eventrecorder', function() {
     var Eventrecorder;
 
     setup(function(done) {
-        require(['app/simplelayout/Eventrecorder', 'jqueryui/droppable'], function(_Eventrecorder) {
+        require(['simplelayout/Eventrecorder'], function(_Eventrecorder) {
             Eventrecorder = _Eventrecorder;
             done();
         });

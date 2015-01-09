@@ -5,7 +5,7 @@ suite('Simplelayout', function() {
   var Toolbox;
 
   setup(function(done) {
-    require(['app/simplelayout/Simplelayout', 'app/toolbox/Toolbox'], function(_Simplelayout, _Toolbox) {
+    require(['simplelayout/Simplelayout', 'toolbox/Toolbox'], function(_Simplelayout, _Toolbox) {
       Simplelayout = _Simplelayout;
       Toolbox = _Toolbox;
       done();

@@ -4,7 +4,7 @@ suite('Block', function() {
   var Block;
 
   setup(function(done) {
-    require(['app/simplelayout/Block'], function(_Block) {
+    require(['simplelayout/Block'], function(_Block) {
       Block = _Block;
       done();
     });
