@@ -1,4 +1,4 @@
-define(["jquery", "renderer"], function($) {
+define([], function() {
 
   'use strict';
 
