@@ -1,4 +1,4 @@
-define(['toolbox/Toolbox', 'simplelayout/Layoutmanager', 'simplelayout/Eventrecorder'], function(Toolbox, Layoutmanager, Eventrecorder) {
+define(['simplelayout/Layoutmanager', 'simplelayout/Eventrecorder'], function(Layoutmanager, Eventrecorder) {
 
   'use strict';
 
