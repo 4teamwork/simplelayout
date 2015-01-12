@@ -23,6 +23,8 @@ npm install
 bower install
 ```
 ### Build
+
+Builds and concatenates javascript and scss file to dist directory
 ```bash
 grunt build
 ```
