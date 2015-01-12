@@ -35,7 +35,7 @@ grunt build
 $(document).ready(function() {
   var target = $('body');
 
-  var simplelayout = new Simplelayout();
+  var simplelayout = new Simplelayout({imageCount : 1});
   var toolbox = new Toolbox({
     layouts: [1, 2, 4]
   });
