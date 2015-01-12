@@ -65,6 +65,10 @@ define(['simplelayout/Block'], function(Block) {
 
       getBlocks: function() {
         return this.blocks;
+      },
+
+      toJSON : function() {
+        return {blocks : this.blocks};
       }
 
     };

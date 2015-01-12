@@ -51,6 +51,10 @@ define(['simplelayout/Column'], function(Column) {
 
       commitBlocks : function(columnId) {
         this.getColumns()[columnId].commitBlocks();
+      },
+
+      toJSON : function() {
+        return {columns : this.columns};
       }
 
     };

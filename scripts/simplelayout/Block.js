@@ -32,6 +32,10 @@ define([], function() {
         data.type = type;
         this.element = $(template.render(data));
         return this.element;
+      },
+
+      toJSON : function() {
+        return this.type;
       }
     };
 

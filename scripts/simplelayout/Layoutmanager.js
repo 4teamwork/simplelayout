@@ -14,15 +14,15 @@ define(["simplelayout/Layout"], function(Layout) {
 
     return {
 
-      layouts : {},
+      layouts: {},
 
-      minImageWidth : null,
+      minImageWidth: null,
 
       attachTo: function(target) {
         target.append(element);
       },
 
-      getElement : function() {
+      getElement: function() {
         return element;
       },
 
@@ -33,52 +33,52 @@ define(["simplelayout/Layout"], function(Layout) {
         layout.getElement().data('layout-id', id);
         element.append(layout.getElement());
         this.layouts[id] = layout;
-        layoutId ++;
+        layoutId++;
         return id;
       },
 
-      deleteLayout : function(layoutId) {
+      deleteLayout: function(layoutId) {
         this.layouts[layoutId].getElement().remove();
         delete this.layouts[layoutId];
       },
 
       commitLayouts: function() {
-        for(var key in this.layouts) {
+        for (var key in this.layouts) {
           this.layouts[key].committed = true;
         }
       },
 
-      getCommittedLayouts : function() {
+      getCommittedLayouts: function() {
         var committedLayouts = {};
-        for(var key in this.layouts) {
-          if(this.layouts[key].committed) {
+        for (var key in this.layouts) {
+          if (this.layouts[key].committed) {
             committedLayouts[key] = this.layouts[key];
           }
         }
         return committedLayouts;
       },
 
-      getLayouts : function() {
+      getLayouts: function() {
         return this.layouts;
       },
 
-      insertBlock : function(layoutId, columnId, blocktype, content) {
+      insertBlock: function(layoutId, columnId, blocktype, content) {
         var layout = this.layouts[layoutId];
         var blockId = layout.insertBlock(columnId, blocktype, content);
         this.layouts[layoutId].getColumns()[columnId].getBlocks()[blockId].getElement().find('img').width(this.minImageWidth);
         return blockId;
       },
 
-      deleteBlock : function(layoutId, columnId, blockId) {
+      deleteBlock: function(layoutId, columnId, blockId) {
         var layout = this.layouts[layoutId];
         layout.deleteBlock(columnId, blockId);
       },
 
-      commitBlocks : function(layoutId, columnId) {
+      commitBlocks: function(layoutId, columnId) {
         this.getLayouts()[layoutId].commitBlocks(columnId);
       },
 
-      moveBlock : function(oldLayoutId, oldColumnId, blockId, newLayoutId, newColumnId) {
+      moveBlock: function(oldLayoutId, oldColumnId, blockId, newLayoutId, newColumnId) {
         var block = this.getLayouts()[oldLayoutId].getColumns()[oldColumnId].getBlocks()[blockId];
         var type = block.getElement().data('type');
         var content = block.getElement().children('.sl-block-content').html();
@@ -86,6 +86,10 @@ define(["simplelayout/Layout"], function(Layout) {
         var newBlockId = this.insertBlock(newLayoutId, newColumnId, type, content);
         this.commitBlocks(newLayoutId, newColumnId);
         return newBlockId;
+      },
+
+      serialize: function() {
+        return JSON.stringify({layouts : this.layouts});
       }
 
     };
