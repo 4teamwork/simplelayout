@@ -77,6 +77,8 @@ Select number of image per column (oriented on biggest layout in toolbox)
 ## API
 
 Attach Element
+
+Must have been called before attaching a toolbox.
 ```javascript
 simplelayout.attachTo($('body'));
 ```
