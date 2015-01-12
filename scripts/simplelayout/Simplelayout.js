@@ -2,11 +2,15 @@ define(['simplelayout/Layoutmanager', 'simplelayout/Eventrecorder'], function(La
 
   'use strict';
 
-  function Simplelayout() {
+  function Simplelayout(_options) {
 
     if (!(this instanceof Simplelayout)) {
       throw new TypeError("Simplelayout constructor cannot be called as a function.");
     }
+
+    var options = $.extend({
+      imageCount : 1
+    }, _options || {});
 
     var eventrecorder = new Eventrecorder();
 
@@ -103,6 +107,7 @@ define(['simplelayout/Layoutmanager', 'simplelayout/Eventrecorder'], function(La
           var columnId = $(this).data('column-id');
           var type = ui.draggable.data('type');
           var blockId = layoutmanager.insertBlock(layoutId, columnId, type);
+          layoutmanager.getLayouts()[layoutId].getColumns()[columnId].getBlocks()[blockId].getElement().css(toolbox.getMinImageWidth());
           e.data = {blockId : blockId, columnId : columnId, layoutId : layoutId};
           eventrecorder.record(e);
         } catch(err) {console.error(err);}
@@ -186,6 +191,8 @@ define(['simplelayout/Layoutmanager', 'simplelayout/Eventrecorder'], function(La
 
     return {
 
+      options : options,
+
       getLayoutmanager : function() {
         return layoutmanager;
       },
@@ -207,6 +214,7 @@ define(['simplelayout/Layoutmanager', 'simplelayout/Eventrecorder'], function(La
           throw new Error('No toolbox defined');
         }
         toolbox = toolboxRef;
+        layoutmanager.minImageWidth = 100 / Math.max.apply(null, toolbox.options.layouts) / this.options.imageCount;
         bindToolboxEvents();
       }
 

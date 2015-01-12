@@ -9,15 +9,17 @@ define([], function() {
     }
 
     var options = $.extend({
-      'layouts': []
+      layouts: []
     }, _options || {});
 
     var layouts = [];
     $.each(options.layouts, function(i, el) {
       layouts.push({
-        'columns': el
+        columns: el
       });
     });
+
+    var minImageCount = 100 / Math.max.apply(null, options.layouts) / options.imageCount;
 
     var template = $.templates(
       "<div id='sl-toolbox' class='list-group sl-toolbox'> \
@@ -51,15 +53,22 @@ define([], function() {
       "layouts": layouts
     };
 
+    var element = $(template.render(components));
+
     return {
 
+      options : options,
+
       attachTo: function(target) {
-        this.element = $(template.render(components));
-        target.append(this.element);
+        target.append(element);
+      },
+
+      getMinImageWidth : function() {
+        return minImageCount;
       },
 
       getElement : function() {
-        return this.element;
+        return element;
       }
 
     };

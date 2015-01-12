@@ -2,10 +2,12 @@ suite('Block', function() {
   'use strict';
 
   var Block;
+  var Toolbox;
 
   setup(function(done) {
-    require(['simplelayout/Block'], function(_Block) {
+    require(['simplelayout/Block', 'toolbox/Toolbox'], function(_Block, _Toolbox) {
       Block = _Block;
+      Toolbox = _Toolbox;
       done();
     });
   });
@@ -30,4 +32,5 @@ suite('Block', function() {
     var node = { tag : textblock.tagName, classes : textblock.className, content : textblock.innerText};
     assert.deepEqual(node, {tag : "DIV", classes : "sl-block", content : "I am a block"});
   });
+
 });

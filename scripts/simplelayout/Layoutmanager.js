@@ -16,6 +16,8 @@ define(["simplelayout/Layout"], function(Layout) {
 
       layouts : {},
 
+      minImageWidth : null,
+
       attachTo: function(target) {
         target.append(element);
       },
@@ -60,9 +62,11 @@ define(["simplelayout/Layout"], function(Layout) {
         return this.layouts;
       },
 
-      insertBlock : function(layoutId, columnId, blocktype) {
+      insertBlock : function(layoutId, columnId, blocktype, content) {
         var layout = this.layouts[layoutId];
-        return layout.insertBlock(columnId, blocktype);
+        var blockId = layout.insertBlock(columnId, blocktype, content);
+        this.layouts[layoutId].getColumns()[columnId].getBlocks()[blockId].getElement().find('img').css('width', this.minImageWidth + '%');
+        return blockId;
       },
 
       deleteBlock : function(layoutId, columnId, blockId) {
