@@ -69,6 +69,11 @@ toolbox.getElement();
 
 ## Options
 
+Select number of image per column (oriented on biggest layout in toolbox)
+```javascript
+{imageCount : 1}
+```
+
 ## API
 
 Attach Element
