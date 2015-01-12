@@ -10,8 +10,6 @@ define(['simplelayout/Column'], function(Column) {
       throw new TypeError("columns must be defined");
     }
 
-    var layoutId = 0;
-
     var template = $.templates("<div class='sl-layout'></div>");
 
     return {
@@ -24,7 +22,7 @@ define(['simplelayout/Column'], function(Column) {
         return this.element;
       },
 
-      create : function() {
+      create : function(id) {
         this.element = $(template.render());
         var columnWidth = 100 / columns + "%";
         for (var i = 0; i < columns; i++) {
@@ -32,7 +30,7 @@ define(['simplelayout/Column'], function(Column) {
           this.columns[i] = column;
           column.create();
           column.getElement().data('column-id', i);
-          column.getElement().data('layout-id', layoutId);
+          column.getElement().data('layout-id', id);
           this.element.append(column.getElement());
         }
       },
