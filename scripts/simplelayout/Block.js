@@ -12,7 +12,7 @@ define([], function() {
       throw new ReferenceError("Type must be defined.");
     }
 
-    var template = $.templates("<div data-type='{{:type}}' class='sl-block'>{{:data}}</div>");
+    var template = $.templates("<div data-type='{{:type}}' class='sl-block'><div class='sl-block-content'>{{:data}}</div></div>");
 
     return {
 

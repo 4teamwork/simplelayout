@@ -81,7 +81,7 @@ define(["simplelayout/Layout"], function(Layout) {
       moveBlock : function(oldLayoutId, oldColumnId, blockId, newLayoutId, newColumnId) {
         var block = this.getLayouts()[oldLayoutId].getColumns()[oldColumnId].getBlocks()[blockId];
         var type = block.getElement().data('type');
-        var content = block.getElement().html();
+        var content = block.getElement().children('.sl-block-content').html();
         this.deleteBlock(oldLayoutId, oldColumnId, blockId);
         var newBlockId = this.insertBlock(newLayoutId, newColumnId, type, content);
         this.commitBlocks(newLayoutId, newColumnId);

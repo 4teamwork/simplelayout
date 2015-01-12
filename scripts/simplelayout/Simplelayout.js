@@ -107,7 +107,8 @@ define(['simplelayout/Layoutmanager', 'simplelayout/Eventrecorder'], function(La
         var newColumnId = target.data('column-id');
         var newLayoutId = target.data('layout-id');
         var newBlockId = layoutmanager.moveBlock(layoutId, columnId, blockId, newLayoutId, newColumnId, type, content);
-        layoutmanager.getLayouts()[newLayoutId].getColumns()[newColumnId].getBlocks()[newBlockId].getElement().resizable(BLOCK_RESIZABLE_SETTINGS);
+        var block = layoutmanager.getLayouts()[newLayoutId].getColumns()[newColumnId].getBlocks()[newBlockId].getElement();
+        block.resizable(BLOCK_RESIZABLE_SETTINGS);
       },
     };
 
@@ -118,16 +119,16 @@ define(['simplelayout/Layoutmanager', 'simplelayout/Eventrecorder'], function(La
           var layoutId = $(this).parent().data('layout-id');
           var columnId = $(this).data('column-id');
           var type = ui.draggable.data('type');
-          var blockId = layoutmanager.insertBlock(layoutId, columnId, type);
+          var blockId = layoutmanager.insertBlock(layoutId, columnId, type, '<p>I am a block</p>');
           e.data = {blockId : blockId, columnId : columnId, layoutId : layoutId};
           eventrecorder.record(e);
-        } catch(err) {console.error(err);}
+        } catch(err) {}
       },
       out: function(e) {
         try {
           var originalOverEventData = eventrecorder.lookup(e).data;
           layoutmanager.deleteBlock(originalOverEventData.layoutId, originalOverEventData.columnId, originalOverEventData.blockId);
-        } catch(err) {console.error(err);}
+        } catch(err) {}
       },
       drop: function(e) {
         try {
@@ -137,7 +138,7 @@ define(['simplelayout/Layoutmanager', 'simplelayout/Eventrecorder'], function(La
           var block = layoutmanager.getLayouts()[originalOverEventData.layoutId].getColumns()[originalOverEventData.columnId].getBlocks()[originalOverEventData.blockId];
           block.getElement().resizable(BLOCK_RESIZABLE_SETTINGS);
           eventrecorder.flush();
-        } catch(err) {console.error(err);}
+        } catch(err) {}
       }
     };
 
@@ -150,12 +151,12 @@ define(['simplelayout/Layoutmanager', 'simplelayout/Eventrecorder'], function(La
           e.data = {layoutId : layoutId};
           eventrecorder.record(e);
           layoutmanager.getLayouts()[layoutId].getElement().find('.sl-column').droppable(LAYOUT_DROPPABLE_SETTINGS).sortable(LAYOUT_SORTABLE_SETTINGS);
-        } catch(err) {console.error(err);}
+        } catch(err) {}
       },
       out: function(e) {
         try {
         layoutmanager.deleteLayout(eventrecorder.lookup(e).data.layoutId);
-        } catch(err) {console.error(err);}
+        } catch(err) {}
       },
       drop: function(e) {
         try {
@@ -163,7 +164,7 @@ define(['simplelayout/Layoutmanager', 'simplelayout/Eventrecorder'], function(La
           layoutmanager.commitLayouts();
           layoutmanager.getLayouts()[originalOverEventData.layoutId].getElement().find('.sl-layout').sortable('refresh');
           eventrecorder.flush();
-        } catch(err) {console.error(err);}
+        } catch(err) {}
       }
     };
 
