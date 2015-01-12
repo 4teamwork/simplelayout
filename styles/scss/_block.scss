@@ -1,9 +1,8 @@
 .sl-block {
   z-index: 1;
   width: 100%;
-  padding: 5px 5px 10px 5px;
   background-color: #fff;
-  border: 1px solid rgba(0, 0, 0, .1);
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,.1);
   opacity: 1;
   height: 100px;
   &.ui-sortable-helper {
