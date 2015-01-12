@@ -60,6 +60,21 @@ suite('Layoutmanager', function() {
       assert.equal(Object.keys(layoutmanager.getCommittedLayouts()).length, 1);
     });
 
+    test('can move a block', function() {
+      var id1 = layoutmanager.insertLayout(4);
+      var id2 = layoutmanager.insertLayout(4);
+      layoutmanager.commitLayouts();
+      var blockId = layoutmanager.insertBlock(id1, 0, 'textblock', 'test');
+      layoutmanager.commitBlocks(id1, 0);
+
+      layoutmanager.moveBlock(id1, 0, blockId, id2, 0);
+      var emptyData = layoutmanager.getLayouts()[id1].getColumns()[0].getBlocks();
+      var block = layoutmanager.getLayouts()[id2].getColumns()[0].getBlocks()[blockId].getElement();
+      assert.equal(Object.keys(emptyData).length, 0);
+      assert.deepEqual(block.data(), {blockId : blockId, columnId : 0, layoutId : id2, type : 'textblock'});
+      assert.equal(block.html(), 'test');
+    });
+
   });
 
   suite('Delegates adding and removing blocks to Layouts', function() {

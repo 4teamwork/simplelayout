@@ -96,7 +96,19 @@ define(['simplelayout/Layoutmanager', 'simplelayout/Eventrecorder'], function(La
       placeholder: "placeholder",
       forcePlaceholderSize: true,
       tolerance: 'pointer',
-      distance: 1
+      distance: 1,
+      receive : function(e, ui) {
+        var target = $(e.target);
+        var columnId = ui.item.data('column-id');
+        var layoutId = ui.item.data('layout-id');
+        var blockId = ui.item.data('block-id');
+        var type = ui.item.data('type');
+        var content = ui.item.html();
+        var newColumnId = target.data('column-id');
+        var newLayoutId = target.data('layout-id');
+        var newBlockId = layoutmanager.moveBlock(layoutId, columnId, blockId, newLayoutId, newColumnId, type, content);
+        layoutmanager.getLayouts()[newLayoutId].getColumns()[newColumnId].getBlocks()[newBlockId].getElement().resizable(BLOCK_RESIZABLE_SETTINGS);
+      },
     };
 
     var LAYOUT_DROPPABLE_SETTINGS = {

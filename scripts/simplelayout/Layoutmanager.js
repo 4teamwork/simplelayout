@@ -76,6 +76,16 @@ define(["simplelayout/Layout"], function(Layout) {
 
       commitBlocks : function(layoutId, columnId) {
         this.getLayouts()[layoutId].commitBlocks(columnId);
+      },
+
+      moveBlock : function(oldLayoutId, oldColumnId, blockId, newLayoutId, newColumnId) {
+        var block = this.getLayouts()[oldLayoutId].getColumns()[oldColumnId].getBlocks()[blockId];
+        var type = block.getElement().data('type');
+        var content = block.getElement().html();
+        this.deleteBlock(oldLayoutId, oldColumnId, blockId);
+        var newBlockId = this.insertBlock(newLayoutId, newColumnId, type, content);
+        this.commitBlocks(newLayoutId, newColumnId);
+        return newBlockId;
       }
 
     };
