@@ -28,11 +28,25 @@ suite('Simplelayout', function() {
     assert.equal(simplelayout.options.imageCount, '2');
   });
 
+  test('raises exception when attaching toolbox when its not attached to DOM', function() {
+    var toolbox = new Toolbox();
+    var simplelayout = new Simplelayout();
+
+    assert.throws(function() {
+      simplelayout.attachToolbox(toolbox);
+    }, Error, 'Not attached to DOM element');
+  });
+
   test('image min-width is calculated correctry depending on imageCount and layoutSettings', function() {
     var toolbox = new Toolbox({layouts : [1, 2, 4]});
     var simplelayout = new Simplelayout({imageCount : 1});
+    var target = $('<div>');
+    simplelayout.getLayoutmanager().getElement().width(1000);
+
+    simplelayout.attachTo(target);
     simplelayout.attachToolbox(toolbox);
-    assert.equal(simplelayout.getLayoutmanager().minImageWidth, '25');
+    assert.equal(simplelayout.getLayoutmanager().minImageWidth, 250);
+
   });
 
   suite('Integrationtests', function() {
@@ -61,15 +75,18 @@ suite('Simplelayout', function() {
       assert.isDefined(simplelayout.getLayoutmanager());
     });
 
-    test('image is rendered depending on toolbox image count', function() {
+    test('image is rendered depending on toolbox layout and image count', function() {
       var toolbox = new Toolbox({layouts : [1, 2, 4]});
       var simplelayout = new Simplelayout({imageCount : 1});
+      var target = $('<div>');
+      simplelayout.getLayoutmanager().getElement().width(1000);
+      simplelayout.attachTo(target);
       simplelayout.attachToolbox(toolbox);
 
       var layoutId = simplelayout.getLayoutmanager().insertLayout(4);
       simplelayout.getLayoutmanager().insertBlock(layoutId, 0, 'textblock', '<img />');
 
-      assert.equal(simplelayout.getLayoutmanager().getElement().find('img').css('width'), '25%');
+      assert.equal(simplelayout.getLayoutmanager().getElement().find('img').css('width'), '250px');
     });
 
   });

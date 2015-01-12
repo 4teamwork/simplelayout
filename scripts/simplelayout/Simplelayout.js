@@ -107,7 +107,6 @@ define(['simplelayout/Layoutmanager', 'simplelayout/Eventrecorder'], function(La
           var columnId = $(this).data('column-id');
           var type = ui.draggable.data('type');
           var blockId = layoutmanager.insertBlock(layoutId, columnId, type);
-          layoutmanager.getLayouts()[layoutId].getColumns()[columnId].getBlocks()[blockId].getElement().css(toolbox.getMinImageWidth());
           e.data = {blockId : blockId, columnId : columnId, layoutId : layoutId};
           eventrecorder.record(e);
         } catch(err) {console.error(err);}
@@ -213,8 +212,11 @@ define(['simplelayout/Layoutmanager', 'simplelayout/Eventrecorder'], function(La
         if(!toolboxRef) {
           throw new Error('No toolbox defined');
         }
+        if(layoutmanager.getElement().parent().length === 0) {
+          throw new Error('Not attached to DOM element');
+        }
         toolbox = toolboxRef;
-        layoutmanager.minImageWidth = 100 / Math.max.apply(null, toolbox.options.layouts) / this.options.imageCount;
+        layoutmanager.minImageWidth = layoutmanager.getElement().width() / Math.max.apply(null, toolbox.options.layouts) / this.options.imageCount;
         bindToolboxEvents();
       }
 
