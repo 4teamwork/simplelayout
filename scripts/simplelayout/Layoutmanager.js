@@ -106,12 +106,11 @@ define(["simplelayout/Layout"], function(Layout) {
       },
 
       serialize: function() {
-        return JSON.stringify({layouts : this.layouts, options : this.options});
+        return JSON.stringify({layouts : this.layouts});
       },
 
       deserialize :function(serializedObjects) {
         var layoutStructure = JSON.parse(serializedObjects);
-        this.options = layoutStructure.options;
         for(var layout in layoutStructure.layouts) {
           var layoutId = this.insertLayout(Object.keys(layoutStructure.layouts[layout].columns).length);
           this.commitLayouts();
