@@ -27,6 +27,16 @@ suite('Layoutmanager', function() {
     assert.deepEqual(addedNodes, [{tag: "DIV", classes: "sl-simplelayout"}]);
   });
 
+  test('default width is 100%', function() {
+    var layoutmanager = new Layoutmanager();
+    assert.equal(layoutmanager.options.width, '100%');
+  });
+
+  test('default block height is 100px', function() {
+    var layoutmanager = new Layoutmanager();
+    assert.equal(layoutmanager.options.blockHeight, '100px');
+  });
+
   suite('Layout-transactions (to get visual feedback where layout will be placed)', function() {
 
     setup(function(done) {
@@ -72,7 +82,7 @@ suite('Layoutmanager', function() {
       var block = layoutmanager.getLayouts()[id2].getColumns()[0].getBlocks()[blockId].getElement();
       assert.equal(Object.keys(emptyData).length, 0);
       assert.deepEqual(block.data(), {blockId : blockId, columnId : 0, layoutId : id2, type : 'textblock'});
-      assert.equal(block.html(), 'test');
+      assert.equal(block.html(), '<div class="sl-block-content">test</div>');
     });
 
   });
@@ -130,5 +140,13 @@ suite('Layoutmanager', function() {
       assert.equal(Object.keys(layoutmanager.getLayouts()[layoutId].getColumns()[columnId].getBlocks()).length, 1);
     });
 
+  });
+
+  test('can serialize complete layout-structure', function() {
+    layoutmanager.insertLayout(4);
+    layoutmanager.commitLayouts();
+    layoutmanager.insertBlock(0, 0, 'block');
+    layoutmanager.commitBlocks(0, 0);
+    assert.equal(layoutmanager.serialize(), '{"layouts":{"0":{"columns":{"0":{"blocks":{"0":{"type":"block","height":"100px"}}},"1":{"blocks":{}},"2":{"blocks":{}},"3":{"blocks":{}}}}}}');
   });
 });
