@@ -2,7 +2,7 @@ define([], function() {
 
   'use strict';
 
-  function Block(type) {
+  function Block(type, height) {
 
     if (!(this instanceof Block)) {
       throw new TypeError("Block constructor cannot be called as a function.");
@@ -20,6 +20,8 @@ define([], function() {
 
       type : type,
 
+      height : height,
+
       getElement: function() {
         return this.element;
       },
@@ -30,12 +32,12 @@ define([], function() {
           'data': _data
         };
         data.type = type;
-        this.element = $(template.render(data));
+        this.element = $(template.render(data)).height(this.height);
         return this.element;
       },
 
       toJSON : function() {
-        return this.type;
+        return {type : this.type, height : this.height};
       }
     };
 

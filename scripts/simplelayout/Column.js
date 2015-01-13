@@ -23,9 +23,9 @@ define(['simplelayout/Block'], function(Block) {
         this.element = $(template.render({'width' : width}));
       },
 
-      insertBlock: function(type, content) {
+      insertBlock: function(type, content, height) {
         var id = blockId;
-        var block = new Block(type);
+        var block = new Block(type, height);
         block.create(content);
         block.getElement().data('block-id', id);
         block.getElement().data('column-id', this.getElement().data('column-id'));
