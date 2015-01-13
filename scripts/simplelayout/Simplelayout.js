@@ -9,7 +9,7 @@ define(['simplelayout/Layoutmanager', 'simplelayout/Eventrecorder'], function(La
     }
 
     var options = $.extend({
-      imageCount : 1
+      imageCount: 1
     }, _options || {});
 
     var eventrecorder = new Eventrecorder();
@@ -20,7 +20,7 @@ define(['simplelayout/Layoutmanager', 'simplelayout/Eventrecorder'], function(La
 
     var BLOCK_RESIZABLE_SETTINGS = {
       handles: "s",
-      resize : function(e, ui) {
+      resize: function(e, ui) {
         var layoutId = ui.element.data('layout-id');
         var columnId = ui.element.data('column-id');
         var blockId = ui.element.data('blockId');
@@ -37,18 +37,18 @@ define(['simplelayout/Layoutmanager', 'simplelayout/Eventrecorder'], function(La
       accept: '.sl-layout, .sl-block',
       tolerance: 'touch',
       over: function(e, ui) {
-        if(ui.draggable.hasClass('sl-layout')) {
+        if (ui.draggable.hasClass('sl-layout')) {
           var layoutId = ui.draggable.data('layout-id');
           var layout = layoutmanager.getLayouts()[layoutId];
           var hasBlocks = false;
-          for(var key in layout.getColumns()) {
-            if(Object.keys(layout.getColumns()[key].getBlocks()).length > 0) {
+          for (var key in layout.getColumns()) {
+            if (Object.keys(layout.getColumns()[key].getBlocks()).length > 0) {
               hasBlocks = true;
               break;
             }
           }
           layout.getElement().addClass('deleted');
-          if(hasBlocks) {
+          if (hasBlocks) {
             layout.getElement().addClass('cancelDeletion');
           }
         } else {
@@ -60,10 +60,10 @@ define(['simplelayout/Layoutmanager', 'simplelayout/Eventrecorder'], function(La
         }
       },
       drop: function(e, ui) {
-        if(ui.draggable.hasClass('sl-layout')) {
+        if (ui.draggable.hasClass('sl-layout')) {
           var layoutId = ui.draggable.data('layout-id');
           var layout = layoutmanager.getLayouts()[layoutId];
-          if(!layout.getElement().hasClass('cancelDeletion')){
+          if (!layout.getElement().hasClass('cancelDeletion')) {
             layoutmanager.deleteLayout(layoutId);
           }
           layout.getElement().removeClass('deleted cancelDeletion');
@@ -76,7 +76,7 @@ define(['simplelayout/Layoutmanager', 'simplelayout/Eventrecorder'], function(La
         }
       },
       out: function(e, ui) {
-        if(ui.draggable.hasClass('sl-layout')) {
+        if (ui.draggable.hasClass('sl-layout')) {
           var layoutId = ui.draggable.data('layout-id');
           var layout = layoutmanager.getLayouts()[layoutId];
           layout.getElement().removeClass('deleted cancelDeletion');
@@ -103,7 +103,7 @@ define(['simplelayout/Layoutmanager', 'simplelayout/Eventrecorder'], function(La
       forcePlaceholderSize: true,
       tolerance: 'pointer',
       distance: 1,
-      receive : function(e, ui) {
+      receive: function(e, ui) {
         var target = $(e.target);
         var columnId = ui.item.data('column-id');
         var layoutId = ui.item.data('layout-id');
@@ -124,15 +124,19 @@ define(['simplelayout/Layoutmanager', 'simplelayout/Eventrecorder'], function(La
           var columnId = $(this).data('column-id');
           var type = ui.draggable.data('type');
           var blockId = layoutmanager.insertBlock(layoutId, columnId, type, '<p>I am a block</p>');
-          e.data = {blockId : blockId, columnId : columnId, layoutId : layoutId};
+          e.data = {
+            blockId: blockId,
+            columnId: columnId,
+            layoutId: layoutId
+          };
           eventrecorder.record(e);
-        } catch(err) {}
+        } catch (err) {}
       },
       out: function(e) {
         try {
           var originalOverEventData = eventrecorder.lookup(e).data;
           layoutmanager.deleteBlock(originalOverEventData.layoutId, originalOverEventData.columnId, originalOverEventData.blockId);
-        } catch(err) {}
+        } catch (err) {}
       },
       drop: function(e) {
         try {
@@ -140,7 +144,7 @@ define(['simplelayout/Layoutmanager', 'simplelayout/Eventrecorder'], function(La
           layoutmanager.commitBlocks(originalOverEventData.layoutId, originalOverEventData.columnId);
           layoutmanager.getLayouts()[originalOverEventData.layoutId].getElement().find('.sl-column').sortable('refresh');
           eventrecorder.flush();
-        } catch(err) {}
+        } catch (err) {}
       }
     };
 
@@ -150,7 +154,9 @@ define(['simplelayout/Layoutmanager', 'simplelayout/Eventrecorder'], function(La
         try {
           var columns = ui.draggable.data('columns');
           var layoutId = layoutmanager.insertLayout(columns);
-          e.data = {layoutId : layoutId};
+          e.data = {
+            layoutId: layoutId
+          };
           eventrecorder.record(e);
         } catch(err) {}
       },
@@ -165,7 +171,7 @@ define(['simplelayout/Layoutmanager', 'simplelayout/Eventrecorder'], function(La
           layoutmanager.commitLayouts();
           layoutmanager.getLayouts()[originalOverEventData.layoutId].getElement().find('.sl-layout').sortable('refresh');
           eventrecorder.flush();
-        } catch(err) {}
+        } catch (err) {}
       }
     };
 
@@ -176,11 +182,11 @@ define(['simplelayout/Layoutmanager', 'simplelayout/Eventrecorder'], function(La
     };
 
     var unbindLayoutEvents = function() {
-      if(layoutmanager.getElement().droppable('instance')) {
+      if (layoutmanager.getElement().droppable('instance')) {
         layoutmanager.getElement().droppable('destroy');
       }
 
-      if(layoutmanager.getElement().sortable('instance')) {
+      if (layoutmanager.getElement().sortable('instance')) {
         layoutmanager.getElement().sortable('destroy');
       }
     };
@@ -189,15 +195,25 @@ define(['simplelayout/Layoutmanager', 'simplelayout/Eventrecorder'], function(La
       unbindToolboxEvents();
       toolbox.getElement().find('.sl-toolbox-component, .sl-toolbox-layout').draggable(TOOLBOX_DRAGGABLE_SETTINGS);
       toolbox.getElement().find('.sl-toolbox-trash').droppable(TRASH_DROPPABLE_SETTINGS);
+      layoutmanager.getElement().on('blockInserted', function(e, layoutId, columnId, blockId) {
+        layoutmanager.getLayouts()[layoutId].getColumns()[columnId].getBlocks()[blockId].getElement().resizable(BLOCK_RESIZABLE_SETTINGS);
+      });
+
+      layoutmanager.getElement().on('layoutInserted', function(e, layoutId) {
+        layoutmanager.getLayouts()[layoutId].getElement().find('.sl-column').droppable(LAYOUT_DROPPABLE_SETTINGS).sortable(LAYOUT_SORTABLE_SETTINGS);
+      });
+
     };
 
     var unbindToolboxEvents = function() {
-      if(toolbox.getElement().find('.sl-toolbox-component, .sl-toolbox-layout').draggable('instance')) {
+      if (toolbox.getElement().find('.sl-toolbox-component, .sl-toolbox-layout').draggable('instance')) {
         toolbox.getElement().find('.sl-toolbox-component, .sl-toolbox-layout').draggable('destroy');
       }
-      if(toolbox.getElement().find('.sl-toolbox-trash').droppable('instance')) {
+      if (toolbox.getElement().find('.sl-toolbox-trash').droppable('instance')) {
         toolbox.getElement().find('.sl-toolbox-trash').droppable('destroy');
       }
+      layoutmanager.getElement().off('blockInserted');
+      layoutmanager.getElement().off('layoutInserted');
     };
 
     bindLayoutEvents();
@@ -212,29 +228,29 @@ define(['simplelayout/Layoutmanager', 'simplelayout/Eventrecorder'], function(La
 
     return {
 
-      options : options,
+      options: options,
 
-      getLayoutmanager : function() {
+      getLayoutmanager: function() {
         return layoutmanager;
       },
 
-      getEventrecorder : function() {
+      getEventrecorder: function() {
         return eventrecorder;
       },
 
-      getToolbox : function() {
+      getToolbox: function() {
         return toolbox;
       },
 
-      attachTo : function(target) {
+      attachTo: function(target) {
         layoutmanager.attachTo(target);
       },
 
-      attachToolbox : function(toolboxRef) {
-        if(!toolboxRef) {
+      attachToolbox: function(toolboxRef) {
+        if (!toolboxRef) {
           throw new Error('No toolbox defined');
         }
-        if(layoutmanager.getElement().parent().length === 0) {
+        if (layoutmanager.getElement().parent().length === 0) {
           throw new Error('Not attached to DOM element');
         }
         toolbox = toolboxRef;
