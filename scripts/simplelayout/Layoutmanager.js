@@ -69,9 +69,10 @@ define(["simplelayout/Layout"], function(Layout) {
         return this.layouts;
       },
 
-      insertBlock: function(layoutId, columnId, blocktype, content) {
+      insertBlock: function(layoutId, columnId, blocktype, content, height) {
+        var blockHeight = height || this.options.blockHeight;
         var layout = this.layouts[layoutId];
-        var blockId = layout.insertBlock(columnId, blocktype, content, this.options.blockHeight);
+        var blockId = layout.insertBlock(columnId, blocktype, content, blockHeight);
         this.layouts[layoutId].getColumns()[columnId].getBlocks()[blockId].getElement().find('img').width(this.minImageWidth);
         return blockId;
       },
@@ -96,7 +97,23 @@ define(["simplelayout/Layout"], function(Layout) {
       },
 
       serialize: function() {
-        return JSON.stringify({layouts : this.layouts});
+        return JSON.stringify({layouts : this.layouts, options : this.options});
+      },
+
+      deserialize :function(serializedObjects) {
+        var layoutStructure = JSON.parse(serializedObjects);
+        this.options = layoutStructure.options;
+        for(var layout in layoutStructure.layouts) {
+          var layoutId = this.insertLayout(Object.keys(layoutStructure.layouts[layout].columns).length);
+          this.commitLayouts();
+          for(var column in layoutStructure.layouts[layout].columns) {
+            for(var blockKey in layoutStructure.layouts[layout].columns[column].blocks) {
+              var block = layoutStructure.layouts[layout].columns[column].blocks[blockKey];
+              this.insertBlock(layout, column, block, block.type, block.height);
+              this.commitBlocks(layout, column);
+            }
+          }
+        }
       }
 
     };
