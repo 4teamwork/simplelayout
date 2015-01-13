@@ -139,8 +139,6 @@ define(['simplelayout/Layoutmanager', 'simplelayout/Eventrecorder'], function(La
           var originalOverEventData = eventrecorder.lookup(e).data;
           layoutmanager.commitBlocks(originalOverEventData.layoutId, originalOverEventData.columnId);
           layoutmanager.getLayouts()[originalOverEventData.layoutId].getElement().find('.sl-column').sortable('refresh');
-          var block = layoutmanager.getLayouts()[originalOverEventData.layoutId].getColumns()[originalOverEventData.columnId].getBlocks()[originalOverEventData.blockId];
-          block.getElement().resizable(BLOCK_RESIZABLE_SETTINGS);
           eventrecorder.flush();
         } catch(err) {}
       }
@@ -154,12 +152,11 @@ define(['simplelayout/Layoutmanager', 'simplelayout/Eventrecorder'], function(La
           var layoutId = layoutmanager.insertLayout(columns);
           e.data = {layoutId : layoutId};
           eventrecorder.record(e);
-          layoutmanager.getLayouts()[layoutId].getElement().find('.sl-column').droppable(LAYOUT_DROPPABLE_SETTINGS).sortable(LAYOUT_SORTABLE_SETTINGS);
         } catch(err) {}
       },
       out: function(e) {
         try {
-        layoutmanager.deleteLayout(eventrecorder.lookup(e).data.layoutId);
+          layoutmanager.deleteLayout(eventrecorder.lookup(e).data.layoutId);
         } catch(err) {}
       },
       drop: function(e) {
@@ -204,6 +201,14 @@ define(['simplelayout/Layoutmanager', 'simplelayout/Eventrecorder'], function(La
     };
 
     bindLayoutEvents();
+
+    layoutmanager.getElement().on('blockInserted', function(e, layoutId, columnId, blockId) {
+      layoutmanager.getLayouts()[layoutId].getColumns()[columnId].getBlocks()[blockId].getElement().resizable(BLOCK_RESIZABLE_SETTINGS);
+    });
+
+    layoutmanager.getElement().on('layoutInserted', function(e, layoutId) {
+      layoutmanager.getLayouts()[layoutId].getElement().find('.sl-column').droppable(LAYOUT_DROPPABLE_SETTINGS).sortable(LAYOUT_SORTABLE_SETTINGS);
+    });
 
     return {
 
