@@ -25,12 +25,14 @@ define(["simplelayout/Layout"], function(Layout) {
 
       options : options,
 
+      element : element,
+
       attachTo: function(target) {
         target.append(element);
       },
 
       getElement: function() {
-        return element;
+        return this.element;
       },
 
       insertLayout: function(columns) {
@@ -41,18 +43,21 @@ define(["simplelayout/Layout"], function(Layout) {
         element.append(layout.getElement());
         this.layouts[id] = layout;
         layoutId++;
+        this.element.trigger("layoutInserted", [id]);
         return id;
       },
 
       deleteLayout: function(layoutId) {
         this.layouts[layoutId].getElement().remove();
         delete this.layouts[layoutId];
+        this.element.trigger("layoutDeleted");
       },
 
       commitLayouts: function() {
         for (var key in this.layouts) {
           this.layouts[key].committed = true;
         }
+        this.element.trigger("layoutsCommitted");
       },
 
       getCommittedLayouts: function() {
@@ -74,16 +79,19 @@ define(["simplelayout/Layout"], function(Layout) {
         var layout = this.layouts[layoutId];
         var blockId = layout.insertBlock(columnId, blocktype, content, blockHeight);
         this.layouts[layoutId].getColumns()[columnId].getBlocks()[blockId].getElement().find('img').width(this.minImageWidth);
+        this.element.trigger("blockInserted", [layoutId, columnId, blockId]);
         return blockId;
       },
 
       deleteBlock: function(layoutId, columnId, blockId) {
         var layout = this.layouts[layoutId];
         layout.deleteBlock(columnId, blockId);
+        this.element.trigger("blockDeleted");
       },
 
       commitBlocks: function(layoutId, columnId) {
         this.getLayouts()[layoutId].commitBlocks(columnId);
+        this.element.trigger("blocksCommitted", [layoutId, columnId]);
       },
 
       moveBlock: function(oldLayoutId, oldColumnId, blockId, newLayoutId, newColumnId) {
@@ -94,6 +102,7 @@ define(["simplelayout/Layout"], function(Layout) {
         block.getElement().data('columnId', newColumnId);
         delete column.getBlocks()[blockId];
         this.getLayouts()[newLayoutId].getColumns()[newColumnId].getBlocks()[blockId] = block;
+        this.element.trigger("blockMoved", [oldLayoutId, oldColumnId, blockId, newLayoutId, newColumnId]);
       },
 
       serialize: function() {
@@ -114,6 +123,7 @@ define(["simplelayout/Layout"], function(Layout) {
             }
           }
         }
+        this.element.trigger('deserialized');
       }
 
     };
