@@ -147,6 +147,14 @@ suite('Layoutmanager', function() {
     layoutmanager.commitLayouts();
     layoutmanager.insertBlock(0, 0, 'block');
     layoutmanager.commitBlocks(0, 0);
-    assert.equal(layoutmanager.serialize(), '{"layouts":{"0":{"columns":{"0":{"blocks":{"0":{"type":"block","height":"100px"}}},"1":{"blocks":{}},"2":{"blocks":{}},"3":{"blocks":{}}}}},"options":{"width":"100%","blockHeight":"100px"}}');
+    assert.equal(layoutmanager.serialize(), '{"layouts":{"0":{"columns":{"0":{"blocks":{"0":{"type":"block","height":"100px"}}},"1":{"blocks":{}},"2":{"blocks":{}},"3":{"blocks":{}}}}}}');
+  });
+
+  test('can deserialize complete layout-structure', function() {
+    layoutmanager.deserialize('{"layouts":{"0":{"columns":{"0":{"blocks":{"0":{"type":"block","height":"200px"}}},"1":{"blocks":{}},"2":{"blocks":{}},"3":{"blocks":{}}}}}}');
+    assert.equal(Object.keys(layoutmanager.getLayouts()).length, 1);
+    assert.equal(Object.keys(layoutmanager.getLayouts()[0].getColumns()).length, 4);
+    assert.equal(Object.keys(layoutmanager.getLayouts()[0].getColumns()[0].getBlocks()).length, 1);
+    assert.equal(layoutmanager.getLayouts()[0].getColumns()[0].getBlocks()[0].height, '200px');
   });
 });
