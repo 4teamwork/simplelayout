@@ -147,6 +147,6 @@ suite('Layoutmanager', function() {
     layoutmanager.commitLayouts();
     layoutmanager.insertBlock(0, 0, 'block');
     layoutmanager.commitBlocks(0, 0);
-    assert.equal(layoutmanager.serialize(), '{"layouts":{"0":{"columns":{"0":{"blocks":{"0":{"type":"block","height":"100px"}}},"1":{"blocks":{}},"2":{"blocks":{}},"3":{"blocks":{}}}}}}');
+    assert.equal(layoutmanager.serialize(), '{"layouts":{"0":{"columns":{"0":{"blocks":{"0":{"type":"block","height":"100px"}}},"1":{"blocks":{}},"2":{"blocks":{}},"3":{"blocks":{}}}}},"options":{"width":"100%","blockHeight":"100px"}}');
   });
 });
