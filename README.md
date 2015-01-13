@@ -104,3 +104,21 @@ Attach Toolbox
 ```javascript
 simplelayout.attachToolbox(toolbox);
 ```
+
+## Events
+
+layoutInserted(event, layoutId)
+
+layoutDeleted(event)
+
+layoutsCommited(event)
+
+blocksInserted(event, layoutId, column-id, blockId)
+
+blockDeleted(event)
+
+blocksCommitted(event)
+
+blockMoved(event, oldLayoutId, oldColumnId, blockId, newLayoutId, newColumnId)
+
+deserialized(event)
