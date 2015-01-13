@@ -37,8 +37,9 @@ define(['simplelayout/Layoutmanager', 'simplelayout/Eventrecorder'], function(La
       accept: '.sl-layout, .sl-block',
       tolerance: 'touch',
       over: function(e, ui) {
+        var layoutId;
         if (ui.draggable.hasClass('sl-layout')) {
-          var layoutId = ui.draggable.data('layout-id');
+          layoutId = ui.draggable.data('layout-id');
           var layout = layoutmanager.getLayouts()[layoutId];
           var hasBlocks = false;
           for (var key in layout.getColumns()) {
@@ -52,7 +53,7 @@ define(['simplelayout/Layoutmanager', 'simplelayout/Eventrecorder'], function(La
             layout.getElement().addClass('cancelDeletion');
           }
         } else {
-          var layoutId = ui.draggable.data('layout-id');
+          layoutId = ui.draggable.data('layout-id');
           var columnId = ui.draggable.data('column-id');
           var blockId = ui.draggable.data('block-id');
           var block = layoutmanager.getLayouts()[layoutId].getColumns()[columnId].getBlocks()[blockId];
@@ -60,15 +61,16 @@ define(['simplelayout/Layoutmanager', 'simplelayout/Eventrecorder'], function(La
         }
       },
       drop: function(e, ui) {
+        var layoutId;
         if (ui.draggable.hasClass('sl-layout')) {
-          var layoutId = ui.draggable.data('layout-id');
+          layoutId = ui.draggable.data('layout-id');
           var layout = layoutmanager.getLayouts()[layoutId];
           if (!layout.getElement().hasClass('cancelDeletion')) {
             layoutmanager.deleteLayout(layoutId);
           }
           layout.getElement().removeClass('deleted cancelDeletion');
         } else {
-          var layoutId = ui.draggable.data('layout-id');
+          layoutId = ui.draggable.data('layout-id');
           var columnId = ui.draggable.data('column-id');
           var blockId = ui.draggable.data('block-id');
           var block = layoutmanager.getLayouts()[layoutId].getColumns()[columnId].getBlocks()[blockId];
@@ -101,8 +103,6 @@ define(['simplelayout/Layoutmanager', 'simplelayout/Eventrecorder'], function(La
       connectWith: '.sl-column, .tb-trash',
       placeholder: "placeholder",
       forcePlaceholderSize: true,
-      tolerance: 'pointer',
-      distance: 1,
       receive: function(e, ui) {
         var target = $(e.target);
         var columnId = ui.item.data('column-id');
