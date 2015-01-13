@@ -1,6 +1,6 @@
 # Simplelayout
 
-Javascript Library for creating Plone-Layouts.
+Javascript Library for organising Layouts with drag and drop.
 
 ## Dependencies
 
@@ -35,7 +35,7 @@ grunt build
 $(document).ready(function() {
   var target = $('body');
 
-  var simplelayout = new Simplelayout({imageCount : 1});
+  var simplelayout = new Simplelayout();
   var toolbox = new Toolbox({
     layouts: [1, 2, 4]
   });
@@ -50,14 +50,14 @@ $(document).ready(function() {
 
 ## Options
 
-Select provided layouts
+Select layouts that can be dragged from the toolbox.
 ```javascript
-{layouts : []} // --> Array of columns
+{layouts : []} // --> Array of columns (Default is [])
 ```
 
 ## API
 
-Attach Element
+Attach Element to JQuery Node
 ```javascript
 toolbox.attachTo($('body'));
 ```
@@ -73,14 +73,24 @@ toolbox.getElement();
 
 Select number of image per column (oriented on biggest layout in toolbox)
 ```javascript
-{imageCount : 1}
+{imageCount : 1} // Default is 1
+```
+
+Define width of layoutmanager
+```javascript
+{width : '800px'} // Default is 100%
+```
+
+Define initial block height
+```javascript
+{blockHeight : '50px'} // Default is 100px
 ```
 
 ## API
 
 Attach Element
 
-Must have been called before attaching a toolbox.
+Must have been called before attaching a toolbox. Otherwise will raise an exception so the layoutmanager knows his context
 ```javascript
 simplelayout.attachTo($('body'));
 ```
