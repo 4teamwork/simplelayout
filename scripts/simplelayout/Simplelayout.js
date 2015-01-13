@@ -14,12 +14,18 @@ define(['simplelayout/Layoutmanager', 'simplelayout/Eventrecorder'], function(La
 
     var eventrecorder = new Eventrecorder();
 
-    var layoutmanager = new Layoutmanager();
+    var layoutmanager = new Layoutmanager(_options);
 
     var toolbox;
 
     var BLOCK_RESIZABLE_SETTINGS = {
-      handles: "s"
+      handles: "s",
+      resize : function(e, ui) {
+        var layoutId = ui.element.data('layout-id');
+        var columnId = ui.element.data('column-id');
+        var blockId = ui.element.data('blockId');
+        layoutmanager.getLayouts()[layoutId].getColumns()[columnId].getBlocks()[blockId].height = (ui.size.height);
+      }
     };
 
     var TOOLBOX_DRAGGABLE_SETTINGS = {
@@ -106,9 +112,7 @@ define(['simplelayout/Layoutmanager', 'simplelayout/Eventrecorder'], function(La
         var content = ui.item.html();
         var newColumnId = target.data('column-id');
         var newLayoutId = target.data('layout-id');
-        var newBlockId = layoutmanager.moveBlock(layoutId, columnId, blockId, newLayoutId, newColumnId, type, content);
-        var block = layoutmanager.getLayouts()[newLayoutId].getColumns()[newColumnId].getBlocks()[newBlockId].getElement();
-        block.resizable(BLOCK_RESIZABLE_SETTINGS);
+        layoutmanager.moveBlock(layoutId, columnId, blockId, newLayoutId, newColumnId, type, content);
       },
     };
 

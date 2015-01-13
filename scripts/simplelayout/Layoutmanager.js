@@ -2,13 +2,18 @@ define(["simplelayout/Layout"], function(Layout) {
 
   'use strict';
 
-  function Layoutmanager() {
+  function Layoutmanager(_options) {
 
     if (!(this instanceof Layoutmanager)) {
       throw new TypeError("Layoutmanager constructor cannot be called as a function.");
     }
 
-    var element = $("<div>").addClass('sl-simplelayout');
+    var options = $.extend({
+      width : '100%',
+      blockHeight : '100px',
+    }, _options || {});
+
+    var element = $("<div>").addClass('sl-simplelayout').css('width', options.width);
 
     var layoutId = 0;
 
@@ -17,6 +22,8 @@ define(["simplelayout/Layout"], function(Layout) {
       layouts: {},
 
       minImageWidth: null,
+
+      options : options,
 
       attachTo: function(target) {
         target.append(element);
@@ -64,7 +71,7 @@ define(["simplelayout/Layout"], function(Layout) {
 
       insertBlock: function(layoutId, columnId, blocktype, content) {
         var layout = this.layouts[layoutId];
-        var blockId = layout.insertBlock(columnId, blocktype, content);
+        var blockId = layout.insertBlock(columnId, blocktype, content, this.options.blockHeight);
         this.layouts[layoutId].getColumns()[columnId].getBlocks()[blockId].getElement().find('img').width(this.minImageWidth);
         return blockId;
       },
@@ -79,13 +86,13 @@ define(["simplelayout/Layout"], function(Layout) {
       },
 
       moveBlock: function(oldLayoutId, oldColumnId, blockId, newLayoutId, newColumnId) {
-        var block = this.getLayouts()[oldLayoutId].getColumns()[oldColumnId].getBlocks()[blockId];
-        var type = block.getElement().data('type');
-        var content = block.getElement().children('.sl-block-content').html();
-        this.deleteBlock(oldLayoutId, oldColumnId, blockId);
-        var newBlockId = this.insertBlock(newLayoutId, newColumnId, type, content);
-        this.commitBlocks(newLayoutId, newColumnId);
-        return newBlockId;
+        var layout = this.getLayouts()[oldLayoutId];
+        var column = layout.getColumns()[oldColumnId];
+        var block = column.getBlocks()[blockId];
+        block.getElement().data('layoutId', newLayoutId);
+        block.getElement().data('columnId', newColumnId);
+        delete column.getBlocks()[blockId];
+        this.getLayouts()[newLayoutId].getColumns()[newColumnId].getBlocks()[blockId] = block;
       },
 
       serialize: function() {
