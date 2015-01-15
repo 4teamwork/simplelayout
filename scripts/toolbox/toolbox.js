@@ -22,33 +22,35 @@ define([], function() {
     var minImageCount = 100 / Math.max.apply(null, options.layouts) / options.imageCount;
 
     var template = $.templates(
-      "<div id='sl-toolbox' class='list-group sl-toolbox'> \
-          <a class='list-group-item sl-header'>Komponenten</a> \
-            {{for blocks}} \
-              <a class='list-group-item sl-toolbox-component' data-type='{{:type}}'> \
-                <i class='{{:icon}}'></i>{{:title}} \
-              </a> \
-            {{/for}} \
-          <a class='list-group-item sl-header'>Layout</a> \
-            {{for layouts}} \
-              <a class='list-group-item sl-toolbox-layout' data-columns='{{:columns}}'> \
-                <i class='glyphicon glyphicon-th'></i>{{:columns}} - Spalten Layout \
-              </a> \
-             {{/for}} \
-          <a class='list-group-item sl-toolbox-trash'> \
-            <i class='glyphicon glyphicon-trash'></i> \
-          </a> \
+      "<div id='sl-toolbox' class='sl-toolbox'> \
+          <div class='components'> \
+            <a class='sl-header'>Komponenten</a> \
+              {{for blocks}} \
+                <a class='sl-toolbox-component' data-type='{{:type}}'> \
+                  <i class='{{:icon}}'></i>{{:title}} \
+                </a> \
+              {{/for}} \
+            <a class='sl-header'>Layout</a> \
+              {{for layouts}} \
+                <a class='sl-toolbox-layout' data-columns='{{:columns}}'> \
+                  <i class='icon-layout'></i>{{:columns}} - Spalten Layout \
+                </a> \
+               {{/for}} \
+          </div> \
+          <div class='sl-toolbox-trash'> \
+            <i class='icon-trash'></i> \
+          </div> \
         </div>");
 
     var components = {
       "blocks": [{
         "type": "listingblock",
         "title": "Listingblock",
-        "icon": "glyphicon glyphicon-list-alt"
+        "icon": "icon-listing-block"
       }, {
         "type": "textblock",
         "title": "Textblock",
-        "icon": "glyphicon glyphicon-align-left"
+        "icon": "icon-text-block"
       }],
       "layouts": layouts
     };

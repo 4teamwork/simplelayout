@@ -25,6 +25,9 @@ define(['simplelayout/Layoutmanager', 'simplelayout/Eventrecorder'], function(La
         var columnId = ui.element.data('column-id');
         var blockId = ui.element.data('blockId');
         layoutmanager.getLayouts()[layoutId].getColumns()[columnId].getBlocks()[blockId].height = (ui.size.height);
+      },
+      create : function(e, ui) {
+        $(e.target).find('.ui-resizable-s').addClass('icon-resize');
       }
     };
 
