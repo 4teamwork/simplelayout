@@ -9,7 +9,6 @@
   "dependencies": {
     "jquery": ">1.6",
     "jquery-ui": "1.11.2",
-    "bootstrap": "3.3.1",
     "jsrender": "1.0.0-beta",
     "requirejs": "2.1.9"
   },
