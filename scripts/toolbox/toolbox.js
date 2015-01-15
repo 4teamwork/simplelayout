@@ -24,13 +24,14 @@ define([], function() {
     var template = $.templates(
       "<div id='sl-toolbox' class='sl-toolbox'> \
           <div class='components'> \
-            <a class='sl-header'>Komponenten</a> \
+            <a class='sl-toolbox-header sl-toolbox-handle'>Toolbox</a> \
+            <a class='sl-toolbox-header'>Komponenten</a> \
               {{for blocks}} \
                 <a class='sl-toolbox-component' data-type='{{:type}}'> \
                   <i class='{{:icon}}'></i>{{:title}} \
                 </a> \
               {{/for}} \
-            <a class='sl-header'>Layout</a> \
+            <a class='sl-toolbox-header'>Layout</a> \
               {{for layouts}} \
                 <a class='sl-toolbox-layout' data-columns='{{:columns}}'> \
                   <i class='icon-layout'></i>{{:columns}} - Spalten Layout \

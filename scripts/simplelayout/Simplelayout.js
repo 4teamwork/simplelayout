@@ -31,7 +31,7 @@ define(['simplelayout/Layoutmanager', 'simplelayout/Eventrecorder'], function(La
       }
     };
 
-    var TOOLBOX_DRAGGABLE_SETTINGS = {
+    var TOOLBOX_COMPONENT_DRAGGABLE_SETTINGS = {
       helper: "clone",
       cursor: "pointer"
     };
@@ -178,6 +178,12 @@ define(['simplelayout/Layoutmanager', 'simplelayout/Eventrecorder'], function(La
       }
     };
 
+    var TOOLBOX_DRAGGABLE_SETTINGS = {
+      cursor: "pointer",
+      containment : 'window',
+      handle : '.sl-toolbox-handle'
+    };
+
     var bindLayoutEvents = function() {
       unbindLayoutEvents();
       layoutmanager.getElement().droppable(LAYOUTMANAGER_DROPPABLE_SETTINGS);
@@ -196,7 +202,7 @@ define(['simplelayout/Layoutmanager', 'simplelayout/Eventrecorder'], function(La
 
     var bindToolboxEvents = function() {
       unbindToolboxEvents();
-      toolbox.getElement().find('.sl-toolbox-component, .sl-toolbox-layout').draggable(TOOLBOX_DRAGGABLE_SETTINGS);
+      toolbox.getElement().find('.sl-toolbox-component, .sl-toolbox-layout').draggable(TOOLBOX_COMPONENT_DRAGGABLE_SETTINGS);
       toolbox.getElement().find('.sl-toolbox-trash').droppable(TRASH_DROPPABLE_SETTINGS);
       layoutmanager.getElement().on('blockInserted', function(e, layoutId, columnId, blockId) {
         layoutmanager.getLayouts()[layoutId].getColumns()[columnId].getBlocks()[blockId].getElement().resizable(BLOCK_RESIZABLE_SETTINGS);
@@ -205,6 +211,8 @@ define(['simplelayout/Layoutmanager', 'simplelayout/Eventrecorder'], function(La
       layoutmanager.getElement().on('layoutInserted', function(e, layoutId) {
         layoutmanager.getLayouts()[layoutId].getElement().find('.sl-column').droppable(LAYOUT_DROPPABLE_SETTINGS).sortable(LAYOUT_SORTABLE_SETTINGS);
       });
+
+      toolbox.getElement().draggable(TOOLBOX_DRAGGABLE_SETTINGS);
 
     };
 
@@ -217,6 +225,9 @@ define(['simplelayout/Layoutmanager', 'simplelayout/Eventrecorder'], function(La
       }
       layoutmanager.getElement().off('blockInserted');
       layoutmanager.getElement().off('layoutInserted');
+      if (toolbox.getElement().draggable('instance')) {
+        toolbox.getElement().draggable('destroy');
+      }
     };
 
     bindLayoutEvents();

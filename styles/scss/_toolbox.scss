@@ -5,6 +5,8 @@
   top: 20px;
   z-index: 2;
   border-radius: 4px;
+  background: white;
+  padding: 10px;
   .components {
     a {
       position: relative;
@@ -37,13 +39,24 @@
       i {
         padding-right: 5px;
       }
-      &.sl-header {
+      &.sl-toolbox-header {
         background-color: #f5f5f5;
         &:hover {
           cursor: default;
         }
       }
+      &.sl-toolbox-handle {
+        font-weight: bold;
+        font-size: 20px;
+        text-align: center;
+        &:hover {
+          cursor: pointer;
+        }
+      }
     }
+  }
+  &.ui-draggable-dragging {
+    box-shadow: 0 0 70px 0 rgba(0, 0, 0, .75);
   }
   .sl-toolbox-trash {
     text-align: center;
