@@ -232,14 +232,6 @@ define(['simplelayout/Layoutmanager', 'simplelayout/Eventrecorder'], function(La
 
     bindLayoutEvents();
 
-    layoutmanager.getElement().on('blockInserted', function(e, layoutId, columnId, blockId) {
-      layoutmanager.getLayouts()[layoutId].getColumns()[columnId].getBlocks()[blockId].getElement().resizable(BLOCK_RESIZABLE_SETTINGS);
-    });
-
-    layoutmanager.getElement().on('layoutInserted', function(e, layoutId) {
-      layoutmanager.getLayouts()[layoutId].getElement().find('.sl-column').droppable(LAYOUT_DROPPABLE_SETTINGS).sortable(LAYOUT_SORTABLE_SETTINGS);
-    });
-
     return {
 
       options: options,
