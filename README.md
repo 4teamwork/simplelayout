@@ -24,11 +24,18 @@ bower install
 ```
 ### Build
 
-Builds and concatenates javascript and scss file to dist directory
+Dev (default):
+Does not optimize javascript and CSS files.
+Starts grunt watcher.
 ```bash
-grunt build
+grunt
 ```
 
+Prod:
+Optimizes javascript and CSS files for production
+```bash
+grunt prod
+```
 ## Get started
 
 ```javascript
