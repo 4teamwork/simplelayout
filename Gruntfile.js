@@ -22,7 +22,7 @@ module.exports = function(grunt) {
           mainConfigFile: 'scripts/config.js',
           findNestedDependencies: true,
           name: '../node_modules/almond/almond',
-          include: ['simplelayout/Simplelayout', 'toolbox/Toolbox'],
+          include: ['simplelayout/Simplelayout', 'toolbox/Toolbox', 'overlay/Overlay'],
           out: 'dist/simplelayout.js',
           wrap: {
             startFile: "build/start.frag",
