@@ -23,7 +23,7 @@ suite('Toolbox', function() {
     var addedNodes = $.map(target.children(), function(e) {
       return [{tag: e.tagName, id: e.id, classes: e.className}];
     });
-    assert.deepEqual(addedNodes, [{tag: "DIV", id: "sl-toolbox", classes: "list-group sl-toolbox"}]);
+    assert.deepEqual(addedNodes, [{tag: "DIV", id: "sl-toolbox", classes: "sl-toolbox"}]);
   });
 
   suite('components', function() {
