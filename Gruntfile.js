@@ -40,13 +40,24 @@ module.exports = function(grunt) {
           'dist/main.css': 'styles/scss/main.scss'
         }
       }
-    }
+    },
+    watch: {
+      scripts: {
+        files: ['scripts/**/*.js', 'styles/scss/*.scss'],
+        tasks: ['build'],
+        options: {
+          spawn: false,
+        },
+      },
+    },
   });
 
   grunt.loadNpmTasks('grunt-mocha');
   grunt.loadNpmTasks('grunt-contrib-requirejs');
   grunt.loadNpmTasks('grunt-contrib-sass');
+  grunt.loadNpmTasks('grunt-contrib-watch');
 
   grunt.registerTask('test', ['mocha']);
   grunt.registerTask('build', ['requirejs', 'sass']);
+  grunt.registerTask('lueg', ['watch']);
 };
