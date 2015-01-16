@@ -33,4 +33,14 @@ suite('Block', function() {
     assert.deepEqual(node, {tag : "DIV", classes : "sl-block", content : "I am a block"});
   });
 
+  test('can set block-content', function() {
+    var block = new Block('textblock');
+    block.create('I am a block');
+    block.content('<p>hallo</p>');
+    var textblock = block.getElement()[0];
+
+    var node = { tag : textblock.tagName, classes : textblock.className, content : textblock.innerText};
+    assert.deepEqual(node, {tag : "DIV", classes : "sl-block", content : "hallo"});
+  });
+
 });

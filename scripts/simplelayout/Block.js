@@ -36,6 +36,10 @@ define([], function() {
         return this.element;
       },
 
+      content : function(content) {
+        $('.sl-block-content', this.element).html(content);
+      },
+
       toJSON : function() {
         return {type : this.type, height : this.height};
       }
