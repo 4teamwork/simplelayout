@@ -3,6 +3,27 @@ module.exports = function(grunt) {
   'use strict';
 
   grunt.initConfig({
+
+    config: {
+      dev: {
+        options: {
+          variables: {
+            'optimize': 'none',
+            'sass-style' : 'expanded'
+          }
+        }
+      },
+      prod: {
+        options: {
+          variables: {
+            'optimize': 'uglify',
+            'sass-style' : 'compressed'
+          }
+        }
+      }
+    },
+
+
     mocha: {
       test: {
         // Test all files ending in .html anywhere inside the test directory.
@@ -24,6 +45,7 @@ module.exports = function(grunt) {
           name: '../node_modules/almond/almond',
           include: ['simplelayout/Simplelayout', 'toolbox/Toolbox', 'overlay/Overlay'],
           out: 'dist/simplelayout.js',
+          optimize : '<%= grunt.config.get("optimize") %>',
           wrap: {
             startFile: "build/start.frag",
             endFile: "build/end.frag"
@@ -34,7 +56,7 @@ module.exports = function(grunt) {
     sass: {
       dist: {
         options: {
-          style: 'expanded'
+          style: '<%= grunt.config.get("sass-style") %>'
         },
         files: {
           'dist/main.css': 'styles/scss/main.scss'
@@ -44,7 +66,7 @@ module.exports = function(grunt) {
     watch: {
       scripts: {
         files: ['scripts/**/*.js', 'styles/scss/*.scss'],
-        tasks: ['build'],
+        tasks: ['config:dev', 'requirejs', 'sass'],
         options: {
           spawn: false,
         },
@@ -56,8 +78,11 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-requirejs');
   grunt.loadNpmTasks('grunt-contrib-sass');
   grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-config');
 
   grunt.registerTask('test', ['mocha']);
-  grunt.registerTask('build', ['requirejs', 'sass']);
-  grunt.registerTask('lueg', ['watch']);
+  grunt.registerTask('dev', ['config:dev', 'requirejs', 'sass', 'watch']);
+  grunt.registerTask('prod', ['config:prod', 'requirejs', 'sass']);
+  grunt.registerTask('default', ['dev']);
+
 };
