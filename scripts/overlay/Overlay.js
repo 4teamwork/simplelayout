@@ -17,6 +17,8 @@ define([], function() {
 
     var modal;
 
+    var overflow;
+
     return {
 
       options : options,
@@ -45,12 +47,14 @@ define([], function() {
           this.create(content);
         }
         this.element.show();
+        overflow = target.css('overflow');
+        target.css('overflow', 'hidden');
       },
 
       close : function() {
         if(this.element) {
           this.element.hide();
-          closeHandle.off('click');
+          target.css('overflow', overflow);
         }
       },
 
@@ -63,8 +67,7 @@ define([], function() {
 
       getElement : function() {
         if(!this.element) {
-          this.element = $(template.render({content : content}));
-          closeHandle = $('.sl-overlay-handler', this.element);
+          this.create();
         }
         return this.element;
       }
