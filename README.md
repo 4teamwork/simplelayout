@@ -129,3 +129,40 @@ blocksCommitted(event)
 blockMoved(event, oldLayoutId, oldColumnId, blockId, newLayoutId, newColumnId)
 
 deserialized(event)
+
+# Overlay
+
+Generate new Overlay
+```javascript
+var overlay = new Overlay();
+```
+
+## Options
+
+Set target selector (Default: 'body')
+```javascript
+{target : '#overlay'}
+```
+
+## API
+
+Creates the overlay, attach event handler for closing, calculate margin for centering.
+Will be called as well when opening the overlay.
+```javascript
+overlay.create();
+```
+
+Opens the overlay (alternative set content)
+```javascript
+overlay.open([content:String]);
+```
+
+Closes the overlay
+```javascript
+overlay.close();
+```
+
+Sets the overlays content
+```javascript
+overlay.content('<p>Test</p>');
+```
