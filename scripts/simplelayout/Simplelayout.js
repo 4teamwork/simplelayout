@@ -185,23 +185,11 @@ define(['simplelayout/Layoutmanager', 'simplelayout/Eventrecorder'], function(La
     };
 
     var bindLayoutEvents = function() {
-      unbindLayoutEvents();
       layoutmanager.getElement().droppable(LAYOUTMANAGER_DROPPABLE_SETTINGS);
       layoutmanager.getElement().sortable(LAYOUTMANAGER_SORTABLE_SETTINGS);
     };
 
-    var unbindLayoutEvents = function() {
-      if (layoutmanager.getElement().droppable('instance')) {
-        layoutmanager.getElement().droppable('destroy');
-      }
-
-      if (layoutmanager.getElement().sortable('instance')) {
-        layoutmanager.getElement().sortable('destroy');
-      }
-    };
-
     var bindToolboxEvents = function() {
-      unbindToolboxEvents();
       toolbox.getElement().find('.sl-toolbox-component, .sl-toolbox-layout').draggable(TOOLBOX_COMPONENT_DRAGGABLE_SETTINGS);
       toolbox.getElement().find('.sl-toolbox-trash').droppable(TRASH_DROPPABLE_SETTINGS);
       layoutmanager.getElement().on('blockInserted', function(e, layoutId, columnId, blockId) {
@@ -214,20 +202,6 @@ define(['simplelayout/Layoutmanager', 'simplelayout/Eventrecorder'], function(La
 
       toolbox.getElement().draggable(TOOLBOX_DRAGGABLE_SETTINGS);
 
-    };
-
-    var unbindToolboxEvents = function() {
-      if (toolbox.getElement().find('.sl-toolbox-component, .sl-toolbox-layout').draggable('instance')) {
-        toolbox.getElement().find('.sl-toolbox-component, .sl-toolbox-layout').draggable('destroy');
-      }
-      if (toolbox.getElement().find('.sl-toolbox-trash').droppable('instance')) {
-        toolbox.getElement().find('.sl-toolbox-trash').droppable('destroy');
-      }
-      layoutmanager.getElement().off('blockInserted');
-      layoutmanager.getElement().off('layoutInserted');
-      if (toolbox.getElement().draggable('instance')) {
-        toolbox.getElement().draggable('destroy');
-      }
     };
 
     bindLayoutEvents();
