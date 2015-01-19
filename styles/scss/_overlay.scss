@@ -4,13 +4,15 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, .2);
   display: none;
+  z-index: 9999;
   .sl-overlay-modal {
     position: fixed;
     top: 50%;
     left: 50%;
-    background: white;
+    background: #fff;
+    box-shadow: 0 0 50px 0 #000;
     .sl-overlay-handler {
       content: "\f005";
       font-family: 'simplelayout';
@@ -24,12 +26,12 @@
       width: 30px;
       right: -15px;
       height: 30px;
-      border: 1px solid rgba(0, 0, 0, 0.4);
-      box-shadow: 0 0 0 5px #e8e8e8;
+      border: 3px solid rgba(0, 0, 0, .4);
       border-radius: 50%;
       top: -15px;
       background: #fff;
       text-align: center;
+      font-size: 22px;
     }
   }
 }
