@@ -103,7 +103,7 @@ define(['simplelayout/Layoutmanager', 'simplelayout/Eventrecorder'], function(La
     };
 
     var LAYOUT_SORTABLE_SETTINGS = {
-      connectWith: '.sl-column, .tb-trash',
+      connectWith: '.sl-column',
       placeholder: "placeholder",
       forcePlaceholderSize: true,
       receive: function(e, ui) {
