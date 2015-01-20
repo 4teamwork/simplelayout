@@ -159,7 +159,7 @@ define(['simplelayout/Layoutmanager', 'simplelayout/Eventrecorder'], function(La
     };
 
     var LAYOUTMANAGER_DROPPABLE_SETTINGS = {
-      accept: ".sl-toolbox-layout, .sl-toolbox-component",
+      accept: ".sl-toolbox-layout",
       over: function(e, ui) {
         try {
           var columns = ui.draggable.data('columns');
