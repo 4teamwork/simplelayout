@@ -29,7 +29,7 @@ suite('Simplelayout', function() {
   });
 
   test('raises exception when attaching toolbox when its not attached to DOM', function() {
-    var toolbox = new Toolbox();
+    var toolbox = new Toolbox({layouts : [0]});
     var simplelayout = new Simplelayout();
 
     assert.throws(function() {

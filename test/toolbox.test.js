@@ -15,7 +15,7 @@ suite('Toolbox', function() {
   });
 
   test('attaches to target container', function() {
-    var toolbox = new Toolbox();
+    var toolbox = new Toolbox({layouts : [0]});
     var target = $("<div></div>");
 
     toolbox.attachTo(target);
@@ -28,38 +28,21 @@ suite('Toolbox', function() {
 
   suite('components', function() {
 
-    var toolbox;
-    var target;
-
-    setup(function(done) {
-      toolbox = new Toolbox();
-      target = $("<div></div>");
-      toolbox.attachTo(target);
-      done();
-    });
-
     test('has listblock- and textblock components', function() {
+      var toolbox = new Toolbox({layouts : [0]});
+      var target = $("<div></div>");
+      toolbox.attachTo(target);
+
       var addedNodes = $.map(target.find('.sl-toolbox-component'), function(e) {
         return $(e).data('type');
       });
       assert.deepEqual(addedNodes, ['listingblock', 'textblock']);
     });
 
-    test('has no layouts by default', function() {
-      var layoutsTotal = target.find('sl-toolbox-layout').length;
-      assert.equal(layoutsTotal, 0);
-    });
-
-    test('can have no layouts (page with predefined layouts, only blocks allowed)', function() {
-      var toolbox = new Toolbox({
-        layouts: []
-      });
-      var target = $('<div></div>');
-
-      toolbox.attachTo(target);
-
-      var layoutsTotal = target.find('sl-toolbox-layout').length;
-      assert.equal(layoutsTotal, 0);
+    test('raises exception when no layout is defined', function() {
+      assert.throws(function(){
+        new Toolbox();
+      }, Error, "No layouts defined.");
     });
 
     test('can allow layouts by column count', function() {
