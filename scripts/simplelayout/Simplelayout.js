@@ -33,7 +33,14 @@ define(['simplelayout/Layoutmanager', 'simplelayout/Eventrecorder'], function(La
 
     var TOOLBOX_COMPONENT_DRAGGABLE_SETTINGS = {
       helper: "clone",
-      cursor: "pointer"
+      cursor: "pointer",
+      start : function(e, ui) {
+        if($(e.target).hasClass('sl-toolbox-component') && Object.keys(layoutmanager.getLayouts()).length === 0) {
+          columns = toolbox.options.layouts[0];
+          layoutId = layoutmanager.insertLayout(columns);
+          layoutmanager.commitLayouts();
+        }
+      }
     };
 
     var TRASH_DROPPABLE_SETTINGS = {
@@ -152,7 +159,7 @@ define(['simplelayout/Layoutmanager', 'simplelayout/Eventrecorder'], function(La
     };
 
     var LAYOUTMANAGER_DROPPABLE_SETTINGS = {
-      accept: ".sl-toolbox-layout",
+      accept: ".sl-toolbox-layout, .sl-toolbox-component",
       over: function(e, ui) {
         try {
           var columns = ui.draggable.data('columns');
