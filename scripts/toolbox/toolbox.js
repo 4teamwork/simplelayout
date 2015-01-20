@@ -8,9 +8,11 @@ define([], function() {
       throw new TypeError("Toolbox constructor cannot be called as a function.");
     }
 
-    var options = $.extend({
-      layouts: []
-    }, _options || {});
+    if(!_options || !_options.layouts || _options.layouts.length === 0){
+      throw new Error("No layouts defined.");
+    }
+
+    var options = $.extend(_options || {});
 
     var layouts = [];
     $.each(options.layouts, function(i, el) {
