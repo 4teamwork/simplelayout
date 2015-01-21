@@ -26,7 +26,7 @@ define(['simplelayout/Layoutmanager', 'simplelayout/Eventrecorder'], function(La
         var blockId = ui.element.data('blockId');
         layoutmanager.getLayouts()[layoutId].getColumns()[columnId].getBlocks()[blockId].height = parseInt((ui.size.height));
       },
-      create : function(e, ui) {
+      create: function(e, ui) {
         $(e.target).find('.ui-resizable-s').addClass('icon-resize');
       }
     };
@@ -34,8 +34,8 @@ define(['simplelayout/Layoutmanager', 'simplelayout/Eventrecorder'], function(La
     var TOOLBOX_COMPONENT_DRAGGABLE_SETTINGS = {
       helper: "clone",
       cursor: "pointer",
-      start : function(e, ui) {
-        if($(e.target).hasClass('sl-toolbox-component') && Object.keys(layoutmanager.getLayouts()).length === 0) {
+      start: function(e, ui) {
+        if ($(e.target).hasClass('sl-toolbox-component') && Object.keys(layoutmanager.getLayouts()).length === 0) {
           columns = toolbox.options.layouts[0];
           layoutId = layoutmanager.insertLayout(columns);
           layoutmanager.commitLayouts();
@@ -114,15 +114,17 @@ define(['simplelayout/Layoutmanager', 'simplelayout/Eventrecorder'], function(La
       placeholder: "placeholder",
       forcePlaceholderSize: true,
       receive: function(e, ui) {
-        var target = $(e.target);
-        var columnId = ui.item.data('column-id');
-        var layoutId = ui.item.data('layout-id');
-        var blockId = ui.item.data('block-id');
-        var type = ui.item.data('type');
-        var content = ui.item.html();
-        var newColumnId = target.data('column-id');
-        var newLayoutId = target.data('layout-id');
-        layoutmanager.moveBlock(layoutId, columnId, blockId, newLayoutId, newColumnId, type, content);
+        if (ui && ui.draggable) {
+          var target = $(e.target);
+          var columnId = ui.item.data('column-id');
+          var layoutId = ui.item.data('layout-id');
+          var blockId = ui.item.data('block-id');
+          var type = ui.item.data('type');
+          var content = ui.item.html();
+          var newColumnId = target.data('column-id');
+          var newLayoutId = target.data('layout-id');
+          layoutmanager.moveBlock(layoutId, columnId, blockId, newLayoutId, newColumnId, type, content);
+        }
       },
     };
 
@@ -168,12 +170,12 @@ define(['simplelayout/Layoutmanager', 'simplelayout/Eventrecorder'], function(La
             layoutId: layoutId
           };
           eventrecorder.record(e);
-        } catch(err) {}
+        } catch (err) {}
       },
       out: function(e) {
         try {
           layoutmanager.deleteLayout(eventrecorder.lookup(e).data.layoutId);
-        } catch(err) {}
+        } catch (err) {}
       },
       drop: function(e) {
         try {
@@ -187,8 +189,8 @@ define(['simplelayout/Layoutmanager', 'simplelayout/Eventrecorder'], function(La
 
     var TOOLBOX_DRAGGABLE_SETTINGS = {
       cursor: "pointer",
-      containment : 'window',
-      handle : '.sl-toolbox-handle'
+      containment: 'window',
+      handle: '.sl-toolbox-handle'
     };
 
     var bindLayoutEvents = function() {
