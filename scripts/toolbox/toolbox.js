@@ -12,6 +12,9 @@ define([], function() {
       throw new Error("No layouts defined.");
     }
 
+components : [{"title": "Listingblock", "description": "can list things", "contentType": "listingblock", "formURL" : "http://www.google.com"},
+{"title": "Textblock", "description": "can show text", "content-type": "textblock", "formURL" : "http://www.bing.com"}];
+
     var options = $.extend(_options || {});
 
     var layouts = [];
@@ -28,9 +31,9 @@ define([], function() {
           <div class='components'> \
             <a class='sl-toolbox-header sl-toolbox-handle'>Toolbox</a> \
             <a class='sl-toolbox-header'>Komponenten</a> \
-              {{for blocks}} \
-                <a class='sl-toolbox-component' data-type='{{:type}}'> \
-                  <i class='{{:icon}}'></i>{{:title}} \
+              {{for components}} \
+                <a class='sl-toolbox-component' title='{{:description}}' data-form_url='{{:form_url}}'> \
+                  <i class='{{:content_type}}'></i>{{:title}} \
                 </a> \
               {{/for}} \
             <a class='sl-toolbox-header'>Layout</a> \
@@ -45,20 +48,12 @@ define([], function() {
           </div> \
         </div>");
 
-    var components = {
-      "blocks": [{
-        "type": "listingblock",
-        "title": "Listingblock",
-        "icon": "icon-listing-block"
-      }, {
-        "type": "textblock",
-        "title": "Textblock",
-        "icon": "icon-text-block"
-      }],
+    var data = {
+      "components" : options.components,
       "layouts": layouts
     };
 
-    var element = $(template.render(components));
+    var element = $(template.render(data));
 
     return {
 

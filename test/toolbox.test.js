@@ -28,15 +28,15 @@ suite('Toolbox', function() {
 
   suite('components', function() {
 
-    test('has listblock- and textblock components', function() {
-      var toolbox = new Toolbox({layouts : [0]});
+    test('can set components', function() {
+      var toolbox = new Toolbox({layouts : [0], components : [{"title": "Listingblock", "description": "can list things", "content_type": "listingblock", "form_url" : "http://www.google.com"},
+        {"title": "Textblock", "description": "can show text", "content_type": "textblock", "form_url" : "http://www.bing.com"}]});
       var target = $("<div></div>");
       toolbox.attachTo(target);
-
       var addedNodes = $.map(target.find('.sl-toolbox-component'), function(e) {
-        return $(e).data('type');
+        return {title : $(e).text().trim(), description : $(e).attr('title'), contentType : $('i', e).attr('class'), formUrl : $(e).data('form_url')};
       });
-      assert.deepEqual(addedNodes, ['listingblock', 'textblock']);
+      assert.deepEqual(addedNodes, [{title : 'Listingblock', description : 'can list things', contentType : 'listingblock', formUrl : 'http://www.google.com'}, {title : 'Textblock', description : 'can show text', contentType : 'textblock', formUrl : 'http://www.bing.com'}]);
     });
 
     test('raises exception when no layout is defined', function() {

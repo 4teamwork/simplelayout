@@ -17,7 +17,9 @@
   $(document).ready(function() {
     var simplelayout = new Simplelayout({width:'900px'});
     var toolbox = new Toolbox({
-      layouts: [1, 2, 4]
+      layouts: [1, 2, 4],
+      components : [{"title": "Listingblock", "description": "can list things", "content_type": "listingblock", "form_url" : "http://www.google.com"},
+        {"title": "Textblock", "description": "can show text", "content_type": "textblock", "form_url" : "http://www.bing.com"}]
     });
 
     simplelayout.attachTo($('main'));
