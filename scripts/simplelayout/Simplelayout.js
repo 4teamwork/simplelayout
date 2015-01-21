@@ -134,8 +134,7 @@ define(['simplelayout/Layoutmanager', 'simplelayout/Eventrecorder'], function(La
         try {
           var layoutId = $(this).parent().data('layout-id');
           var columnId = $(this).data('column-id');
-          var type = ui.draggable.data('type');
-          var blockId = layoutmanager.insertBlock(layoutId, columnId, type, '<p>I am a block</p>');
+          var blockId = layoutmanager.insertBlock(layoutId, columnId, null, null);
           e.data = {
             blockId: blockId,
             columnId: columnId,
