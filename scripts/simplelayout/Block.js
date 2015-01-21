@@ -20,6 +20,8 @@ define([], function() {
 
       height : height,
 
+      uid : null,
+
       getElement: function() {
         return this.element;
       },
@@ -38,7 +40,7 @@ define([], function() {
       },
 
       toJSON : function() {
-        return {height : this.height};
+        return {height : this.height, uid : this.uid};
       }
     };
 
