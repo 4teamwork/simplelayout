@@ -30,13 +30,13 @@ suite('Column', function() {
     test('can insert a block', function() {
       var column = new Column('50%');
       column.create();
-      column.insertBlock('textblock');
+      column.insertBlock();
 
       var blocks = $.map(column.getBlocks(), function(block) {
-        return {type : block.type, committed : block.committed, id : block.getElement().data('block-id')};
+        return {committed : block.committed, id : block.getElement().data('block-id')};
       });
 
-      assert.deepEqual(blocks, [{type : 'textblock', committed : false, id : 0}]);
+      assert.deepEqual(blocks, [{committed : false, id : 0}]);
       assert.equal(Object.keys(column.getBlocks()).length, 1);
 
     });
@@ -57,10 +57,10 @@ suite('Column', function() {
       var blockId = column.insertBlock('textblock');
       column.commitBlocks();
       var blocks = $.map(column.getCommittedBlocks(), function(block) {
-        return {type : block.type, committed : block.committed};
+        return {committed : block.committed};
       });
 
-      assert.deepEqual(blocks, [{type : 'textblock', committed : true}]);
+      assert.deepEqual(blocks, [{committed : true}]);
 
     });
 

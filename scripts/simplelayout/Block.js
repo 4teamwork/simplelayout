@@ -2,23 +2,21 @@ define([], function() {
 
   'use strict';
 
-  function Block(type, height) {
+  function Block(height, content) {
 
     if (!(this instanceof Block)) {
       throw new TypeError("Block constructor cannot be called as a function.");
     }
 
-    if (!type) {
-      throw new ReferenceError("Type must be defined.");
-    }
+    var template = $.templates("<div class='sl-block'><div class='sl-block-content'>{{:data}}</div></div>");
 
-    var template = $.templates("<div data-type='{{:type}}' class='sl-block'><div class='sl-block-content'>{{:data}}</div></div>");
+    if(!height) {
+      height = 'auto';
+    }
 
     return {
 
       committed : false,
-
-      type : type,
 
       height : height,
 
@@ -26,12 +24,11 @@ define([], function() {
         return this.element;
       },
 
-      create: function(_data) {
+      create: function() {
         var that = this;
         var data = {
-          'data': _data
+          'data': content
         };
-        data.type = type;
         this.element = $(template.render(data)).height(this.height);
         return this.element;
       },
@@ -41,7 +38,7 @@ define([], function() {
       },
 
       toJSON : function() {
-        return {type : this.type, height : this.height};
+        return {height : this.height};
       }
     };
 
