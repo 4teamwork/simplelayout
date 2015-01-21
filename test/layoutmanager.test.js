@@ -32,9 +32,9 @@ suite('Layoutmanager', function() {
     assert.equal(layoutmanager.options.width, '100%');
   });
 
-  test('default block height is 100px', function() {
+  test('default block height is auto', function() {
     var layoutmanager = new Layoutmanager();
-    assert.equal(layoutmanager.options.blockHeight, '100px');
+    assert.equal(layoutmanager.options.blockHeight, 'auto');
   });
 
   suite('Layout-transactions (to get visual feedback where layout will be placed)', function() {
@@ -81,7 +81,7 @@ suite('Layoutmanager', function() {
       var emptyData = layoutmanager.getLayouts()[id1].getColumns()[0].getBlocks();
       var block = layoutmanager.getLayouts()[id2].getColumns()[0].getBlocks()[blockId].getElement();
       assert.equal(Object.keys(emptyData).length, 0);
-      assert.deepEqual(block.data(), {blockId : blockId, columnId : 0, layoutId : id2, type : 'textblock'});
+      assert.deepEqual(block.data(), {blockId : blockId, columnId : 0, layoutId : id2});
       assert.equal(block.html(), '<div class="sl-block-content">test</div>');
     });
 
@@ -99,10 +99,10 @@ suite('Layoutmanager', function() {
       layoutmanager.insertBlock(layoutId, columnId, block);
 
       var blocks = $.map(layoutmanager.getLayouts()[layoutId].getColumns()[columnId].getBlocks(), function(block) {
-        return {type : block.type, committed : block.committed};
+        return {committed : block.committed};
       });
 
-      assert.deepEqual(blocks, [{ type: 'textblock', committed: false}]);
+      assert.deepEqual(blocks, [{committed: false}]);
       assert.equal(Object.keys(layoutmanager.getLayouts()[layoutId].getColumns()[columnId].getBlocks()).length, 1);
     });
 
@@ -118,10 +118,10 @@ suite('Layoutmanager', function() {
       layoutmanager.deleteBlock(layoutId, columnId, blockId);
 
       var blocks = $.map(layoutmanager.getLayouts()[layoutId].getColumns()[columnId].getBlocks(), function(block) {
-        return {type : block.type, committed : block.committed};
+        return {committed : block.committed};
       });
 
-      assert.deepEqual(blocks, [{ type: 'textblock', committed: false}]);
+      assert.deepEqual(blocks, [{committed: false}]);
       assert.equal(Object.keys(layoutmanager.getLayouts()[layoutId].getColumns()[columnId].getBlocks()).length, 1);
     });
 
@@ -133,28 +133,12 @@ suite('Layoutmanager', function() {
       layoutmanager.commitBlocks(layoutId, columnId);
 
       var blocks = $.map(layoutmanager.getLayouts()[layoutId].getColumns()[columnId].getBlocks(), function(block) {
-        return {type : block.type, committed : block.committed};
+        return {committed : block.committed};
       });
 
-      assert.deepEqual(blocks, [{ type: 'textblock', committed: true}]);
+      assert.deepEqual(blocks, [{committed: true}]);
       assert.equal(Object.keys(layoutmanager.getLayouts()[layoutId].getColumns()[columnId].getBlocks()).length, 1);
     });
 
-  });
-
-  test('can serialize complete layout-structure', function() {
-    layoutmanager.insertLayout(4);
-    layoutmanager.commitLayouts();
-    layoutmanager.insertBlock(0, 0, 'block');
-    layoutmanager.commitBlocks(0, 0);
-    assert.equal(layoutmanager.serialize(), '{"layouts":{"0":{"columns":{"0":{"blocks":{"0":{"type":"block","height":"100px"}}},"1":{"blocks":{}},"2":{"blocks":{}},"3":{"blocks":{}}}}}}');
-  });
-
-  test('can deserialize complete layout-structure', function() {
-    layoutmanager.deserialize('{"layouts":{"0":{"columns":{"0":{"blocks":{"0":{"type":"block","height":"200px"}}},"1":{"blocks":{}},"2":{"blocks":{}},"3":{"blocks":{}}}}}}');
-    assert.equal(Object.keys(layoutmanager.getLayouts()).length, 1);
-    assert.equal(Object.keys(layoutmanager.getLayouts()[0].getColumns()).length, 4);
-    assert.equal(Object.keys(layoutmanager.getLayouts()[0].getColumns()[0].getBlocks()).length, 1);
-    assert.equal(layoutmanager.getLayouts()[0].getColumns()[0].getBlocks()[0].height, '200px');
   });
 });
