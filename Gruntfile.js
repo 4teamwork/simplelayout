@@ -9,7 +9,10 @@ module.exports = function(grunt) {
         options: {
           variables: {
             'optimize': 'none',
-            'sass-style' : 'expanded'
+            'sass-style' : 'expanded',
+            'sourcemap' : 'inline',
+            'cssoutput' : 'dist/simplelayout.css',
+            'jsoutput' : 'dist/simplelayout.js'
           }
         }
       },
@@ -17,7 +20,10 @@ module.exports = function(grunt) {
         options: {
           variables: {
             'optimize': 'uglify',
-            'sass-style' : 'compressed'
+            'sass-style' : 'compressed',
+            'sourcemap' : 'none',
+            'cssoutput' : 'dist/simplelayout.min.css',
+            'jsoutput' : 'dist/simplelayout.min.js'
           }
         }
       }
@@ -44,7 +50,7 @@ module.exports = function(grunt) {
           findNestedDependencies: true,
           name: '../node_modules/almond/almond',
           include: ['simplelayout/Simplelayout', 'toolbox/Toolbox', 'overlay/Overlay'],
-          out: 'dist/simplelayout.js',
+          out: '<%= grunt.config.get("jsoutput") %>',
           optimize : '<%= grunt.config.get("optimize") %>',
           wrap: {
             startFile: "build/start.frag",
@@ -56,33 +62,36 @@ module.exports = function(grunt) {
     sass: {
       dist: {
         options: {
-          style: '<%= grunt.config.get("sass-style") %>'
+          style: '<%= grunt.config.get("sass-style") %>',
+          sourcemap: '<%= grunt.config.get("sourcemap") %>',
         },
         files: {
-          'dist/main.css': 'styles/scss/main.scss'
+          '<%= grunt.config.get("cssoutput") %>' : 'styles/scss/main.scss',
         }
       }
     },
     watch: {
       scripts: {
         files: ['scripts/**/*.js', 'styles/scss/*.scss'],
-        tasks: ['config:dev', 'requirejs', 'sass'],
+        tasks: ['requirejs', 'sass'],
         options: {
           spawn: false,
         },
       },
     },
+    clean : ['dist']
   });
 
-  grunt.loadNpmTasks('grunt-mocha');
+  grunt.loadNpmTasks('grunt-config');
+  grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-requirejs');
   grunt.loadNpmTasks('grunt-contrib-sass');
   grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-config');
+  grunt.loadNpmTasks('grunt-mocha');
 
   grunt.registerTask('test', ['mocha']);
-  grunt.registerTask('dev', ['config:dev', 'requirejs', 'sass', 'watch']);
-  grunt.registerTask('prod', ['config:prod', 'requirejs', 'sass']);
+  grunt.registerTask('dev', ['clean', 'config:dev', 'requirejs', 'sass', 'watch']);
+  grunt.registerTask('prod', ['clean','config:prod', 'requirejs', 'sass']);
   grunt.registerTask('default', ['dev']);
 
 };
