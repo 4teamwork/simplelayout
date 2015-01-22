@@ -8,7 +8,7 @@ JQuery 1.6+
 
 jsrender 1.0.0-beta (https://github.com/BorisMoore/jsrender)
 
-JQueryUI 1.11.2 (draggable/droppable/resizable/sortable)
+JQueryUI 1.10.2 (draggable/droppable/resizable/sortable)
 
 npm 2.0.0
 
@@ -42,9 +42,11 @@ grunt prod
 $(document).ready(function() {
   var target = $('body');
 
-  var simplelayout = new Simplelayout();
+  var simplelayout = new Simplelayout({width : '900px'});
   var toolbox = new Toolbox({
-    layouts: [1, 2, 4]
+    layouts: [1, 2, 4],
+    components : components : [{"title": "Listingblock", "description": "can list things", "content_type": "listingblock", "form_url" : "http://www.google.com"},
+        {"title": "Textblock", "description": "can show text", "content_type": "textblock", "form_url" : "http://www.bing.com"}]
   });
 
   simplelayout.attachTo(target);
@@ -59,7 +61,13 @@ $(document).ready(function() {
 
 Select layouts that can be dragged from the toolbox.
 ```javascript
-{layouts : []} // --> Array of columns (Default is [])
+{layouts : [1]} // --> Raises exeption when no layouts are defined
+```
+
+Select the provided components
+```javascript
+{components : [{"title": "Listingblock", "description": "can list things", "content_type": "listingblock", "form_url" : "http://www.google.com"},
+        {"title": "Textblock", "description": "can show text", "content_type": "textblock", "form_url" : "http://www.bing.com"}]}
 ```
 
 ## API
@@ -90,7 +98,7 @@ Define width of layoutmanager
 
 Define initial block height
 ```javascript
-{blockHeight : '50px'} // Default is 100px
+{blockHeight : '50px'} // Default is auto
 ```
 
 ## API
@@ -129,40 +137,3 @@ blocksCommitted(event)
 blockMoved(event, oldLayoutId, oldColumnId, blockId, newLayoutId, newColumnId)
 
 deserialized(event)
-
-# Overlay
-
-Generate new Overlay
-```javascript
-var overlay = new Overlay();
-```
-
-## Options
-
-Set target selector (Default: 'body')
-```javascript
-{target : '#overlay'}
-```
-
-## API
-
-Creates the overlay, attach event handler for closing, calculate margin for centering.
-Will be called as well when opening the overlay.
-```javascript
-overlay.create();
-```
-
-Opens the overlay (alternative set content)
-```javascript
-overlay.open([content:String]);
-```
-
-Closes the overlay
-```javascript
-overlay.close();
-```
-
-Sets the overlays content
-```javascript
-overlay.content('<p>Test</p>');
-```
