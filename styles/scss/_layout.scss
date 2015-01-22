@@ -1,12 +1,12 @@
 .sl-layout {
   display: inline-block;
   min-height: 200px;
-  background: #fff;
   width: 100%;
   opacity: 1;
+  position: relative;
   .placeholder {
-    background-color: #edfbff;
-    border: 1px dotted #a6dbf3;
+    background-color: $block-placeholder-background-color;
+    border: 1px dotted $block-placeholder-border-color;
   }
   &.ui-sortable-helper {
     opacity: .9;

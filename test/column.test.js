@@ -14,15 +14,15 @@ suite('Column', function() {
     assert.throw(Column, TypeError, 'Column constructor cannot be called as a function.');
   });
 
-  test('can create column with 50% width', function() {
-    var column = new Column('50%');
+  test('can create column with sl-col-2 class', function() {
+    var column = new Column(2);
 
     column.create();
     var node = $.map(column.getElement(), function(column) {
       return {tag : column.tagName, classes : column.className};
     });
 
-    assert.deepEqual(node, [{tag : 'DIV', classes : 'sl-column'}]);
+    assert.deepEqual(node, [{tag : 'DIV', classes : 'sl-column sl-col-2'}]);
   });
 
   suite('Block-transactions', function() {

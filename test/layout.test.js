@@ -29,10 +29,10 @@ suite('Layout', function() {
       });
 
       assert.deepEqual(nodes, [
-        {tag: "DIV", classes: "sl-column", id : 0},
-        {tag: "DIV", classes: "sl-column", id : 1},
-        {tag: "DIV", classes: "sl-column", id : 2},
-        {tag: "DIV", classes: "sl-column", id : 3}
+        {tag: "DIV", classes: "sl-column sl-col-4", id : 0},
+        {tag: "DIV", classes: "sl-column sl-col-4", id : 1},
+        {tag: "DIV", classes: "sl-column sl-col-4", id : 2},
+        {tag: "DIV", classes: "sl-column sl-col-4", id : 3}
       ]);
 
     });
@@ -47,7 +47,7 @@ suite('Layout', function() {
         return {tag: el.tagName, classes: el.className, id : $(el).data('column-id')};
       });
 
-      assert.deepEqual(columns, [{tag: "DIV", classes: "sl-column", id : 0}]);
+      assert.deepEqual(columns, [{tag: "DIV", classes: "sl-column sl-col-1", id : 0}]);
 
     });
   });

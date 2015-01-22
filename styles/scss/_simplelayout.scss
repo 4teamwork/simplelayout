@@ -1,12 +1,11 @@
 .sl-simplelayout {
   min-height: 1000px;
-  background: #fff;
   z-index: 0;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 14px;
   .placeholder {
-    background-color: #edfbff;
-    border: 1px dotted #a6dbf3;
+    background-color: $layout-placeholder-background-color;
+    border: 1px dotted $layout-placeholder-border-color;
   }
 }
 

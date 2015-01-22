@@ -2,14 +2,14 @@ define(['simplelayout/Block'], function(Block) {
 
   'use strict';
 
-  function Column(width) {
+  function Column(column) {
     if (!(this instanceof Column)) {
       throw new TypeError("Column constructor cannot be called as a function.");
     }
 
     var blockId = 0;
 
-    var template = $.templates("<div class='sl-column' style='width: {{:width}};'></div>");
+    var template = $.templates("<div class='sl-column sl-col-{{:column}}'></div>");
 
     return {
 
@@ -20,7 +20,7 @@ define(['simplelayout/Block'], function(Block) {
       },
 
       create : function() {
-        this.element = $(template.render({'width' : width}));
+        this.element = $(template.render({column : column}));
       },
 
       insertBlock: function(height, content) {
