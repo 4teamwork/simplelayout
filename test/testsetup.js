@@ -2,8 +2,7 @@ require.config({
   baseUrl: '../bower_components',
   paths: {
     simplelayout : "../scripts/simplelayout",
-    toolbox : "../scripts/toolbox",
-    overlay : "../scripts/overlay"
+    toolbox : "../scripts/toolbox"
   }
 });
 
