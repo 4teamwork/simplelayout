@@ -114,7 +114,7 @@ define(['simplelayout/Layoutmanager', 'simplelayout/Eventrecorder'], function(La
       placeholder: "placeholder",
       forcePlaceholderSize: true,
       receive: function(e, ui) {
-        if (ui && ui.draggable) {
+        if (ui && ui.item) {
           var target = $(e.target);
           var columnId = ui.item.data('column-id');
           var layoutId = ui.item.data('layout-id');
