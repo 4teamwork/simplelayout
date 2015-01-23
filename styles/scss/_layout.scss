@@ -4,6 +4,7 @@
   width: 100%;
   opacity: 1;
   position: relative;
+  border-bottom: 1px solid $column-border-color;
   .placeholder {
     background-color: $block-placeholder-background-color;
     border: 1px dotted $block-placeholder-border-color;
