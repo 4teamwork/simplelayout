@@ -16,11 +16,6 @@ suite('Block', function() {
     assert.throw(Block, TypeError, 'Block constructor cannot be called as a function.');
   });
 
-  test('default height is auto', function() {
-    var block = new Block(undefined, '<p>I am a block</p>');
-    assert.equal(block.height, 'auto');
-  });
-
   test('can set block-content', function() {
     var block = new Block('textblock', '<p>I am a block</p>');
     block.create();

@@ -38,9 +38,9 @@ define(['simplelayout/Column'], function(Column) {
         return this.columns;
       },
 
-      insertBlock : function(columnId, height, content) {
+      insertBlock : function(columnId, content) {
         var column = this.columns[columnId];
-        return column.insertBlock(height, content);
+        return column.insertBlock(content);
       },
 
       deleteBlock : function(columnId, blockId) {

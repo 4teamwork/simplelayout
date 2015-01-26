@@ -2,7 +2,7 @@ define([], function() {
 
   'use strict';
 
-  function Block(height, content) {
+  function Block(content) {
 
     if (!(this instanceof Block)) {
       throw new TypeError("Block constructor cannot be called as a function.");
@@ -10,15 +10,9 @@ define([], function() {
 
     var template = $.templates("<div class='sl-block'><div class='sl-block-content'>{{:data}}</div></div>");
 
-    if(!height) {
-      height = 'auto';
-    }
-
     return {
 
       committed : false,
-
-      height : height,
 
       uid : null,
 
@@ -31,7 +25,7 @@ define([], function() {
         var data = {
           'data': content
         };
-        this.element = $(template.render(data)).height(this.height);
+        this.element = $(template.render(data));
         return this.element;
       },
 
@@ -40,7 +34,7 @@ define([], function() {
       },
 
       toJSON : function() {
-        return {height : this.height, uid : this.uid};
+        return {uid : this.uid};
       }
     };
 

@@ -18,19 +18,6 @@ define(['simplelayout/Layoutmanager', 'simplelayout/Eventrecorder'], function(La
 
     var toolbox;
 
-    var BLOCK_RESIZABLE_SETTINGS = {
-      handles: "s",
-      resize: function(e, ui) {
-        var layoutId = ui.element.data('layout-id');
-        var columnId = ui.element.data('column-id');
-        var blockId = ui.element.data('blockId');
-        layoutmanager.getLayouts()[layoutId].getColumns()[columnId].getBlocks()[blockId].height = parseInt((ui.size.height));
-      },
-      create: function(e, ui) {
-        $(e.target).find('.ui-resizable-s').addClass('icon-resize');
-      }
-    };
-
     var TOOLBOX_COMPONENT_DRAGGABLE_SETTINGS = {
       helper: "clone",
       cursor: "pointer",
@@ -200,9 +187,6 @@ define(['simplelayout/Layoutmanager', 'simplelayout/Eventrecorder'], function(La
     var bindToolboxEvents = function() {
       toolbox.getElement().find('.sl-toolbox-component, .sl-toolbox-layout').draggable(TOOLBOX_COMPONENT_DRAGGABLE_SETTINGS);
       toolbox.getElement().find('.sl-toolbox-trash').droppable(TRASH_DROPPABLE_SETTINGS);
-      layoutmanager.getElement().on('blockInserted', function(e, layoutId, columnId, blockId) {
-        layoutmanager.getLayouts()[layoutId].getColumns()[columnId].getBlocks()[blockId].getElement().resizable(BLOCK_RESIZABLE_SETTINGS);
-      });
 
       layoutmanager.getElement().on('layoutInserted', function(e, layoutId) {
         layoutmanager.getLayouts()[layoutId].getElement().find('.sl-column').droppable(LAYOUT_DROPPABLE_SETTINGS).sortable(LAYOUT_SORTABLE_SETTINGS);

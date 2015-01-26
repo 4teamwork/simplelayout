@@ -84,8 +84,7 @@ suite('Simplelayout', function() {
       simplelayout.attachToolbox(toolbox);
 
       var layoutId = simplelayout.getLayoutmanager().insertLayout(4);
-      simplelayout.getLayoutmanager().insertBlock(layoutId, 0, 'textblock', '<img />');
-
+      simplelayout.getLayoutmanager().insertBlock(layoutId, 0, '<img />');
       assert.equal(simplelayout.getLayoutmanager().getElement().find('img').css('width'), '250px');
     });
 

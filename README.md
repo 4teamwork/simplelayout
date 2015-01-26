@@ -8,7 +8,7 @@ JQuery 1.6+
 
 jsrender 1.0.0-beta (https://github.com/BorisMoore/jsrender)
 
-JQueryUI 1.10.2 (draggable/droppable/resizable/sortable)
+JQueryUI 1.10.2 (draggable/droppable/sortable)
 
 npm 2.0.0
 
@@ -94,11 +94,6 @@ Select number of image per column (oriented on biggest layout in toolbox)
 Define width of layoutmanager
 ```javascript
 {width : '800px'} // Default is 100%
-```
-
-Define initial block height
-```javascript
-{blockHeight : '50px'} // Default is auto
 ```
 
 ## API

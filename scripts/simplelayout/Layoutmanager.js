@@ -9,8 +9,7 @@ define(["simplelayout/Layout"], function(Layout) {
     }
 
     var options = $.extend({
-      width : '100%',
-      blockHeight : 'auto',
+      width : '100%'
     }, _options || {});
 
     var element = $("<div>").addClass('sl-simplelayout').css('width', options.width);
@@ -74,10 +73,9 @@ define(["simplelayout/Layout"], function(Layout) {
         return this.layouts;
       },
 
-      insertBlock: function(layoutId, columnId, height, content) {
-        var blockHeight = height || this.options.blockHeight;
+      insertBlock: function(layoutId, columnId, content) {
         var layout = this.layouts[layoutId];
-        var blockId = layout.insertBlock(columnId, blockHeight, content);
+        var blockId = layout.insertBlock(columnId, content);
         this.layouts[layoutId].getColumns()[columnId].getBlocks()[blockId].getElement().find('img').width(this.minImageWidth);
         this.element.trigger("blockInserted", [layoutId, columnId, blockId]);
         return blockId;
@@ -117,7 +115,6 @@ define(["simplelayout/Layout"], function(Layout) {
               var layoutId = blockNode.data('layoutId');
               var block = that.getLayouts()[layoutId].getColumns()[columnId].getBlocks()[blockId];
               var blockData = {};
-              blockData.height = block.height;
               blockData.layoutPos = layoutIdx;
               blockData.columnPos = columnIdx;
               blockData.blockPos = blockIdx;
@@ -137,7 +134,7 @@ define(["simplelayout/Layout"], function(Layout) {
         });
         that.commitLayouts();
         $.each(input.blocks, function(idx, block) {
-          that.insertBlock(block.layoutPos, block.columnPos, block.height);
+          that.insertBlock(block.layoutPos, block.columnPos);
           that.commitBlocks(block.layoutPos, block.columnPos);
         });
         this.element.trigger('deserialized');

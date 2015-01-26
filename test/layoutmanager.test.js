@@ -32,11 +32,6 @@ suite('Layoutmanager', function() {
     assert.equal(layoutmanager.options.width, '100%');
   });
 
-  test('default block height is auto', function() {
-    var layoutmanager = new Layoutmanager();
-    assert.equal(layoutmanager.options.blockHeight, 'auto');
-  });
-
   suite('Layout-transactions (to get visual feedback where layout will be placed)', function() {
 
     setup(function(done) {
@@ -74,7 +69,7 @@ suite('Layoutmanager', function() {
       var id1 = layoutmanager.insertLayout(4);
       var id2 = layoutmanager.insertLayout(4);
       layoutmanager.commitLayouts();
-      var blockId = layoutmanager.insertBlock(id1, 0, 'textblock', 'test');
+      var blockId = layoutmanager.insertBlock(id1, 0, 'test');
       layoutmanager.commitBlocks(id1, 0);
 
       layoutmanager.moveBlock(id1, 0, blockId, id2, 0);
