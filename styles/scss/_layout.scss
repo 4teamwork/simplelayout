@@ -1,10 +1,11 @@
 .sl-layout {
-  display: inline-block;
-  min-height: 200px;
+  display: table;
   width: 100%;
   opacity: 1;
   position: relative;
-  border-bottom: 1px solid $column-border-color;
+  border: 1px solid $column-border-color;
+  margin-bottom: 4px;
+  background: $column-background-color;
   .placeholder {
     background-color: $block-placeholder-background-color;
     border: 1px dotted $block-placeholder-border-color;
@@ -12,7 +13,6 @@
   &.ui-sortable-helper {
     opacity: .9;
     box-shadow: 0 20px 20px 0 rgba(0, 0, 0, .3);
-    display: block;
   }
   &.deleted {
     opacity: .6;

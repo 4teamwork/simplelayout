@@ -1,23 +1,13 @@
 .sl-column {
-  min-height: 200px;
-  float: left;
-  background: $column-background-color;
+  display: table-cell;
+  vertical-align: top;
+  min-height: 40px;
   padding: 10px;
   box-sizing: border-box;
-  border: 1px solid #a9a9a9;
-  border-right: none;
-  border-bottom: none;
-  &:before {
-    content : "";
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    width: inherit;
-    background: $column-background-color;
-    margin-left: -11px;
-    border: 1px solid $column-border-color;
-    border-bottom: none;
-    z-index: -1;
+  border-right: 1px solid $column-border-color;
+
+  &:last-child {
+    border-right: none;
   }
 
   @while $column-count-total > 0 {
