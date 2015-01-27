@@ -8,7 +8,13 @@ define([], function() {
       throw new TypeError("Block constructor cannot be called as a function.");
     }
 
-    var template = $.templates("<div class='sl-block'><div class='sl-block-content'>{{:data}}</div></div>");
+    var template = $.templates(
+      "<div class='sl-block'> \
+        <div class='sl-block-content'> \
+          {{:data}} \
+        </div> \
+      </div>"
+    );
 
     return {
 
