@@ -8,8 +8,20 @@ define(['simplelayout/Layoutmanager', 'simplelayout/Eventrecorder'], function(La
       throw new TypeError("Simplelayout constructor cannot be called as a function.");
     }
 
+    var editbarTemplate = $.templates(
+      "<ul class='sl-block-editbar'> \
+        {{for editbar}} \
+          <li><a class='icon-{{:type}}' title='{{:description}}'></a></li> \
+          <li class='delimiter'></li> \
+        {{/for}} \
+      </ul>"
+    );
+
+    var editbarOptions = $.merge( _options.editbar || [], [{type: 'move', description: 'Move this block arround', eventType : 'beforeBlockMove'}]);
+
     var options = $.extend({
-      imageCount: 1
+      imageCount: 1,
+      editbar : editbarOptions
     }, _options || {});
 
     var eventrecorder = new Eventrecorder();
@@ -17,6 +29,14 @@ define(['simplelayout/Layoutmanager', 'simplelayout/Eventrecorder'], function(La
     var layoutmanager = new Layoutmanager(_options);
 
     var toolbox;
+
+    var editbar = editbarTemplate.render(options);
+
+    $('a', editbar).each(function(i, el) {
+      $(layoutmanager.getElement()).on('click', el, function() {
+        layoutmanager.getElement().trigger(options.editbar[i].eventType);
+      });
+    });
 
     var TOOLBOX_COMPONENT_DRAGGABLE_SETTINGS = {
       helper: "clone",
@@ -183,6 +203,10 @@ define(['simplelayout/Layoutmanager', 'simplelayout/Eventrecorder'], function(La
     var bindLayoutEvents = function() {
       layoutmanager.getElement().droppable(LAYOUTMANAGER_DROPPABLE_SETTINGS);
       layoutmanager.getElement().sortable(LAYOUTMANAGER_SORTABLE_SETTINGS);
+      on('blockInserted', function(event, layoutId, columnId, blockId) {
+        var block = layoutmanager.getLayouts()[layoutId].getColumns()[columnId].getBlocks()[blockId].getElement();
+        block.append(editbar);
+      });
     };
 
     var bindToolboxEvents = function() {
@@ -195,6 +219,12 @@ define(['simplelayout/Layoutmanager', 'simplelayout/Eventrecorder'], function(La
 
       toolbox.getElement().draggable(TOOLBOX_DRAGGABLE_SETTINGS);
 
+    };
+
+    var on = function(eventType, callback) {
+      layoutmanager.getElement().on(eventType, function() {
+        callback.apply(this, arguments);
+      });
     };
 
     bindLayoutEvents();
@@ -231,9 +261,7 @@ define(['simplelayout/Layoutmanager', 'simplelayout/Eventrecorder'], function(La
         bindToolboxEvents();
       },
 
-      on : function(eventType, callbackFunction) {
-        this.getLayoutmanager().getElement().on(eventType, callbackFunction);
-      }
+      on : on
 
     };
 

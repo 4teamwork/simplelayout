@@ -15,7 +15,7 @@
   <script src="dist/simplelayout.js"></script>
   <script>
   $(document).ready(function() {
-    var simplelayout = new Simplelayout({width:'900px'});
+    var simplelayout = new Simplelayout({width:'900px', editbar : [{type: 'edit', description: 'Edit this block', eventType : 'onedit'}]});
     var toolbox = new Toolbox({
       layouts: [1, 2, 4],
       components : [{"title": "Listingblock", "description": "can list things", "content_type": "listingblock", "form_url" : "http://www.google.com"},
@@ -25,6 +25,9 @@
     simplelayout.attachTo($('main'));
     toolbox.attachTo($('body'));
     simplelayout.attachToolbox(toolbox);
+    simplelayout.on('onedit', function() {
+      console.log('edit');
+    });
     $('#ser').on('click', function() {
       console.log(simplelayout.getLayoutmanager().serialize());
     });
