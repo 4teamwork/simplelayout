@@ -75,12 +75,13 @@ define(['simplelayout/Layoutmanager', 'simplelayout/Eventrecorder'], function(La
         }
       },
       out: function(e, ui) {
+        var layoutId;
         if (ui.draggable.hasClass('sl-layout')) {
-          var layoutId = ui.draggable.data('layout-id');
+          layoutId = ui.draggable.data('layout-id');
           var layout = layoutmanager.getLayouts()[layoutId];
           layout.getElement().removeClass('deleted cancelDeletion');
         } else {
-          var layoutId = ui.draggable.data('layout-id');
+          layoutId = ui.draggable.data('layout-id');
           var columnId = ui.draggable.data('column-id');
           var blockId = ui.draggable.data('block-id');
           var block = layoutmanager.getLayouts()[layoutId].getColumns()[columnId].getBlocks()[blockId];
