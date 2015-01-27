@@ -115,7 +115,12 @@ Attach Toolbox
 simplelayout.attachToolbox(toolbox);
 ```
 
-## Events
+Eventbinding
+```javascript
+simplelayout.on(eventType, callbackFunction);
+```
+
+## Eventtypes
 
 layoutInserted(event, layoutId)
 
@@ -123,7 +128,7 @@ layoutDeleted(event)
 
 layoutsCommited(event)
 
-blocksInserted(event, layoutId, column-id, blockId)
+blocksInserted(event, layoutId, columnId, blockId)
 
 blockDeleted(event)
 
