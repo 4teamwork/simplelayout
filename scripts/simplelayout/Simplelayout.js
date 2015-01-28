@@ -1,4 +1,4 @@
-define(['simplelayout/Layoutmanager', 'simplelayout/Eventrecorder'], function(Layoutmanager, Eventrecorder) {
+define(['simplelayout/Layoutmanager', 'simplelayout/Eventrecorder', 'simplelayout/Toolbar'], function(Layoutmanager, Eventrecorder, Toolbar) {
 
   'use strict';
 
@@ -205,7 +205,8 @@ define(['simplelayout/Layoutmanager', 'simplelayout/Eventrecorder'], function(La
       layoutmanager.getElement().sortable(LAYOUTMANAGER_SORTABLE_SETTINGS);
       on('blockInserted', function(event, layoutId, columnId, blockId) {
         var block = layoutmanager.getLayouts()[layoutId].getColumns()[columnId].getBlocks()[blockId].getElement();
-        block.append(editbar);
+        var toolbar = new Toolbar(options.actions);
+        block.append(toolbar.getElement());
       });
     };
 
