@@ -31,6 +31,7 @@ define(['simplelayout/Layoutmanager', 'simplelayout/Eventrecorder', 'simplelayou
           layoutId = layoutmanager.insertLayout(columns);
           layoutmanager.commitLayouts();
         }
+        blockToCreateOptions = $(e.target).data();
       }
     };
 
@@ -273,7 +274,11 @@ define(['simplelayout/Layoutmanager', 'simplelayout/Eventrecorder', 'simplelayou
         bindToolboxEvents();
       },
 
-      on : on
+      on : on,
+
+      getCurrentBlock : function() {
+        return currentBlock;
+      }
 
     };
 
