@@ -8,20 +8,8 @@ define(['simplelayout/Layoutmanager', 'simplelayout/Eventrecorder', 'simplelayou
       throw new TypeError("Simplelayout constructor cannot be called as a function.");
     }
 
-    var editbarTemplate = $.templates(
-      "<ul class='sl-block-editbar'> \
-        {{for editbar}} \
-          <li><a class='icon-{{:type}}' title='{{:description}}'></a></li> \
-          <li class='delimiter'></li> \
-        {{/for}} \
-      </ul>"
-    );
-
-    var editbarOptions = $.merge( _options.editbar || [], [{type: 'move', description: 'Move this block arround', eventType : 'beforeBlockMove'}]);
-
     var options = $.extend({
-      imageCount: 1,
-      editbar : editbarOptions
+      imageCount: 1
     }, _options || {});
 
     var eventrecorder = new Eventrecorder();
@@ -29,14 +17,6 @@ define(['simplelayout/Layoutmanager', 'simplelayout/Eventrecorder', 'simplelayou
     var layoutmanager = new Layoutmanager(_options);
 
     var toolbox;
-
-    var editbar = editbarTemplate.render(options);
-
-    $('a', editbar).each(function(i, el) {
-      $(layoutmanager.getElement()).on('click', el, function() {
-        layoutmanager.getElement().trigger(options.editbar[i].eventType);
-      });
-    });
 
     var TOOLBOX_COMPONENT_DRAGGABLE_SETTINGS = {
       helper: "clone",
