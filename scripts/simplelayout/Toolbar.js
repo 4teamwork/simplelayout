@@ -13,7 +13,7 @@ define([], function() {
     var actions = $.merge(defaultActions, _actions || []);
 
     var template = $.templates(
-      "<ul class='sl-block-editbar'> \
+      "<ul class='sl-toolbar'> \
         {{for actions}} \
           <li><a class='{{:name}} icon-{{:name}}' title='{{:description}}'></a></li> \
           <li class='delimiter'></li> \
@@ -23,12 +23,28 @@ define([], function() {
 
     var element = $(template.render({actions : actions}));
 
+    var keepVisible = false;
+
     return {
 
       element : element,
 
       getElement: function() {
         return this.element;
+      },
+
+      show : function() {
+        this.element.show();
+      },
+
+      hide : function() {
+        if(!keepVisible) {
+          this.element.hide();
+        }
+      },
+
+      keepVisible : function(_keepVisible) {
+        keepVisible = _keepVisible;
       }
 
     };
