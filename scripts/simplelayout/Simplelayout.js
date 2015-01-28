@@ -108,6 +108,7 @@ define(['simplelayout/Layoutmanager', 'simplelayout/Eventrecorder', 'simplelayou
       placeholder: "placeholder",
       forcePlaceholderSize: true,
       handle: '.move',
+      tolerance : 'pointer',
       receive: function(e, ui) {
         if (ui && ui.item) {
           var target = $(e.target);
