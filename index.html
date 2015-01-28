@@ -15,11 +15,11 @@
   <script src="dist/simplelayout.js"></script>
   <script>
   $(document).ready(function() {
-    var simplelayout = new Simplelayout({width:'900px', actions : [{name: 'edit', description: 'Edit this block'}]});
+    var simplelayout = new Simplelayout({width:'900px'});
     var toolbox = new Toolbox({
       layouts: [1, 2, 4],
-      components : [{"title": "Listingblock", "description": "can list things", "content_type": "listingblock", "form_url" : "http://www.google.com"},
-        {"title": "Textblock", "description": "can show text", "content_type": "textblock", "form_url" : "http://www.bing.com"}]
+      components : [{"title": "Listingblock", "description": "can list things", "content_type": "listingblock", "form_url" : "http://www.google.com", actions : [{name: 'edit', description: 'Edit this block'}]},
+        {"title": "Textblock", "description": "can show text", "content_type": "textblock", "form_url" : "http://www.bing.com", actions : [{name: 'edit', description: 'Edit this block'}]}]
     });
 
     simplelayout.attachTo($('main'));
