@@ -22,6 +22,8 @@ define([], function() {
 
       uid : null,
 
+      toolbar : null,
+
       getElement: function() {
         return this.element;
       },
@@ -37,6 +39,15 @@ define([], function() {
 
       content : function(content) {
         $('.sl-block-content', this.element).html(content);
+      },
+
+      attachToolbar : function(toolbar) {
+        this.toolbar = toolbar;
+        this.element.append(toolbar.getElement());
+      },
+
+      getToolbar : function() {
+        return this.toolbar;
       },
 
       toJSON : function() {
