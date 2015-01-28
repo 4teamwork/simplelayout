@@ -93,6 +93,7 @@ define(['simplelayout/Layoutmanager', 'simplelayout/Eventrecorder', 'simplelayou
     var LAYOUTMANAGER_SORTABLE_SETTINGS = {
       connectWith: '.sl-simplelayout',
       items: '.sl-layout',
+      handle: '.sl-column',
       placeholder: "placeholder",
       forcePlaceholderSize: true,
     };
@@ -101,6 +102,7 @@ define(['simplelayout/Layoutmanager', 'simplelayout/Eventrecorder', 'simplelayou
       connectWith: '.sl-column',
       placeholder: "placeholder",
       forcePlaceholderSize: true,
+      handle: '.move',
       receive: function(e, ui) {
         if (ui && ui.item) {
           var target = $(e.target);
