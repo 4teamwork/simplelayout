@@ -107,6 +107,7 @@ define(["simplelayout/Layout"], function(Layout) {
         var that = this;
         var output = {"layouts" : [], "blocks" : []};
         $('.sl-layout', this.element).each(function(layoutIdx, layout) {
+          output.layouts.push(Object.keys(that.getLayouts()[$(layout).data('layoutId')].getColumns()).length);
           $('.sl-column', layout).each(function(columnIdx, column) {
             $('.sl-block', column).each(function(blockIdx, blockNode) {
               blockNode = $(blockNode);
@@ -119,7 +120,6 @@ define(["simplelayout/Layout"], function(Layout) {
               blockData.columnPos = columnIdx;
               blockData.blockPos = blockIdx;
               output.blocks.push(blockData);
-              output.layouts.push(Object.keys(that.getLayouts()[layoutId].getColumns()).length);
             });
           });
         });
