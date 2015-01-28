@@ -12,10 +12,7 @@ define([], function() {
       throw new Error("No layouts defined.");
     }
 
-components : [{"title": "Listingblock", "description": "can list things", "contentType": "listingblock", "formURL" : "http://www.google.com"},
-{"title": "Textblock", "description": "can show text", "content-type": "textblock", "formURL" : "http://www.bing.com"}];
-
-    var options = $.extend(_options || {});
+    var options = _options;
 
     var layouts = [];
     $.each(options.layouts, function(i, el) {
@@ -54,6 +51,10 @@ components : [{"title": "Listingblock", "description": "can list things", "conte
     };
 
     var element = $(template.render(data));
+
+    $('.sl-toolbox-component', element).each(function(i, el) {
+      $(el).data('actions', options.components[i].actions);
+    });
 
     return {
 
