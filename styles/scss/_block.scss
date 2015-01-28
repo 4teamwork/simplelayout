@@ -38,14 +38,14 @@
     border-radius: 5px;
     li {
       float: right;
+      text-align: center;
       a {
         display: inline-block;
         width: $editbar-height;
         height: $editbar-height;
         color: #818491;
-        font-size: ($editbar-height / 3) * 2;
+        font-size: $editbar-font-size;
         line-height: $editbar-height;
-        padding-left: (($editbar-height / 3) * 2) / 4;
         box-sizing: border-box;
         &:hover {
           color: #BBBED0;
