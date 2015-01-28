@@ -69,15 +69,15 @@ suite('Layoutmanager', function() {
       var id1 = layoutmanager.insertLayout(4);
       var id2 = layoutmanager.insertLayout(4);
       layoutmanager.commitLayouts();
-      var blockId = layoutmanager.insertBlock(id1, 0, 'test');
+      var blockId = layoutmanager.insertBlock(id1, 0, '<p>test</p>');
       layoutmanager.commitBlocks(id1, 0);
 
       layoutmanager.moveBlock(id1, 0, blockId, id2, 0);
       var emptyData = layoutmanager.getLayouts()[id1].getColumns()[0].getBlocks();
-      var block = layoutmanager.getLayouts()[id2].getColumns()[0].getBlocks()[blockId].getElement();
+      var block = layoutmanager.getLayouts()[id2].getColumns()[0].getBlocks()[blockId].getElement()[0];
       assert.equal(Object.keys(emptyData).length, 0);
-      assert.deepEqual(block.data(), {blockId : blockId, columnId : 0, layoutId : id2});
-      assert.equal(block.html(), '<div class="sl-block-content">test</div>');
+      assert.deepEqual($(block).data(), {blockId : blockId, columnId : 0, layoutId : id2});
+      assert.equal(block.childNodes[1].innerHTML.trim(), '<p>test</p>');
     });
 
   });

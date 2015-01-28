@@ -17,13 +17,13 @@ suite('Block', function() {
   });
 
   test('can set block-content', function() {
-    var block = new Block('textblock', '<p>I am a block</p>');
+    var block = new Block('<p>I am a block</p>');
     block.create();
     block.content('<p>hallo</p>');
     var textblock = block.getElement()[0];
 
-    var node = { tag : textblock.tagName, classes : textblock.className, content : textblock.innerText};
-    assert.deepEqual(node, {tag : "DIV", classes : "sl-block", content : "hallo"});
+    var node = { tag : textblock.tagName, classes : textblock.className, content : textblock.innerHTML.trim()};
+    assert.deepEqual(node, {tag : "DIV", classes : "sl-block", content : '<div class="sl-block-content"><p>hallo</p></div>'});
   });
 
 });
