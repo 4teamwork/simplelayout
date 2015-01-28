@@ -25,17 +25,8 @@
     simplelayout.attachTo($('main'));
     toolbox.attachTo($('body'));
     simplelayout.attachToolbox(toolbox);
-    $(document).on('click', '#edit', function() {
-      console.log('edit');
-    });
-    $(document).on('click', '#move', function() {
-      console.log('move');
-    });
     $('#ser').on('click', function() {
       console.log(simplelayout.getLayoutmanager().serialize());
-    });
-    $('#des').on('click', function() {
-      console.log(simplelayout.getLayoutmanager().deserialize('{"layouts":[4,4,4],"blocks":[{"height":122,"layoutPos":0,"columnPos":1,"blockPos":0},{"height":183,"layoutPos":1,"columnPos":0,"blockPos":0},{"height":136,"layoutPos":2,"columnPos":3,"blockPos":0}]}'));
     });
   });
   </script>
