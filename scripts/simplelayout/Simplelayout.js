@@ -16,7 +16,11 @@ define(['simplelayout/Layoutmanager', 'simplelayout/Eventrecorder', 'simplelayou
 
     var layoutmanager = new Layoutmanager(_options);
 
-    var toolbox;
+    var toolbox = null;
+
+    var blockToCreateOptions = {};
+
+    var currentBlock = null;
 
     var TOOLBOX_COMPONENT_DRAGGABLE_SETTINGS = {
       helper: "clone",
