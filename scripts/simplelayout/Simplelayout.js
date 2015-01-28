@@ -183,12 +183,37 @@ define(['simplelayout/Layoutmanager', 'simplelayout/Eventrecorder', 'simplelayou
     };
 
     var bindLayoutEvents = function() {
+      var layoutId;
+      var columnId;
+      var blockId;
       layoutmanager.getElement().droppable(LAYOUTMANAGER_DROPPABLE_SETTINGS);
       layoutmanager.getElement().sortable(LAYOUTMANAGER_SORTABLE_SETTINGS);
       on('blockInserted', function(event, layoutId, columnId, blockId) {
-        var block = layoutmanager.getLayouts()[layoutId].getColumns()[columnId].getBlocks()[blockId].getElement();
-        var toolbar = new Toolbar(options.actions);
-        block.append(toolbar.getElement());
+        var block = layoutmanager.getLayouts()[layoutId].getColumns()[columnId].getBlocks()[blockId];
+        var toolbar = new Toolbar(blockToCreateOptions.actions);
+        block.attachToolbar(toolbar);
+      });
+      layoutmanager.getElement().on('mouseover', '.sl-block', function() {
+        layoutId = $(this).data('layoutId');
+        columnId = $(this).data('columnId');
+        blockId = $(this).data('blockId');
+        currentBlock = layoutmanager.getLayouts()[layoutId].getColumns()[columnId].getBlocks()[blockId];
+        currentBlock.getToolbar().show();
+      }).on('mouseout', '.sl-block', function() {
+        layoutId = $(this).data('layoutId');
+        columnId = $(this).data('columnId');
+        blockId = $(this).data('blockId');
+        layoutmanager.getLayouts()[layoutId].getColumns()[columnId].getBlocks()[blockId].getToolbar().hide();
+      }).on('mousedown', '.sl-block', function() {
+        layoutId = $(this).data('layoutId');
+        columnId = $(this).data('columnId');
+        blockId = $(this).data('blockId');
+        layoutmanager.getLayouts()[layoutId].getColumns()[columnId].getBlocks()[blockId].getToolbar().keepVisible(true);
+      }).on('mouseup', '.sl-block', function() {
+        layoutId = $(this).data('layoutId');
+        columnId = $(this).data('columnId');
+        blockId = $(this).data('blockId');
+        layoutmanager.getLayouts()[layoutId].getColumns()[columnId].getBlocks()[blockId].getToolbar().keepVisible(false);
       });
     };
 
