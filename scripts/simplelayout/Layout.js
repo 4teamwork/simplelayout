@@ -24,6 +24,7 @@ define(['simplelayout/Column'], function(Column) {
 
       create : function(id) {
         this.element = $(template.render());
+        this.element.data('layoutId', id);
         for (var i = 0; i < columns; i++) {
           var column = new Column(columns);
           this.columns[i] = column;

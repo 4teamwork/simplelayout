@@ -38,7 +38,6 @@ define(["simplelayout/Layout"], function(Layout) {
         var id = layoutId;
         var layout = new Layout(columns);
         layout.create(id);
-        layout.getElement().data('layout-id', id);
         element.append(layout.getElement());
         this.layouts[id] = layout;
         layoutId++;
