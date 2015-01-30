@@ -92,7 +92,7 @@ define(["simplelayout/Layout"], function(Layout) {
         this.element.trigger("blocksCommitted", [layoutId, columnId]);
       },
 
-      moveBlock: function(oldLayoutId, oldColumnId, blockId, newLayoutId, newColumnId) {
+      moveBlock: function(oldLayoutId, oldColumnId, oldBlockId, newLayoutId, newColumnId) {
         var layout = this.getLayouts()[oldLayoutId];
         var column = layout.getColumns()[oldColumnId];
         var block = column.getBlocks()[blockId];
@@ -102,7 +102,7 @@ define(["simplelayout/Layout"], function(Layout) {
         block.getElement().data('blockId', nextBlockId);
         delete column.getBlocks()[blockId];
         this.getLayouts()[newLayoutId].getColumns()[newColumnId].getBlocks()[nextBlockId] = block;
-        this.element.trigger("blockMoved", [oldLayoutId, oldColumnId, nextBlockId, newLayoutId, newColumnId]);
+        this.element.trigger("blockMoved", [oldLayoutId, oldColumnId, oldBlockId, newLayoutId, newColumnId, newBlockId]);
       },
 
       serialize: function() {
