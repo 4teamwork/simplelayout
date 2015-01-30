@@ -11,8 +11,6 @@ define(['simplelayout/Block'], function(Block) {
       throw new Error("Columns are not defined.");
     }
 
-    var blockId = 0;
-
     var template = $.templates("<div class='sl-column sl-col-{{:column}}'></div>");
 
     return {
@@ -29,16 +27,15 @@ define(['simplelayout/Block'], function(Block) {
       },
 
       insertBlock: function(content, type) {
-        var id = blockId;
+        var nextBlockId = Object.keys(this.blocks).length;
         var block = new Block(content, type);
         var blockElement = block.create();
-        blockElement.data('block-id', id);
+        blockElement.data('blockId', nextBlockId);
         blockElement.data('columnId', this.getElement().data('columnId'));
         blockElement.data('layoutId', this.getElement().data('layoutId'));
         this.getElement().append(blockElement);
-        this.blocks[id] = block;
-        blockId++;
-        return id;
+        this.blocks[nextBlockId] = block;
+        return nextBlockId;
       },
 
       deleteBlock: function(blockId) {
