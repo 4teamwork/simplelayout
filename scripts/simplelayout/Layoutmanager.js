@@ -73,9 +73,9 @@ define(["simplelayout/Layout"], function(Layout) {
         return this.layouts;
       },
 
-      insertBlock: function(layoutId, columnId, content) {
+      insertBlock: function(layoutId, columnId, content, type) {
         var layout = this.layouts[layoutId];
-        var blockId = layout.insertBlock(columnId, content);
+        var blockId = layout.insertBlock(columnId, content, type);
         this.layouts[layoutId].getColumns()[columnId].getBlocks()[blockId].getElement().find('img').width(this.minImageWidth);
         this.element.trigger("blockInserted", [layoutId, columnId, blockId]);
         return blockId;

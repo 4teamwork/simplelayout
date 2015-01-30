@@ -7,6 +7,10 @@ define(['simplelayout/Block'], function(Block) {
       throw new TypeError("Column constructor cannot be called as a function.");
     }
 
+    if(!column){
+      throw new Error("Columns are not defined.");
+    }
+
     var blockId = 0;
 
     var template = $.templates("<div class='sl-column sl-col-{{:column}}'></div>");
@@ -21,16 +25,17 @@ define(['simplelayout/Block'], function(Block) {
 
       create : function() {
         this.element = $(template.render({column : column}));
+        return this.element;
       },
 
-      insertBlock: function(content) {
+      insertBlock: function(content, type) {
         var id = blockId;
-        var block = new Block(content);
-        block.create();
-        block.getElement().data('block-id', id);
-        block.getElement().data('column-id', this.getElement().data('column-id'));
-        block.getElement().data('layout-id', this.getElement().data('layout-id'));
-        this.getElement().append(block.getElement());
+        var block = new Block(content, type);
+        var blockElement = block.create();
+        blockElement.data('block-id', id);
+        blockElement.data('columnId', this.getElement().data('columnId'));
+        blockElement.data('layoutId', this.getElement().data('layoutId'));
+        this.getElement().append(blockElement);
         this.blocks[id] = block;
         blockId++;
         return id;

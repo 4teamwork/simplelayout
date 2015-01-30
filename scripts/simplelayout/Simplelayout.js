@@ -130,7 +130,7 @@ define(['simplelayout/Layoutmanager', 'simplelayout/Eventrecorder', 'simplelayou
         try {
           var layoutId = $(this).parent().data('layout-id');
           var columnId = $(this).data('column-id');
-          var blockId = layoutmanager.insertBlock(layoutId, columnId, null, null);
+          var blockId = layoutmanager.insertBlock(layoutId, columnId, null, ui.draggable.data('type'));
           e.data = {
             blockId: blockId,
             columnId: columnId,
