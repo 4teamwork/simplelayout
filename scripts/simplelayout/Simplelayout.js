@@ -272,6 +272,7 @@ define(['simplelayout/Layoutmanager', 'simplelayout/Eventrecorder', 'simplelayou
         }
         toolbox = toolboxRef;
         layoutmanager.minImageWidth = layoutmanager.getElement().width() / Math.max.apply(null, toolbox.options.layouts) / this.options.imageCount;
+        layoutmanager.toolbox = toolbox;
         bindToolboxEvents();
       },
 
