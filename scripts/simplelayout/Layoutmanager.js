@@ -140,14 +140,16 @@ define(["simplelayout/Layout"], function(Layout) {
           that.layouts[layoutIdx] = new Layout($(layout).children('.sl-column').length);
           that.layouts[layoutIdx].element = $(layout);
           that.layouts[layoutIdx].getElement().data('layoutId', layoutIdx);
-          $('.sl-column', simplelayout).each(function(columnIdx, column) {
+          that.id++;
+          $('.sl-column', layout).each(function(columnIdx, column) {
             that.layouts[layoutIdx].getColumns()[columnIdx] = new Column($(layout).children('.sl-column').length);
             that.layouts[layoutIdx].getColumns()[columnIdx].element = $(column);
             that.layouts[layoutIdx].getColumns()[columnIdx].getElement().data('layoutId', layoutIdx);
             that.layouts[layoutIdx].getColumns()[columnIdx].getElement().data('columnId', columnIdx);
-            $('.sl-block', simplelayout).each(function(blockIdx, block) {
+            $('.sl-block', column).each(function(blockIdx, block) {
               that.layouts[layoutIdx].getColumns()[columnIdx].getBlocks()[blockIdx] = new Block();
               that.layouts[layoutIdx].getColumns()[columnIdx].getBlocks()[blockIdx].element = $(block);
+              that.layouts[layoutIdx].getColumns()[columnIdx].getBlocks()[blockIdx].type = $(block).data('type');
               toolbar = new Toolbar(that.toolbox.options.components[$(block).data('type')].actions);
               that.layouts[layoutIdx].getColumns()[columnIdx].getBlocks()[blockIdx].attachToolbar(toolbar);
               that.layouts[layoutIdx].getColumns()[columnIdx].getBlocks()[blockIdx].getElement().data('layoutId', layoutIdx);
@@ -156,8 +158,8 @@ define(["simplelayout/Layout"], function(Layout) {
             });
           });
         });
+        console.log(this.layouts);
       }
-
     };
 
   }
