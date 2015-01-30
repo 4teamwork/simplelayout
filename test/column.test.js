@@ -16,8 +16,8 @@ suite('Column', function() {
 
   test('can create column with sl-col-2 class', function() {
     var column = new Column(2);
-
     column.create();
+
     var node = $.map(column.getElement(), function(column) {
       return {tag : column.tagName, classes : column.className};
     });
@@ -25,36 +25,43 @@ suite('Column', function() {
     assert.deepEqual(node, [{tag : 'DIV', classes : 'sl-column sl-col-2'}]);
   });
 
+  test('defining an empty column raises an exeption', function() {
+    assert.throws(function() {
+      new Column();
+    }, Error, 'Columns are not defined.');
+  });
+
   suite('Block-transactions', function() {
 
     test('can insert a block', function() {
-      var column = new Column('50%');
+      var column = new Column(2);
       column.create();
-      column.insertBlock();
+      column.insertBlock('<p>Test</p>', 'textblock');
 
-      var blocks = $.map(column.getBlocks(), function(block) {
-        return {committed : block.committed, id : block.getElement().data('block-id')};
+      var block = $.map(column.getBlocks(), function(block) {
+        return {committed : block.committed, blockId : block.getElement().data('block-id'), type : block.type};
       });
 
-      assert.deepEqual(blocks, [{committed : false, id : 0}]);
-      assert.equal(Object.keys(column.getBlocks()).length, 1);
-
+      assert.deepEqual(block, [{committed : false, blockId : 0, type : 'textblock'}]);
     });
 
     test('can delete a block', function() {
-      var column = new Column('50%');
+      var column = new Column(2);
       column.create();
-      var blockId = column.insertBlock('textblock');
+      var blockId = column.insertBlock('<p>Test</p>', 'textblock');
       column.deleteBlock(blockId);
 
-      assert.equal(Object.keys(column.getBlocks()).length, 0);
+      var block = $.map(column.getBlocks(), function(block) {
+        return {committed : block.committed, blockId : block.getElement().data('block-id'), type : block.type};
+      });
 
+      assert.deepEqual(block, [], "Should have no blocks after deleting them");
     });
 
     test('can commit a block', function() {
-      var column = new Column('50%');
+      var column = new Column(2);
       column.create();
-      var blockId = column.insertBlock('textblock');
+      var blockId = column.insertBlock('<p>Test</p>','textblock');
       column.commitBlocks();
       var blocks = $.map(column.getCommittedBlocks(), function(block) {
         return {committed : block.committed};
@@ -65,17 +72,17 @@ suite('Column', function() {
     });
 
     test('inserting and deleting blocks does not commit them', function() {
-      var column = new Column('50%');
+      var column = new Column(2);
       column.create();
-      column.insertBlock("first-block", 0);
-      var blockId = column.insertBlock('second-block', 0);
+      column.insertBlock('<p>Test</p>','textblock');
+      var blockId = column.insertBlock('<p>Test</p>','textblock');
       column.deleteBlock(blockId);
 
       assert.deepEqual(column.getCommittedBlocks(), {}, "Should have no committed blocks without commit");
     });
 
     test('delete a non inseted block raises an exception', function() {
-      var column = new Column('50%');
+      var column = new Column(2);
       column.create();
 
       assert.throws(function() {
@@ -84,7 +91,7 @@ suite('Column', function() {
     });
 
     test('commit non inserted blocks raises exception', function() {
-      var column = new Column('50%');
+      var column = new Column(2);
       column.create();
 
       assert.throws(function() {

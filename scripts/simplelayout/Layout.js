@@ -7,7 +7,7 @@ define(['simplelayout/Column'], function(Column) {
       throw new TypeError("Layout constructor cannot be called as a function.");
     }
     if (!columns) {
-      throw new TypeError("columns must be defined");
+      throw new TypeError("Columns are not defined.");
     }
 
     var template = $.templates("<div class='sl-layout'></div>");

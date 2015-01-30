@@ -78,7 +78,7 @@ define([], function() {
       },
 
       getElement : function() {
-        return element;
+        return this.element;
       }
 
     };
