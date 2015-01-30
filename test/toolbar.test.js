@@ -24,7 +24,7 @@ suite('Toolbar', function() {
   });
 
   test('can add a edit action', function() {
-    var toolbar = new Toolbar([{name : 'edit', description : 'Can edit this block'}]);
+    var toolbar = new Toolbar({edit : {name : 'edit', description : 'Can edit this block'}});
     var actionNodes = $.map(toolbar.getElement().find('a'), function(action) {
       return {tagName : action.tagName, classes : action.className, title : action.title};
     });

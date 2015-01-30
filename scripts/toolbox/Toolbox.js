@@ -12,7 +12,9 @@ define([], function() {
       throw new Error("No layouts defined.");
     }
 
-    var options = _options;
+    var options = $.extend(
+      {components : {}
+    }, _options || {});
 
     var layouts = [];
     $.each(options.layouts, function(i, el) {
@@ -45,20 +47,27 @@ define([], function() {
           </div> \
         </div>");
 
+    var components = [];
+    $.each(options.components, function(key, value) {
+      components.push(value);
+    });
+
     var data = {
-      "components" : options.components,
+      "components" : components,
       "layouts": layouts
     };
 
     var element = $(template.render(data));
 
     $('.sl-toolbox-component', element).each(function(i, el) {
-      $(el).data('actions', options.components[i].actions);
+      $(el).data('actions', options.components[$(el).data('type')].actions);
     });
 
     return {
 
       options : options,
+
+      element : element,
 
       attachTo: function(target) {
         target.append(element);

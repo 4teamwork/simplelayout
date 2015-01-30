@@ -1,5 +1,5 @@
 <!doctype html>
-<html class="no-js" lang="">
+<html>
 
 <head>
   <meta charset="utf-8">
@@ -11,15 +11,15 @@
   <link rel="stylesheet" href="bower_components/jquery-ui/themes/ui-lightness/jquery-ui.min.css" />
   <script src="bower_components/jquery/dist/jquery.min.js"></script>
   <script src="bower_components/jquery-ui/ui/minified/jquery-ui.custom.min.js"></script>
-  <script src="bower_components/jsrender/jsrender.min.js"></script>
+  <script src="bower_components/jsrender/jsrender.js"></script>
   <script src="dist/simplelayout.js"></script>
   <script>
   $(document).ready(function() {
     var simplelayout = new Simplelayout({width:'900px'});
     var toolbox = new Toolbox({
       layouts: [1, 2, 4],
-      components : [{"title": "Listingblock", "description": "can list things", "content_type": "listingblock", "form_url" : "http://www.google.com", actions : [{name: 'edit', description: 'Edit this block'}]},
-        {"title": "Textblock", "description": "can show text", "content_type": "textblock", "form_url" : "http://www.bing.com", actions : [{name: 'edit', description: 'Edit this block'}]}]
+      components : {listingblock : {title: "Listingblock", description: "can list things", content_type: "listingblock", form_url : "http://www.google.com", actions : {edit : {name: 'edit', description: 'Edit this block'}}},
+        textblock : {title: "Textblock", description: "can show text", content_type: "textblock", form_url : "http://www.bing.com", actions : {edit : {name: 'edit', description: 'Edit this block'}}}}
     });
 
     simplelayout.attachTo($('main'));
@@ -27,6 +27,9 @@
     simplelayout.attachToolbox(toolbox);
     $('#ser').on('click', function() {
       console.log(simplelayout.getLayoutmanager().serialize());
+    });
+    $('#des').on('click', function() {
+      simplelayout.getLayoutmanager().deserialize();
     });
   });
   </script>
