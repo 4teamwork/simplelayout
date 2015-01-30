@@ -12,7 +12,8 @@ define(["simplelayout/Layout"], function(Layout) {
       width : '100%'
     }, _options || {});
 
-    var element = $("<div>").addClass('sl-simplelayout').css('width', options.width);
+    var template = $.templates('<div class="sl-simplelayout" style="width:{{:width}};"></div>');
+    var element = $(template.render(options));
 
     var layoutId = 0;
 
