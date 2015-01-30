@@ -126,18 +126,34 @@ define(["simplelayout/Layout"], function(Layout) {
         return JSON.stringify(output);
       },
 
-      deserialize :function(input) {
+      deserialize: function() {
+        var Layout = require('simplelayout/Layout');
+        var Column = require('simplelayout/Column');
+        var Block = require('simplelayout/Block');
+        var Toolbar = require('simplelayout/Toolbar');
+        var toolbar;
         var that = this;
-        input = JSON.parse(input);
-        $.each(input.layouts, function(idx, layout) {
-          that.insertLayout(layout);
+        var simplelayout = $('.sl-simplelayout');
+        $('.sl-layout', simplelayout).each(function(layoutIdx, layout) {
+          that.layouts[layoutIdx] = new Layout($(layout).children('.sl-column').length);
+          that.layouts[layoutIdx].element = $(layout);
+          that.layouts[layoutIdx].getElement().data('layoutId', layoutIdx);
+          $('.sl-column', simplelayout).each(function(columnIdx, column) {
+            that.layouts[layoutIdx].getColumns()[columnIdx] = new Column($(layout).children('.sl-column').length);
+            that.layouts[layoutIdx].getColumns()[columnIdx].element = $(column);
+            that.layouts[layoutIdx].getColumns()[columnIdx].getElement().data('layoutId', layoutIdx);
+            that.layouts[layoutIdx].getColumns()[columnIdx].getElement().data('columnId', columnIdx);
+            $('.sl-block', simplelayout).each(function(blockIdx, block) {
+              that.layouts[layoutIdx].getColumns()[columnIdx].getBlocks()[blockIdx] = new Block();
+              that.layouts[layoutIdx].getColumns()[columnIdx].getBlocks()[blockIdx].element = $(block);
+              toolbar = new Toolbar(that.toolbox.options.components[$(block).data('type')].actions);
+              that.layouts[layoutIdx].getColumns()[columnIdx].getBlocks()[blockIdx].attachToolbar(toolbar);
+              that.layouts[layoutIdx].getColumns()[columnIdx].getBlocks()[blockIdx].getElement().data('layoutId', layoutIdx);
+              that.layouts[layoutIdx].getColumns()[columnIdx].getBlocks()[blockIdx].getElement().data('columnId', columnIdx);
+              that.layouts[layoutIdx].getColumns()[columnIdx].getBlocks()[blockIdx].getElement().data('blockId', blockIdx);
+            });
+          });
         });
-        that.commitLayouts();
-        $.each(input.blocks, function(idx, block) {
-          that.insertBlock(block.layoutPos, block.columnPos);
-          that.commitBlocks(block.layoutPos, block.columnPos);
-        });
-        this.element.trigger('deserialized');
       }
 
     };
