@@ -278,6 +278,11 @@ define(['simplelayout/Layoutmanager', 'simplelayout/Eventrecorder', 'simplelayou
 
       on : on,
 
+      bindEvents : function() {
+        bindLayoutEvents();
+        bindToolboxEvents();
+      },
+
       getCurrentBlock : function() {
         return currentBlock;
       }
