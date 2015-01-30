@@ -194,6 +194,11 @@ define(['simplelayout/Layoutmanager', 'simplelayout/Eventrecorder', 'simplelayou
       var blockId;
       layoutmanager.getElement().droppable(LAYOUTMANAGER_DROPPABLE_SETTINGS);
       layoutmanager.getElement().sortable(LAYOUTMANAGER_SORTABLE_SETTINGS);
+      layoutmanager.getElement().find('.sl-column').droppable(LAYOUT_DROPPABLE_SETTINGS).sortable(LAYOUT_SORTABLE_SETTINGS);
+      layoutmanager.getElement().on('layoutInserted', function(e, layoutId) {
+        layoutmanager.getLayouts()[layoutId].getElement().find('.sl-column').sortable(LAYOUT_SORTABLE_SETTINGS);
+        layoutmanager.getLayouts()[layoutId].getElement().find('.sl-column').droppable(LAYOUT_DROPPABLE_SETTINGS);
+      });
       on('blockInserted', function(event, layoutId, columnId, blockId) {
         var block = layoutmanager.getLayouts()[layoutId].getColumns()[columnId].getBlocks()[blockId];
         var toolbar = new Toolbar(blockToCreateOptions.actions);
@@ -226,13 +231,7 @@ define(['simplelayout/Layoutmanager', 'simplelayout/Eventrecorder', 'simplelayou
     var bindToolboxEvents = function() {
       toolbox.getElement().find('.sl-toolbox-component, .sl-toolbox-layout').draggable(TOOLBOX_COMPONENT_DRAGGABLE_SETTINGS);
       toolbox.getElement().find('.sl-toolbox-trash').droppable(TRASH_DROPPABLE_SETTINGS);
-
-      layoutmanager.getElement().on('layoutInserted', function(e, layoutId) {
-        layoutmanager.getLayouts()[layoutId].getElement().find('.sl-column').droppable(LAYOUT_DROPPABLE_SETTINGS).sortable(LAYOUT_SORTABLE_SETTINGS);
-      });
-
       toolbox.getElement().draggable(TOOLBOX_DRAGGABLE_SETTINGS);
-
     };
 
     var on = function(eventType, callback) {
