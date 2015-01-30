@@ -15,11 +15,11 @@ define(["simplelayout/Layout"], function(Layout) {
     var template = $.templates('<div class="sl-simplelayout" style="width:{{:width}};"></div>');
     var element = $(template.render(options));
 
-    var layoutId = 0;
-
     return {
 
       layouts: {},
+
+      id : 0,
 
       minImageWidth: null,
 
@@ -36,12 +36,12 @@ define(["simplelayout/Layout"], function(Layout) {
       },
 
       insertLayout: function(columns) {
-        var id = layoutId;
+        var id = this.id;
         var layout = new Layout(columns);
         layout.create(id);
         element.append(layout.getElement());
         this.layouts[id] = layout;
-        layoutId++;
+        this.id++;
         this.element.trigger("layoutInserted", [id]);
         return id;
       },
@@ -96,11 +96,13 @@ define(["simplelayout/Layout"], function(Layout) {
         var layout = this.getLayouts()[oldLayoutId];
         var column = layout.getColumns()[oldColumnId];
         var block = column.getBlocks()[blockId];
+        var nextBlockId = Object.keys(this.getLayouts()[newLayoutId].getColumns()[newColumnId].getBlocks()).length;
         block.getElement().data('layoutId', newLayoutId);
         block.getElement().data('columnId', newColumnId);
+        block.getElement().data('blockId', nextBlockId);
         delete column.getBlocks()[blockId];
-        this.getLayouts()[newLayoutId].getColumns()[newColumnId].getBlocks()[blockId] = block;
-        this.element.trigger("blockMoved", [oldLayoutId, oldColumnId, blockId, newLayoutId, newColumnId]);
+        this.getLayouts()[newLayoutId].getColumns()[newColumnId].getBlocks()[nextBlockId] = block;
+        this.element.trigger("blockMoved", [oldLayoutId, oldColumnId, nextBlockId, newLayoutId, newColumnId]);
       },
 
       serialize: function() {
