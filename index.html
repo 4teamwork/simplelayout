@@ -19,7 +19,7 @@
     var toolbox = new Toolbox({
       layouts: [1, 2, 4],
       components : {listingblock : {title: "Listingblock", description: "can list things", content_type: "listingblock", form_url : "http://www.google.com", actions : {edit : {name: 'edit', description: 'Edit this block'}}},
-        textblock : {title: "Textblock", description: "can show text", content_type: "textblock", form_url : "http://www.bing.com", actions : {edit : {name: 'edit', description: 'Edit this block'}}}}
+        textblock : {title: "Textblock", description: "can show text", content_type: "textblock", form_url : "http://www.bing.com", actions : {edit : {name: 'edit', description: 'Edit this block'}, download : {name: 'download', description : 'Download this content'}}}}
     });
 
     simplelayout.attachTo($('main'));
