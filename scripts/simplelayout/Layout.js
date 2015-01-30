@@ -28,11 +28,12 @@ define(['simplelayout/Column'], function(Column) {
         for (var i = 0; i < columns; i++) {
           var column = new Column(columns);
           this.columns[i] = column;
-          column.create();
-          column.getElement().data('column-id', i);
-          column.getElement().data('layout-id', id);
-          this.element.append(column.getElement());
+          var columnElement = column.create();
+          columnElement.data('column-id', i);
+          columnElement.data('layout-id', id);
+          this.element.append(columnElement);
         }
+        return this.element;
       },
 
       getColumns: function() {
