@@ -42,6 +42,7 @@ define([], function() {
 
       attachToolbar : function(toolbar) {
         this.toolbar = toolbar;
+        $('.sl-toolbar', this.element).remove();
         this.element.append(toolbar.getElement());
       },
 
