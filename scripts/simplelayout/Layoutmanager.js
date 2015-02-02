@@ -101,14 +101,14 @@ define(["simplelayout/Layout"], function(Layout) {
       moveBlock: function(oldLayoutId, oldColumnId, oldBlockId, newLayoutId, newColumnId) {
         var layout = this.getLayouts()[oldLayoutId];
         var column = layout.getColumns()[oldColumnId];
-        var block = column.getBlocks()[blockId];
+        var block = column.getBlocks()[oldBlockId];
         var nextBlockId = Object.keys(this.getLayouts()[newLayoutId].getColumns()[newColumnId].getBlocks()).length;
         block.getElement().data('layoutId', newLayoutId);
         block.getElement().data('columnId', newColumnId);
         block.getElement().data('blockId', nextBlockId);
-        delete column.getBlocks()[blockId];
+        delete column.getBlocks()[oldBlockId];
         this.getLayouts()[newLayoutId].getColumns()[newColumnId].getBlocks()[nextBlockId] = block;
-        this.element.trigger("blockMoved", [oldLayoutId, oldColumnId, oldBlockId, newLayoutId, newColumnId, newBlockId]);
+        this.element.trigger("blockMoved", [oldLayoutId, oldColumnId, oldBlockId, newLayoutId, newColumnId, nextBlockId]);
       },
 
       serialize: function() {
