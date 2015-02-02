@@ -7,6 +7,9 @@
     "phantomjs" : true,
     "browser" : ture
   },
+  "rules" : {
+    [2, "double", "avoid-escape"]
+  },
   "globals": {
     "assert": true
   }
