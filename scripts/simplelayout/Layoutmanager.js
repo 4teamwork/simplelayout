@@ -12,8 +12,14 @@ define(["simplelayout/Layout"], function(Layout) {
       width : '100%'
     }, _options || {});
 
-    var template = $.templates('<div class="sl-simplelayout" style="width:{{:width}};"></div>');
-    var element = $(template.render(options));
+    var element;
+
+    if(options.source) {
+      element = $(_options.source);
+    } else {
+      var template = $.templates('<div class="sl-simplelayout" style="width:{{:width}};"></div>');
+      element = $(template.render(options));
+    }
 
     return {
 
@@ -135,8 +141,7 @@ define(["simplelayout/Layout"], function(Layout) {
         var Toolbar = require('simplelayout/Toolbar');
         var toolbar;
         var that = this;
-        var simplelayout = $('.sl-simplelayout');
-        $('.sl-layout', simplelayout).each(function(layoutIdx, layout) {
+        $('.sl-layout', element).each(function(layoutIdx, layout) {
           that.layouts[layoutIdx] = new Layout($(layout).children('.sl-column').length);
           that.layouts[layoutIdx].element = $(layout);
           that.layouts[layoutIdx].getElement().data('layoutId', layoutIdx);
