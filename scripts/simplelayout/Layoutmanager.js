@@ -122,11 +122,13 @@ define(["simplelayout/Layout"], function(Layout) {
               var blockId = blockNode.data('blockId');
               var columnId = blockNode.data('columnId');
               var layoutId = blockNode.data('layoutId');
+              var uid = blockNode.data('uid');
               var block = that.getLayouts()[layoutId].getColumns()[columnId].getBlocks()[blockId];
               var blockData = {};
               blockData.layoutPos = layoutIdx;
               blockData.columnPos = columnIdx;
               blockData.blockPos = blockIdx;
+              blockData.uid = uid;
               output.blocks.push(blockData);
             });
           });
