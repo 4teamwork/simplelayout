@@ -165,7 +165,6 @@ define(["simplelayout/Layout"], function(Layout) {
             });
           });
         });
-        console.log(this.layouts);
       }
     };
 
