@@ -1,6 +1,6 @@
 define([], function() {
 
-  'use strict';
+  "use strict";
 
   function Block(content, type) {
 
@@ -14,44 +14,40 @@ define([], function() {
 
     return {
 
-      committed : false,
+      committed: false,
 
-      uid : null,
+      uid: null,
 
-      toolbar : null,
+      toolbar: null,
 
-      type : type,
+      type: type,
 
-      getElement: function() {
-        return this.element;
-      },
+      element: null,
 
       create: function() {
-        var that = this;
         var data = {
-          'content': content,
-          'type' : type
+          "content": content,
+          "type": type
         };
         this.element = $(template.render(data));
         return this.element;
       },
 
-      content : function(content) {
-        $('.sl-block-content', this.element).html(content);
+      content: function(toReplace) {
+        $(".sl-block-content", this.element).html(toReplace);
       },
 
-      attachToolbar : function(toolbar) {
+      attachToolbar: function(toolbar) {
         this.toolbar = toolbar;
-        $('.sl-toolbar', this.element).remove();
-        this.element.append(toolbar.getElement());
+        $(".sl-toolbar", this.element).remove();
+        this.element.append(toolbar.element);
       },
 
-      getToolbar : function() {
-        return this.toolbar;
-      },
-
-      toJSON : function() {
-        return {uid : this.uid, type : type};
+      toJSON: function() {
+        return {
+          uid: this.uid,
+          type: type
+        };
       }
     };
 

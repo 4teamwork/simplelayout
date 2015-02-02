@@ -1,6 +1,6 @@
-define(['simplelayout/Layoutmanager', 'simplelayout/Eventrecorder', 'simplelayout/Toolbar'], function(Layoutmanager, Eventrecorder, Toolbar) {
+define(["simplelayout/Layoutmanager", "simplelayout/Eventrecorder", "simplelayout/Toolbar"], function(Layoutmanager, Eventrecorder, Toolbar) {
 
-  'use strict';
+  "use strict";
 
   function Simplelayout(_options) {
 
@@ -25,10 +25,8 @@ define(['simplelayout/Layoutmanager', 'simplelayout/Eventrecorder', 'simplelayou
     var TOOLBOX_COMPONENT_DRAGGABLE_SETTINGS = {
       helper: "clone",
       cursor: "pointer",
-      start: function(e, ui) {
-        if ($(e.target).hasClass('sl-toolbox-component') && Object.keys(layoutmanager.getLayouts()).length === 0) {
-          columns = toolbox.options.layouts[0];
-          layoutId = layoutmanager.insertLayout(columns);
+      start: function(e) {
+        if ($(e.target).hasClass("sl-toolbox-component") && Object.keys(layoutmanager.layouts).length === 0) {
           layoutmanager.commitLayouts();
         }
         blockToCreateOptions = $(e.target).data();
@@ -36,101 +34,100 @@ define(['simplelayout/Layoutmanager', 'simplelayout/Eventrecorder', 'simplelayou
     };
 
     var TRASH_DROPPABLE_SETTINGS = {
-      accept: '.sl-layout, .sl-block',
-      tolerance: 'touch',
+      accept: ".sl-layout, .sl-block",
+      tolerance: "touch",
       over: function(e, ui) {
         var layoutId;
-        if (ui.draggable.hasClass('sl-layout')) {
-          layoutId = ui.draggable.data('layout-id');
-          var layout = layoutmanager.getLayouts()[layoutId];
+        if (ui.draggable.hasClass("sl-layout")) {
+          layoutId = ui.draggable.data("layout-id");
+          var layout = layoutmanager.layouts[layoutId];
           var hasBlocks = false;
-          for (var key in layout.getColumns()) {
-            if (Object.keys(layout.getColumns()[key].getBlocks()).length > 0) {
+          for (var key in layout.columns) {
+            if (Object.keys(layout.columns[key].blocks).length > 0) {
               hasBlocks = true;
               break;
             }
           }
-          layout.getElement().addClass('deleted');
+          layout.element.addClass("deleted");
           if (hasBlocks) {
-            layout.getElement().addClass('cancelDeletion');
+            layout.element.addClass("cancelDeletion");
           }
         } else {
-          layoutId = ui.draggable.data('layout-id');
-          var columnId = ui.draggable.data('column-id');
-          var blockId = ui.draggable.data('block-id');
-          var block = layoutmanager.getLayouts()[layoutId].getColumns()[columnId].getBlocks()[blockId];
-          block.getElement().addClass('deleted');
+          layoutId = ui.draggable.data("layout-id");
+          var columnId = ui.draggable.data("column-id");
+          var blockId = ui.draggable.data("block-id");
+          var block = layoutmanager.getBlock(layoutId, columnId, blockId);
+          block.element.addClass("deleted");
         }
       },
       drop: function(e, ui) {
         var layoutId;
-        if (ui.draggable.hasClass('sl-layout')) {
-          layoutId = ui.draggable.data('layout-id');
-          var layout = layoutmanager.getLayouts()[layoutId];
-          if (!layout.getElement().hasClass('cancelDeletion')) {
+        if (ui.draggable.hasClass("sl-layout")) {
+          layoutId = ui.draggable.data("layout-id");
+          var layout = layoutmanager.layouts[layoutId];
+          if (!layout.element.hasClass("cancelDeletion")) {
             layoutmanager.deleteLayout(layoutId);
           }
-          layout.getElement().removeClass('deleted cancelDeletion');
+          layout.element.removeClass("deleted cancelDeletion");
         } else {
-          layoutId = ui.draggable.data('layout-id');
-          var columnId = ui.draggable.data('column-id');
-          var blockId = ui.draggable.data('block-id');
-          var block = layoutmanager.getLayouts()[layoutId].getColumns()[columnId].getBlocks()[blockId];
+          layoutId = ui.draggable.data("layout-id");
+          var columnId = ui.draggable.data("column-id");
+          var blockId = ui.draggable.data("block-id");
           layoutmanager.deleteBlock(layoutId, columnId, blockId);
         }
       },
       out: function(e, ui) {
         var layoutId;
-        if (ui.draggable.hasClass('sl-layout')) {
-          layoutId = ui.draggable.data('layout-id');
-          var layout = layoutmanager.getLayouts()[layoutId];
-          layout.getElement().removeClass('deleted cancelDeletion');
+        if (ui.draggable.hasClass("sl-layout")) {
+          layoutId = ui.draggable.data("layout-id");
+          var layout = layoutmanager.layouts[layoutId];
+          layout.element.removeClass("deleted cancelDeletion");
         } else {
-          layoutId = ui.draggable.data('layout-id');
-          var columnId = ui.draggable.data('column-id');
-          var blockId = ui.draggable.data('block-id');
-          var block = layoutmanager.getLayouts()[layoutId].getColumns()[columnId].getBlocks()[blockId];
-          block.getElement().removeClass('deleted');
+          layoutId = ui.draggable.data("layout-id");
+          var columnId = ui.draggable.data("column-id");
+          var blockId = ui.draggable.data("block-id");
+          var block = layoutmanager.getBlock(layoutId, columnId, blockId);
+          block.element.removeClass("deleted");
         }
       }
     };
 
     var LAYOUTMANAGER_SORTABLE_SETTINGS = {
-      connectWith: '.sl-simplelayout',
-      items: '.sl-layout',
-      handle: '.sl-column',
+      connectWith: ".sl-simplelayout",
+      items: ".sl-layout",
+      handle: ".sl-column",
       placeholder: "placeholder",
-      forcePlaceholderSize: true,
+      forcePlaceholderSize: true
     };
 
     var LAYOUT_SORTABLE_SETTINGS = {
-      connectWith: '.sl-column',
+      connectWith: ".sl-column",
       placeholder: "placeholder",
       forcePlaceholderSize: true,
-      handle: '.move',
-      tolerance : 'pointer',
+      handle: ".move",
+      tolerance: "pointer",
       receive: function(e, ui) {
         if (ui && ui.item) {
           var target = $(e.target);
-          var columnId = ui.item.data('column-id');
-          var layoutId = ui.item.data('layout-id');
-          var blockId = ui.item.data('block-id');
-          var type = ui.item.data('type');
+          var columnId = ui.item.data("column-id");
+          var layoutId = ui.item.data("layout-id");
+          var blockId = ui.item.data("block-id");
+          var type = ui.item.data("type");
           var content = ui.item.html();
-          var newColumnId = target.data('column-id');
-          var newLayoutId = target.data('layout-id');
+          var newColumnId = target.data("column-id");
+          var newLayoutId = target.data("layout-id");
           layoutmanager.moveBlock(layoutId, columnId, blockId, newLayoutId, newColumnId, type, content);
         }
-      },
+      }
     };
 
     var LAYOUT_DROPPABLE_SETTINGS = {
-      accept: '.sl-toolbox-component',
+      accept: ".sl-toolbox-component",
       over: function(e, ui) {
         try {
-          var layoutId = $(this).parent().data('layout-id');
-          var columnId = $(this).data('column-id');
-          var blockId = layoutmanager.insertBlock(layoutId, columnId, null, ui.draggable.data('type'));
+          var layoutId = $(this).parent().data("layout-id");
+          var columnId = $(this).data("column-id");
+          var blockId = layoutmanager.insertBlock(layoutId, columnId, null, ui.draggable.data("type"));
           e.data = {
             blockId: blockId,
             columnId: columnId,
@@ -149,7 +146,7 @@ define(['simplelayout/Layoutmanager', 'simplelayout/Eventrecorder', 'simplelayou
         try {
           var originalOverEventData = eventrecorder.lookup(e).data;
           layoutmanager.commitBlocks(originalOverEventData.layoutId, originalOverEventData.columnId);
-          layoutmanager.getLayouts()[originalOverEventData.layoutId].getElement().find('.sl-column').sortable('refresh');
+          layoutmanager.layouts[originalOverEventData.layoutId].element.find(".sl-column").sortable("refresh");
           eventrecorder.flush();
         } catch (err) {}
       }
@@ -159,7 +156,7 @@ define(['simplelayout/Layoutmanager', 'simplelayout/Eventrecorder', 'simplelayou
       accept: ".sl-toolbox-layout",
       over: function(e, ui) {
         try {
-          var columns = ui.draggable.data('columns');
+          var columns = ui.draggable.data("columns");
           var layoutId = layoutmanager.insertLayout(columns);
           e.data = {
             layoutId: layoutId
@@ -176,7 +173,7 @@ define(['simplelayout/Layoutmanager', 'simplelayout/Eventrecorder', 'simplelayou
         try {
           var originalOverEventData = eventrecorder.lookup(e).data;
           layoutmanager.commitLayouts();
-          layoutmanager.getLayouts()[originalOverEventData.layoutId].getElement().find('.sl-layout').sortable('refresh');
+          layoutmanager.layouts[originalOverEventData.layoutId].element.find(".sl-layout").sortable("refresh");
           eventrecorder.flush();
         } catch (err) {}
       }
@@ -184,60 +181,65 @@ define(['simplelayout/Layoutmanager', 'simplelayout/Eventrecorder', 'simplelayou
 
     var TOOLBOX_DRAGGABLE_SETTINGS = {
       cursor: "pointer",
-      containment: 'window',
-      handle: '.sl-toolbox-handle'
+      containment: "window",
+      handle: ".sl-toolbox-handle"
+    };
+
+    var on = function(eventType, callback) {
+      layoutmanager.element.on(eventType, function() {
+        callback.apply(this, arguments);
+      });
     };
 
     var bindLayoutEvents = function() {
       var layoutId;
       var columnId;
       var blockId;
-      layoutmanager.getElement().droppable(LAYOUTMANAGER_DROPPABLE_SETTINGS);
-      layoutmanager.getElement().sortable(LAYOUTMANAGER_SORTABLE_SETTINGS);
-      layoutmanager.getElement().find('.sl-column').droppable(LAYOUT_DROPPABLE_SETTINGS).sortable(LAYOUT_SORTABLE_SETTINGS);
-      layoutmanager.getElement().on('layoutInserted', function(e, layoutId) {
-        layoutmanager.getLayouts()[layoutId].getElement().find('.sl-column').sortable(LAYOUT_SORTABLE_SETTINGS);
-        layoutmanager.getLayouts()[layoutId].getElement().find('.sl-column').droppable(LAYOUT_DROPPABLE_SETTINGS);
+      var data;
+      layoutmanager.element.droppable(LAYOUTMANAGER_DROPPABLE_SETTINGS);
+      layoutmanager.element.sortable(LAYOUTMANAGER_SORTABLE_SETTINGS);
+      layoutmanager.element.find(".sl-column").droppable(LAYOUT_DROPPABLE_SETTINGS).sortable(LAYOUT_SORTABLE_SETTINGS);
+      layoutmanager.element.on("layoutInserted", function(e, insertedLayout) {
+        layoutmanager.layouts[insertedLayout].element.find(".sl-column").sortable(LAYOUT_SORTABLE_SETTINGS);
+        layoutmanager.layouts[insertedLayout].element.find(".sl-column").droppable(LAYOUT_DROPPABLE_SETTINGS);
       });
-      on('blockInserted', function(event, layoutId, columnId, blockId) {
-        var block = layoutmanager.getLayouts()[layoutId].getColumns()[columnId].getBlocks()[blockId];
+      on("blockInserted", function(event, insertedLayout, insertedColumn, insertedBlock) {
+        var block = layoutmanager.getBlock(insertedLayout, insertedColumn, insertedBlock);
         var toolbar = new Toolbar(blockToCreateOptions.actions);
         block.attachToolbar(toolbar);
       });
-      layoutmanager.getElement().on('mouseover', '.sl-block', function() {
-        layoutId = $(this).data('layoutId');
-        columnId = $(this).data('columnId');
-        blockId = $(this).data('blockId');
-        currentBlock = layoutmanager.getLayouts()[layoutId].getColumns()[columnId].getBlocks()[blockId];
-        currentBlock.getToolbar().show();
-      }).on('mouseout', '.sl-block', function() {
-        layoutId = $(this).data('layoutId');
-        columnId = $(this).data('columnId');
-        blockId = $(this).data('blockId');
-        layoutmanager.getLayouts()[layoutId].getColumns()[columnId].getBlocks()[blockId].getToolbar().hide();
-      }).on('mousedown', '.sl-block', function() {
-        layoutId = $(this).data('layoutId');
-        columnId = $(this).data('columnId');
-        blockId = $(this).data('blockId');
-        layoutmanager.getLayouts()[layoutId].getColumns()[columnId].getBlocks()[blockId].getToolbar().keepVisible(true);
-      }).on('mouseup', '.sl-block', function() {
-        layoutId = $(this).data('layoutId');
-        columnId = $(this).data('columnId');
-        blockId = $(this).data('blockId');
-        layoutmanager.getLayouts()[layoutId].getColumns()[columnId].getBlocks()[blockId].getToolbar().keepVisible(false);
+      layoutmanager.element.on("mouseover", ".sl-block", function() {
+        data = $(this).data();
+        layoutId = data.layoutId;
+        columnId = data.columnId;
+        blockId = data.blockId;
+        currentBlock = layoutmanager.getBlock(layoutId, columnId, blockId);
+        currentBlock.toolbar.show();
+      }).on("mouseout", ".sl-block", function() {
+        data = $(this).data();
+        layoutId = data.layoutId;
+        columnId = data.columnId;
+        blockId = data.blockId;
+        layoutmanager.getBlock(layoutId, columnId, blockId).toolbar.hide();
+      }).on("mousedown", ".sl-block", function() {
+        data = $(this).data();
+        layoutId = data.layoutId;
+        columnId = data.columnId;
+        blockId = data.blockId;
+        layoutmanager.getBlock(layoutId, columnId, blockId).toolbar.keepVisible(true);
+      }).on("mouseup", ".sl-block", function() {
+        data = $(this).data();
+        layoutId = data.layoutId;
+        columnId = data.columnId;
+        blockId = data.blockId;
+        layoutmanager.getBlock(layoutId, columnId, blockId).toolbar.keepVisible(false);
       });
     };
 
     var bindToolboxEvents = function() {
-      toolbox.getElement().find('.sl-toolbox-component, .sl-toolbox-layout').draggable(TOOLBOX_COMPONENT_DRAGGABLE_SETTINGS);
-      toolbox.getElement().find('.sl-toolbox-trash').droppable(TRASH_DROPPABLE_SETTINGS);
-      toolbox.getElement().draggable(TOOLBOX_DRAGGABLE_SETTINGS);
-    };
-
-    var on = function(eventType, callback) {
-      layoutmanager.getElement().on(eventType, function() {
-        callback.apply(this, arguments);
-      });
+      toolbox.element.find(".sl-toolbox-component, .sl-toolbox-layout").draggable(TOOLBOX_COMPONENT_DRAGGABLE_SETTINGS);
+      toolbox.element.find(".sl-toolbox-trash").droppable(TRASH_DROPPABLE_SETTINGS);
+      toolbox.element.draggable(TOOLBOX_DRAGGABLE_SETTINGS);
     };
 
     bindLayoutEvents();
@@ -264,25 +266,25 @@ define(['simplelayout/Layoutmanager', 'simplelayout/Eventrecorder', 'simplelayou
 
       attachToolbox: function(toolboxRef) {
         if (!toolboxRef) {
-          throw new Error('No toolbox defined');
+          throw new Error("No toolbox defined");
         }
-        if (layoutmanager.getElement().parent().length === 0) {
-          throw new Error('Not attached to DOM element');
+        if (layoutmanager.element.parent().length === 0) {
+          throw new Error("Not attached to DOM element");
         }
         toolbox = toolboxRef;
-        layoutmanager.minImageWidth = layoutmanager.getElement().width() / Math.max.apply(null, toolbox.options.layouts) / this.options.imageCount;
+        layoutmanager.minImageWidth = layoutmanager.element.width() / Math.max.apply(null, toolbox.options.layouts) / this.options.imageCount;
         layoutmanager.toolbox = toolbox;
         bindToolboxEvents();
       },
 
-      on : on,
+      on: on,
 
-      bindEvents : function() {
+      bindEvents: function() {
         bindLayoutEvents();
         bindToolboxEvents();
       },
 
-      getCurrentBlock : function() {
+      getCurrentBlock: function() {
         return currentBlock;
       }
 

@@ -1,6 +1,6 @@
 module.exports = function(grunt) {
 
-  'use strict';
+  "use strict";
 
   grunt.initConfig({
 
@@ -8,22 +8,22 @@ module.exports = function(grunt) {
       dev: {
         options: {
           variables: {
-            'optimize': 'none',
-            'sass-style' : 'expanded',
-            'sourcemap' : 'inline',
-            'cssoutput' : 'dist/simplelayout.css',
-            'jsoutput' : 'dist/simplelayout.js'
+            "optimize": "none",
+            "sass-style": "expanded",
+            "sourcemap": "inline",
+            "cssoutput": "dist/simplelayout.css",
+            "jsoutput": "dist/simplelayout.js"
           }
         }
       },
       prod: {
         options: {
           variables: {
-            'optimize': 'uglify',
-            'sass-style' : 'compressed',
-            'sourcemap' : 'none',
-            'cssoutput' : 'dist/simplelayout.min.css',
-            'jsoutput' : 'dist/simplelayout.min.js'
+            "optimize": "uglify",
+            "sass-style": "compressed",
+            "sourcemap": "none",
+            "cssoutput": "dist/simplelayout.min.css",
+            "jsoutput": "dist/simplelayout.min.js"
           }
         }
       }
@@ -33,10 +33,10 @@ module.exports = function(grunt) {
     mocha: {
       test: {
         // Test all files ending in .html anywhere inside the test directory.
-        src: ['test/**/*.html'],
+        src: ["test/**/*.html"],
         options: {
           log: true,
-          reporter: 'Spec',
+          reporter: "Spec",
           run: true
         }
       }
@@ -45,39 +45,39 @@ module.exports = function(grunt) {
       compile: {
         options: {
           almond: true,
-          baseUrl: 'scripts',
-          mainConfigFile: 'scripts/config.js',
+          baseUrl: "scripts",
+          mainConfigFile: "scripts/config.js",
           findNestedDependencies: true,
-          name: '../node_modules/almond/almond',
-          include: ['simplelayout/Simplelayout', 'toolbox/Toolbox'],
-          out: '<%= grunt.config.get("jsoutput") %>',
-          optimize : '<%= grunt.config.get("optimize") %>',
+          name: "../node_modules/almond/almond",
+          include: ["simplelayout/Simplelayout", "toolbox/Toolbox"],
+          out: "<%= grunt.config.get('jsoutput') %>",
+          optimize: "<%= grunt.config.get('optimize') %>",
           wrap: {
             startFile: "build/start.frag",
             endFile: "build/end.frag"
-          },
+          }
         }
       }
     },
     sass: {
       dist: {
         options: {
-          style: '<%= grunt.config.get("sass-style") %>',
-          sourcemap: '<%= grunt.config.get("sourcemap") %>',
+          style: "<%= grunt.config.get('sass-style') %>",
+          sourcemap: "<%= grunt.config.get('sourcemap') %>"
         },
         files: {
-          '<%= grunt.config.get("cssoutput") %>' : 'styles/scss/main.scss',
+          "<%= grunt.config.get('cssoutput') %>": "styles/scss/main.scss"
         }
       }
     },
     watch: {
       scripts: {
-        files: ['scripts/**/*.js', 'styles/scss/*.scss'],
-        tasks: ['requirejs', 'sass'],
+        files: ["scripts/**/*.js", "styles/scss/*.scss"],
+        tasks: ["requirejs", "sass"],
         options: {
-          spawn: false,
-        },
-      },
+          spawn: false
+        }
+      }
     },
     clean: ["dist"],
     eslint: {

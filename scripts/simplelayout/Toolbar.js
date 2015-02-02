@@ -1,6 +1,6 @@
 define([], function() {
 
-  'use strict';
+  "use strict";
 
   function Toolbar(_actions) {
 
@@ -8,7 +8,12 @@ define([], function() {
       throw new TypeError("Toolbar constructor cannot be called as a function.");
     }
 
-    var defaultActions = {move : {name: 'move', description: 'Move this block arround'}};
+    var defaultActions = {
+      move: {
+        name: "move",
+        description: "Move this block arround"
+      }
+    };
 
     var actions = $.extend(defaultActions, _actions || {});
 
@@ -22,29 +27,27 @@ define([], function() {
       "<ul class='sl-toolbar'>{{for actions}}<li><a class='{{:name}} icon-{{:name}}' title='{{:description}}'></a></li><li class='delimiter'></li>{{/for}}</ul>"
     );
 
-    var element = $(template.render({actions : normalizedActions}));
+    var element = $(template.render({
+      actions: normalizedActions
+    }));
 
     var keepVisible = false;
 
     return {
 
-      element : element,
+      element: element,
 
-      getElement: function() {
-        return this.element;
-      },
-
-      show : function() {
+      show: function() {
         this.element.show();
       },
 
-      hide : function() {
-        if(!keepVisible) {
+      hide: function() {
+        if (!keepVisible) {
           this.element.hide();
         }
       },
 
-      keepVisible : function(_keepVisible) {
+      keepVisible: function(_keepVisible) {
         keepVisible = _keepVisible;
       }
 

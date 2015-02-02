@@ -1,8 +1,8 @@
 (function() {
-  'use strict';
+  "use strict";
 
   require.config({
-    baseUrl: '../bower_components',
+    baseUrl: "../bower_components",
     paths: {
       simplelayout: "../scripts/simplelayout",
       toolbox: "../scripts/toolbox",

@@ -1,6 +1,6 @@
 define([], function() {
 
-  'use strict';
+  "use strict";
 
   function Eventrecorder() {
 
@@ -10,29 +10,29 @@ define([], function() {
 
     return {
 
-      eventId : 0,
+      eventId: 0,
 
-      eventQueue : {},
+      eventQueue: {},
 
-      record : function(event) {
-        $(event.target).data('event-id', this.eventId);
+      record: function(event) {
+        $(event.target).data("event-id", this.eventId);
         this.eventQueue[this.eventId] = event;
         this.eventId++;
       },
 
-      lookup : function(event) {
-        var eventLookup = this.eventQueue[$(event.target).data('event-id')];
-        if(!eventLookup) {
-          throw new Error('No event for lookup.');
+      lookup: function(event) {
+        var eventLookup = this.eventQueue[$(event.target).data("event-id")];
+        if (!eventLookup) {
+          throw new Error("No event for lookup.");
         }
         return eventLookup;
       },
 
-      getEventQueue : function() {
+      getEventQueue: function() {
         return this.eventQueue;
       },
 
-      flush : function() {
+      flush: function() {
         this.eventQueue = {};
         this.eventId = 0;
       }

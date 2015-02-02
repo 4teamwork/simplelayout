@@ -1,5 +1,6 @@
 <!DOCTYPE>
 <html>
+
 <head>
   <script type="text/javascript" src="../bower_components/sinonjs/sinon.js"></script>
   <script type="text/javascript" src="../bower_components/mocha/mocha.js"></script>
@@ -11,13 +12,18 @@
   <link rel="stylesheet" href="../bower_components/mocha/mocha.css" />
 
   <script type="text/javascript">
-    if(window.location.href.indexOf('?refresh') > 0) {
-      window.setInterval(function() {
-        window.location.reload();
-      }, 5000)
-    }
+  (function() {
+    "use strict";
+
+    if (window.location.href.indexOf("?refresh") > 0) {
+        window.setInterval(function() {
+          window.location.reload();
+        }, 5000);
+      }
+    }());
   </script>
 </head>
+
 <body>
   <div id="mocha"></div>
   <div id="simplelayout"></div>
@@ -25,7 +31,7 @@
   // Set as test mode for proper configuration.
   window._TEST_MODE = true;
 
-  mocha.setup('tdd');
+  mocha.setup("tdd");
   </script>
 
   <!-- Include the actual tests. -->
@@ -41,10 +47,11 @@
 
   <script type="text/javascript">
   // Only tests run in real browser, injected script run if options.run == true
-  if (navigator.userAgent.indexOf('PhantomJS') < 0) {
+  if (navigator.userAgent.indexOf("PhantomJS") < 0) {
     mocha.run();
   }
   </script>
 
 </body>
+
 </html>

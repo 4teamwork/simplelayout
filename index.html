@@ -14,64 +14,67 @@
   <script src="bower_components/jsrender/jsrender.js"></script>
   <script src="dist/simplelayout.js"></script>
   <script>
-  $(document).ready(function() {
-    var simplelayout = new Simplelayout({
-      width: '900px',
-      source : '#simplelayout'
-    });
+  (function() {
+    "use strict";
+    $(document).ready(function() {
+      var simplelayout = new Simplelayout({
+        width: "900px",
+        source: "#simplelayout"
+      });
 
-    var toolbox = new Toolbox({
-      layouts: [1, 2, 4],
-      components: {
-        listingblock: {
-          title: "Listingblock",
-          description: "can list things",
-          content_type: "listingblock",
-          form_url: "http://www.google.com",
-          actions: {
-            edit: {
-              name: 'edit',
-              description: 'Edit this block'
+      var toolbox = new Toolbox({
+        layouts: [1, 2, 4],
+        components: {
+          listingblock: {
+            title: "Listingblock",
+            description: "can list things",
+            contentType: "listingblock",
+            formUrl: "http://www.google.com",
+            actions: {
+              edit: {
+                name: "edit",
+                description: "Edit this block"
+              }
             }
-          }
-        },
-        textblock: {
-          title: "Textblock",
-          description: "can show text",
-          content_type: "textblock",
-          form_url: "http://www.bing.com",
-          actions: {
-            edit: {
-              name: 'edit',
-              description: 'Edit this block'
-            },
-            download: {
-              name: 'download',
-              description: 'Download this content'
+          },
+          textblock: {
+            title: "Textblock",
+            description: "can show text",
+            contentType: "textblock",
+            formUrl: "http://www.bing.com",
+            actions: {
+              edit: {
+                name: "edit",
+                description: "Edit this block"
+              },
+              download: {
+                name: "download",
+                description: "Download this content"
+              }
             }
           }
         }
-      }
-    });
+      });
 
-    toolbox.attachTo($('body'));
-    simplelayout.attachToolbox(toolbox);
-    $('#ser').on('click', function() {
-      console.log(simplelayout.getLayoutmanager().serialize());
+      toolbox.attachTo($("body"));
+      simplelayout.attachToolbox(toolbox);
+      $("#ser").on("click", function() {
+        console.log(simplelayout.getLayoutmanager().serialize());
+      });
+      $("#des").on("click", function() {
+        simplelayout.getLayoutmanager().deserialize();
+      });
     });
-    $('#des').on('click', function() {
-      simplelayout.getLayoutmanager().deserialize();
-      //simplelayout.bindEvents();
-    });
-  });
+  }());
   </script>
+
 </head>
 
 <body>
   <header style="width: 100%; height: 100px; background: red;"></header>
   <aside style="width: 200px; float: left; background: red;height:100%;">
-    <button id='ser'>Serialize</button>
-    <button id='des'>Deserialize</button>
+    <button id="ser">Serialize</button>
+    <button id="des">Deserialize</button>
   </aside>
   <main style="float: left;">
     <div id="simplelayout" class="sl-simplelayout" style="width:900px;">
