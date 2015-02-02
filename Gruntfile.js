@@ -79,19 +79,24 @@ module.exports = function(grunt) {
         },
       },
     },
-    clean : ['dist']
+    clean: ["dist"],
+    eslint: {
+        target: ["Gruntfile.js", "test/**/*.js", "scripts/**/*.js"]
+    }
   });
 
-  grunt.loadNpmTasks('grunt-config');
-  grunt.loadNpmTasks('grunt-contrib-clean');
-  grunt.loadNpmTasks('grunt-contrib-requirejs');
-  grunt.loadNpmTasks('grunt-contrib-sass');
-  grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-mocha');
+  grunt.loadNpmTasks("grunt-config");
+  grunt.loadNpmTasks("grunt-contrib-clean");
+  grunt.loadNpmTasks("grunt-eslint");
+  grunt.loadNpmTasks("grunt-contrib-requirejs");
+  grunt.loadNpmTasks("grunt-contrib-sass");
+  grunt.loadNpmTasks("grunt-contrib-watch");
+  grunt.loadNpmTasks("grunt-mocha");
 
-  grunt.registerTask('test', ['mocha']);
-  grunt.registerTask('dev', ['clean', 'config:dev', 'requirejs', 'sass', 'watch']);
-  grunt.registerTask('prod', ['clean','config:prod', 'requirejs', 'sass']);
-  grunt.registerTask('default', ['dev']);
+  grunt.registerTask("lint", ["eslint"]);
+  grunt.registerTask("test", ["mocha"]);
+  grunt.registerTask("dev", ["clean", "config:dev", "lint", "requirejs", "sass", "watch"]);
+  grunt.registerTask("prod", ["clean", "config:prod", "lint", "requirejs", "sass"]);
+  grunt.registerTask("default", ["dev"]);
 
 };

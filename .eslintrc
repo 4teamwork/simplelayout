@@ -1,0 +1,13 @@
+{
+  "env" : {
+    "node" : true,
+    "amd" : true,
+    "jquery" : true,
+    "mocha" : true,
+    "phantomjs" : true,
+    "browser" : ture
+  },
+  "globals": {
+    "assert": true
+  }
+}
