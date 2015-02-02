@@ -27,32 +27,68 @@ bower install
 Dev (default):
 Does not optimize javascript and CSS files.
 Starts grunt watcher.
+Executes eslinter.
 ```bash
 grunt
 ```
 
 Prod:
-Optimizes javascript and CSS files for production
+Optimizes javascript and CSS files for production. Executes eslinter.
 ```bash
 grunt prod
 ```
 ## Get started
 
+With existing DOM ready to serialize.
+
 ```javascript
-$(document).ready(function() {
-  var target = $('body');
+(function() {
+  "use strict";
+  $(document).ready(function() {
+    var simplelayout = new Simplelayout({
+      width: "900px",
+      source: "#simplelayout"
+    });
 
-  var simplelayout = new Simplelayout({width : '900px'});
-  var toolbox = new Toolbox({
-    layouts: [1, 2, 4],
-    components : components : [{"title": "Listingblock", "description": "can list things", "content_type": "listingblock", "form_url" : "http://www.google.com"},
-        {"title": "Textblock", "description": "can show text", "content_type": "textblock", "form_url" : "http://www.bing.com"}]
+    var toolbox = new Toolbox({
+      layouts: [1, 2, 4],
+      components: {
+        listingblock: {
+          title: "Listingblock",
+          description: "can list things",
+          contentType: "listingblock",
+          formUrl: "http://www.google.com",
+          actions: {
+            edit: {
+              name: "edit",
+              description: "Edit this block"
+            }
+          }
+        },
+        textblock: {
+          title: "Textblock",
+          description: "can show text",
+          contentType: "textblock",
+          formUrl: "http://www.bing.com",
+          actions: {
+            edit: {
+              name: "edit",
+              description: "Edit this block"
+            },
+            download: {
+              name: "download",
+              description: "Download this content"
+            }
+          }
+        }
+      }
+    });
+
+    toolbox.attachTo($("body"));
+    simplelayout.attachToolbox(toolbox);
+    simplelayout.getLayoutmanager().deserialize();
   });
-
-  simplelayout.attachTo(target);
-  toolbox.attachTo(target);
-  simplelayout.attachToolbox(toolbox);
-});
+}());
 ```
 
 #Toolbox
@@ -66,20 +102,51 @@ Select layouts that can be dragged from the toolbox.
 
 Select the provided components
 ```javascript
-{components : [{"title": "Listingblock", "description": "can list things", "content_type": "listingblock", "form_url" : "http://www.google.com"},
-        {"title": "Textblock", "description": "can show text", "content_type": "textblock", "form_url" : "http://www.bing.com"}]}
+components: {
+  listingblock: {
+    title: "Listingblock",
+    description: "can list things",
+    contentType: "listingblock",
+    formUrl: "http://www.google.com",
+    actions: {
+      edit: {
+        name: "edit",
+        description: "Edit this block"
+      }
+    }
+  },
+  textblock: {
+    title: "Textblock",
+    description: "can show text",
+    contentType: "textblock",
+    formUrl: "http://www.bing.com",
+    actions: {
+      edit: {
+        name: "edit",
+        description: "Edit this block"
+      },
+      download: {
+        name: "download",
+        description: "Download this content"
+      }
+    }
+  }
+}
 ```
+
+title --> Title in toolbox.
+description --> Used for title attribute
+contentType --> Must be unique. Used for internal reasons.
+formUrl --> URL will be called when adding that block.
+actions --> Define actions for this block.
+  name --> Used for generating elements class.
+  description --> Used for title attribute.
 
 ## API
 
 Attach Element to JQuery Node
 ```javascript
 toolbox.attachTo($('body'));
-```
-
-Get JQuery Element
-```javascript
-toolbox.getElement();
 ```
 
 #Simplelayout
@@ -137,3 +204,109 @@ blocksCommitted(event)
 blockMoved(event, oldLayoutId, oldColumnId, blockId, newLayoutId, newColumnId)
 
 deserialized(event)
+
+# Plone-Intergration
+
+## Endpoints
+
+Saving: /save_state
+Produces JSON.
+
+```javascript
+{
+  "layouts": [1, 2, 1],
+  "blocks": [{
+    "layoutPos": 0,
+    "columnPos": 0,
+    "blockPos": 0,
+    "uid": "fe0cd15feedb49469033e783d1340545"
+  }, {
+    "layoutPos": 1,
+    "columnPos": 0,
+    "blockPos": 0,
+    "uid": "35df1fc8aadb11e489d3123b93f75cba"
+  }, {
+    "layoutPos": 1,
+    "columnPos": 1,
+    "blockPos": 0,
+    "uid": "1951bb7caadb11e489d3123b93f75cba"
+  }, {
+    "layoutPos": 2,
+    "columnPos": 0,
+    "blockPos": 0,
+    "uid": "fe0cd15feedb49469033e783d1340545"
+  }]
+}
+```
+
+- The numbers in the layouts Array defines total columns.
+- uid represents the object in the database.
+
+Loading: /load_state
+Produces HTML.
+
+```html
+<div id="simplelayout" class="sl-simplelayout ui-droppable ui-sortable" style="width:900px;">
+  <div class="sl-layout">
+    <div class="sl-column sl-col-1 ui-droppable ui-sortable">
+      <div data-type="textblock" data-uid="fe0cd15feedb49469033e783d1340545" class="sl-block">
+        <!-- Block content -->
+      </div>
+    </div>
+  </div>
+  <div class="sl-layout">
+    <div class="sl-column sl-col-2 ui-droppable ui-sortable">
+      <div data-type="textblock" data-uid="35df1fc8aadb11e489d3123b93f75cba" class="sl-block">
+        <!-- Block content -->
+      </div>
+    </div>
+    <div class="sl-column sl-col-2 ui-droppable ui-sortable">
+      <div data-type="textblock" data-uid="1951bb7caadb11e489d3123b93f75cba" class="sl-block">
+        <!-- Block content -->
+      </div>
+    </div>
+  </div>
+  <div class="sl-layout">
+    <div class="sl-column sl-col-1 ui-droppable ui-sortable">
+      <div data-type="textblock" data-uid="fe0cd15feedb49469033e783d1340545" class="sl-block">
+        <!-- Block content -->
+      </div>
+    </div>
+  </div>
+</div>
+```
+
+Loading Toolbox definition: /addable_blocks
+Produces JSON
+```Javascript
+{
+  listingblock: {
+    title: "Listingblock",
+    description: "can list things",
+    contentType: "listingblock",
+    formUrl: "http://www.google.com",
+    actions: {
+      edit: {
+        name: "edit",
+        description: "Edit this block"
+      }
+    }
+  },
+  textblock: {
+    title: "Textblock",
+    description: "can show text",
+    contentType: "textblock",
+    formUrl: "http://www.bing.com",
+    actions: {
+      edit: {
+        name: "edit",
+        description: "Edit this block"
+      },
+      download: {
+        name: "download",
+        description: "Download this content"
+      }
+  }
+}
+```
+
