@@ -3,8 +3,9 @@
   width: 100%;
   opacity: 1;
   position: relative;
-  border: 1px solid $column-border-color;
-  margin-bottom: 4px;
+  box-shadow: inset 0px 0px 0px 1px $column-border-color;
+  margin-bottom: 2px;
+  min-height: 40px;
   background: $column-background-color;
   .placeholder {
     background-color: $block-placeholder-background-color;

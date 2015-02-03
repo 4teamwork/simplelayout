@@ -27,6 +27,14 @@
   content: "\f000";
 }
 
+.icon-textblock:before {
+  content: "\f001";
+}
+
+.icon-listingblock:before {
+  content: "\f002";
+}
+
 .icon-resize:before {
   content: "\f003";
 }
@@ -48,5 +56,9 @@
 }
 
 .icon-download:before {
-  content: "\f0ed";
+  content: "\f008";
+}
+
+.icon-tool:before {
+  content: "\f009";
 }
