@@ -2,7 +2,6 @@
   "use strict";
   $(document).ready(function() {
     var simplelayout = new Simplelayout({
-      width: "900px",
       source: "#simplelayout"
     });
 
