@@ -42,11 +42,9 @@
 
     toolbox.attachTo($("body"));
     simplelayout.attachToolbox(toolbox);
+    simplelayout.getLayoutmanager().deserialize();
     $("#ser").on("click", function() {
       console.log(simplelayout.getLayoutmanager().serialize());
-    });
-    $("#des").on("click", function() {
-      simplelayout.getLayoutmanager().deserialize();
     });
   });
 }());
