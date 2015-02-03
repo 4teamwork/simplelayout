@@ -31,25 +31,9 @@ define([], function() {
       actions: normalizedActions
     }));
 
-    var keepVisible = false;
-
     return {
 
       element: element,
-
-      show: function() {
-        this.element.show();
-      },
-
-      hide: function() {
-        if (!keepVisible) {
-          this.element.hide();
-        }
-      },
-
-      keepVisible: function(_keepVisible) {
-        keepVisible = _keepVisible;
-      }
 
     };
 

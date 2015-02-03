@@ -209,30 +209,11 @@ define(["simplelayout/Layoutmanager", "simplelayout/Eventrecorder", "simplelayou
         block.attachToolbar(toolbar);
       });
       layoutmanager.element.on("mouseover", ".sl-block", function() {
-        data = $(this).data();
-        layoutId = data.layoutId;
-        columnId = data.columnId;
-        blockId = data.blockId;
-        currentBlock = layoutmanager.getBlock(layoutId, columnId, blockId);
-        currentBlock.toolbar.show();
-      }).on("mouseout", ".sl-block", function() {
-        data = $(this).data();
-        layoutId = data.layoutId;
-        columnId = data.columnId;
-        blockId = data.blockId;
-        layoutmanager.getBlock(layoutId, columnId, blockId).toolbar.hide();
-      }).on("mousedown", ".sl-block", function() {
-        data = $(this).data();
-        layoutId = data.layoutId;
-        columnId = data.columnId;
-        blockId = data.blockId;
-        layoutmanager.getBlock(layoutId, columnId, blockId).toolbar.keepVisible(true);
-      }).on("mouseup", ".sl-block", function() {
-        data = $(this).data();
-        layoutId = data.layoutId;
-        columnId = data.columnId;
-        blockId = data.blockId;
-        layoutmanager.getBlock(layoutId, columnId, blockId).toolbar.keepVisible(false);
+          data = $(this).data();
+          layoutId = data.layoutId;
+          columnId = data.columnId;
+          blockId = data.blockId;
+          currentBlock = layoutmanager.getBlock(layoutId, columnId, blockId);
       });
     };
 
