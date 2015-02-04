@@ -35,10 +35,10 @@ suite("Toolbox", function() {
       toolbox.attachTo(target);
 
       var addedNodes = $.map(target.find(".sl-toolbox-component"), function(e) {
-        return {title: $(e).text().trim(), description: $(e).attr("title"), contentType: $("i", e).attr("class"), formUrl: $(e).data("form_url")};
+        return {title: $(e).text().trim(), description: $(e).attr("title"), iconClass: $("i", e).attr("class"), formUrl: $(e).data("form_url")};
       });
 
-      assert.deepEqual(addedNodes, [{title: "Listingblock", description: "can list things", contentType: "listingblock", formUrl: "http://www.google.com"}, {title: "Textblock", description: "can show text", contentType: "textblock", formUrl: "http://www.bing.com"}]);
+      assert.deepEqual(addedNodes, [{title: "Listingblock", description: "can list things", iconClass: "icon-listingblock", formUrl: "http://www.google.com"}, {title: "Textblock", description: "can show text", iconClass: "icon-textblock", formUrl: "http://www.bing.com"}]);
     });
 
     test("raises exception when no layout is defined", function() {

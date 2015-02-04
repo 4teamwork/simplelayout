@@ -33,7 +33,7 @@ define([], function() {
 
     return {
 
-      element: element,
+      element: element
 
     };
 

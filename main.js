@@ -1,5 +1,9 @@
-(function() {
+(function(global) {
   "use strict";
+
+  var Simplelayout = global.Simplelayout;
+  var Toolbox = global.Toolbox;
+
   $(document).ready(function() {
     var simplelayout = new Simplelayout({
       source: "#simplelayout"
@@ -45,5 +49,14 @@
     $("#ser").on("click", function() {
       console.log(simplelayout.getLayoutmanager().serialize());
     });
+    $("#mark").on("click", function() {
+      for(var lkey in simplelayout.getLayoutmanager().layouts) {
+        for(var ckey in simplelayout.getLayoutmanager().layouts[lkey].columns){
+          for(var bkey in simplelayout.getLayoutmanager().layouts[lkey].columns[ckey].blocks) {
+            simplelayout.getLayoutmanager().layouts[lkey].columns[ckey].blocks[bkey].mark();
+          }
+        }
+      }
+    });
   });
-}());
+}(window));

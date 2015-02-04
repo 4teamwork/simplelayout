@@ -16,7 +16,7 @@ define(["simplelayout/Layout"], function(Layout) {
 
     if (options.source) {
       element = $(_options.source);
-      element.addClass('sl-simplelayout');
+      element.addClass("sl-simplelayout");
     } else {
       var template = $.templates("<div class='sl-simplelayout' style='width:{{:width}};''></div>");
       element = $(template.render(options));

@@ -9,7 +9,7 @@ define([], function() {
     }
 
     var template = $.templates(
-      "<div data-type='{{:type}}' class='sl-block'><div class='sl-block-content'>{{:content}}</div></div>"
+      '<div data-type="{{:type}}" class="sl-block"><div class="sl-block-content">{{:content}}</div></div>'
     );
 
     return {
