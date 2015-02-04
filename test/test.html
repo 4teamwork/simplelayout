@@ -12,27 +12,25 @@
   <link rel="stylesheet" href="../bower_components/mocha/mocha.css" />
 
   <script type="text/javascript">
-  (function() {
+  (function(global) {
     "use strict";
 
     if (window.location.href.indexOf("?refresh") > 0) {
-        window.setInterval(function() {
-          window.location.reload();
-        }, 5000);
-      }
-    }());
-  </script>
+      window.setInterval(function() {
+        window.location.reload();
+      }, 5000);
+    }
+
+    global._TEST_MODE = true;
+
+    global.mocha.setup("tdd");
+  }(window));
+</script>
 </head>
 
 <body>
   <div id="mocha"></div>
   <div id="simplelayout"></div>
-  <script type="text/javascript">
-  // Set as test mode for proper configuration.
-  window._TEST_MODE = true;
-
-  mocha.setup("tdd");
-  </script>
 
   <!-- Include the actual tests. -->
   <script type="text/javascript" src="testsetup.js"></script>

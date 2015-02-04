@@ -208,6 +208,12 @@ define(["simplelayout/Layoutmanager", "simplelayout/Eventrecorder", "simplelayou
         var toolbar = new Toolbar(blockToCreateOptions.actions);
         block.attachToolbar(toolbar);
       });
+      layoutmanager.element.on("click", ".remove", function() {
+        layoutId = currentBlock.element.data("layoutId");
+        columnId = currentBlock.element.data("columnId");
+        blockId = currentBlock.element.data("blockId");
+        layoutmanager.deleteBlock(layoutId, columnId, blockId);
+      });
       layoutmanager.element.on("mouseover", ".sl-block", function() {
           data = $(this).data();
           layoutId = data.layoutId;

@@ -11,7 +11,11 @@ define([], function() {
     var defaultActions = {
       move: {
         name: "move",
-        description: "Move this block arround"
+        description: "Move this block arround."
+      },
+      remove: {
+        name: "remove",
+        description: "Remove this block."
       }
     };
 
