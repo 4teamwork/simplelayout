@@ -269,10 +269,6 @@ define(["simplelayout/Layoutmanager", "simplelayout/Eventrecorder", "simplelayou
       bindEvents: function() {
         bindLayoutEvents();
         bindToolboxEvents();
-      },
-
-      getCurrentBlock: function() {
-        return currentBlock;
       }
 
     };
