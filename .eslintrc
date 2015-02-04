@@ -5,10 +5,10 @@
     "jquery" : true,
     "mocha" : true,
     "phantomjs" : true,
-    "browser" : ture
+    "browser" : true
   },
   "rules" : {
-    [2, "double", "avoid-escape"]
+    "quotes": [1, "double", "avoid-escape"]
   },
   "globals": {
     "assert": true
