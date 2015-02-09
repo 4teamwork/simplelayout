@@ -28,7 +28,7 @@ define([], function() {
     });
 
     var template = $.templates(
-      "<ul class='sl-toolbar'>{{for actions}}<li><a class='{{:name}} icon-{{:name}}' title='{{:description}}'></a></li><li class='delimiter'></li>{{/for}}</ul>"
+      "<ul class='sl-toolbar'>{{for actions}}<li><a href='#{{:name}}' class='{{:name}} icon-{{:name}}' title='{{:description}}'></a></li><li class='delimiter'></li>{{/for}}</ul>"
     );
 
     var element = $(template.render({
