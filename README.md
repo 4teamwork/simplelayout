@@ -209,7 +209,7 @@ deserialized(event)
 
 ## Endpoints
 
-Saving: /save_state
+Saving: /sl-ajax-save-state-view
 Produces JSON.
 
 ```javascript
@@ -242,7 +242,7 @@ Produces JSON.
 - The numbers in the layouts Array defines total columns.
 - uid represents the object in the database.
 
-Loading: /load_state
+Loading: /sl-ajax-load-state-view
 Produces HTML.
 
 ```html
@@ -276,7 +276,7 @@ Produces HTML.
 </div>
 ```
 
-Loading Toolbox definition: /addable_blocks
+Loading Toolbox definition: /sl-ajax-addable-blocks-view
 Produces JSON
 ```Javascript
 {
@@ -287,8 +287,8 @@ Produces JSON
     formUrl: "http://www.google.com",
     actions: {
       edit: {
-        name: "edit",
-        description: "Edit this block"
+        // Custom key value pair will be rendered for the action
+        // i.e. "class": "edit edit-icon"
       }
     }
   },
@@ -299,20 +299,20 @@ Produces JSON
     formUrl: "http://www.bing.com",
     actions: {
       edit: {
-        name: "edit",
-        description: "Edit this block"
+        class: "edit edit-icon",
+        title: "Edit this block"
       },
       download: {
-        name: "download",
-        description: "Download this content"
+        class: "download download-icon",
+        title: "Download this content"
       }
   }
 }
 ```
 
-Deleting Blocks: /delete_blocks
+Deleting Blocks: /sl-ajax-delete-blocks-view
 
-data: A list of uids.
+blocks: A list of uids.
 confirmed: If true the blocks will be deleted otherwise not.
 
 Comsumes JSON
@@ -325,3 +325,16 @@ Comsumes JSON
   ],
   confirmed: false/true
 }
+```
+
+Reload Block content: /sl-ajax-reload-block-view
+
+uid: Identifier for current block.
+
+Comsumes JSON
+```Javascript
+{
+  uid: "41274c3ab9df4eb38e1fc12cff5df1e0",
+  //other dynmic configurations based on action
+}
+```
