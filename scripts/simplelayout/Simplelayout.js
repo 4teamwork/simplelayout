@@ -235,6 +235,10 @@ define(["simplelayout/Layoutmanager", "simplelayout/Eventrecorder", "simplelayou
 
       options: options,
 
+      getCurrentBlock: function() {
+        return currentBlock;
+      },
+
       getLayoutmanager: function() {
         return layoutmanager;
       },
