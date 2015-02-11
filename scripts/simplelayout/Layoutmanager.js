@@ -90,8 +90,8 @@ define(["simplelayout/Layout"], function(Layout) {
 
       deleteBlock: function(layoutId, columnId, blockId) {
         var layout = this.layouts[layoutId];
+        this.element.trigger("blockDeleted", [layoutId, columnId, blockId]);
         layout.deleteBlock(columnId, blockId);
-        this.element.trigger("blockDeleted");
       },
 
       commitBlocks: function(layoutId, columnId) {
