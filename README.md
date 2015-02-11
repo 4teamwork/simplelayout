@@ -197,7 +197,7 @@ layoutsCommited(event)
 
 blocksInserted(event, layoutId, columnId, blockId)
 
-blockDeleted(event)
+blockDeleted(event, layoutId, columnId, blockId)
 
 blocksCommitted(event)
 
@@ -310,3 +310,18 @@ Produces JSON
 }
 ```
 
+Deleting Blocks: /delete_blocks
+
+data: A list of uids.
+confirmed: If true the blocks will be deleted otherwise not.
+
+Comsumes JSON
+```Javascript
+{
+  blocks: [
+    "41274c3ab9df4eb38e1fc12cff5df1e0",
+    "8dc61996b4bb42a8a2904b8c41f6c9d3",
+    "42d3b4c6f3984773b55fb4e9dfc93499"
+  ],
+  confirmed: false/true
+}
