@@ -9,7 +9,7 @@
   "dependencies": {
     "jquery": ">1.6",
     "jquery-ui": "1.10.2",
-    "jsrender": "1.0.0-beta",
+    "jsrender": "git://github.com/BorisMoore/jsrender#master",
     "requirejs": "2.1.9"
   },
   "homepage": "https://github.com/4teamwork/simplelayout-mockup",
