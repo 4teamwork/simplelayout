@@ -10,12 +10,12 @@ define([], function() {
 
     var defaultActions = {
       move: {
-        name: "move",
-        description: "Move this block arround."
+        "class": "move icon-move",
+        "title": "Move this block arround."
       },
       remove: {
-        name: "remove",
-        description: "Remove this block."
+        "class": "remove icon-remove",
+        "title": "Remove this block."
       }
     };
 
@@ -28,7 +28,7 @@ define([], function() {
     });
 
     var template = $.templates(
-      "<ul class='sl-toolbar'>{{for actions}}<li><a href='#{{:name}}' class='{{:name}} icon-{{:name}}' title='{{:description}}'></a></li><li class='delimiter'></li>{{/for}}</ul>"
+      "<ul class='sl-toolbar'>{{for actions}}<li><a {{props}} {{>key}}='{{>prop}}' {{/props}}></a></li><li class='delimiter'></li>{{/for}}</ul>"
     );
 
     var element = $(template.render({

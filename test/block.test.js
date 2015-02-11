@@ -49,7 +49,7 @@ suite("Block", function() {
       return {tagName: blockNode.tagName, content: blockNode.innerHTML, type: blockNode.dataset.type};
     });
 
-    assert.deepEqual(node, [{tagName: "DIV", content: '<div class="sl-block-content"><p>Test</p></div><ul class="sl-toolbar"><li><a href="#move" class="move icon-move" title="Move this block arround."></a></li><li class="delimiter"></li><li><a href="#remove" class="remove icon-remove" title="Remove this block."></a></li><li class="delimiter"></li></ul>', type: "textblock"}]);
+    assert.deepEqual(node, [{tagName: "DIV", content: '<div class="sl-block-content"><p>Test</p></div><ul class="sl-toolbar"><li><a href="#" class="move icon-move" title="Move this block arround."></a></li><li class="delimiter"></li><li><a href="#" class="remove icon-remove" title="Remove this block."></a></li><li class="delimiter"></li></ul>', type: "textblock"}]);
   });
 
 });
