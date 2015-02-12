@@ -33,65 +33,6 @@ define(["simplelayout/Layoutmanager", "simplelayout/Eventrecorder", "simplelayou
       }
     };
 
-    var TRASH_DROPPABLE_SETTINGS = {
-      accept: ".sl-layout, .sl-block",
-      tolerance: "touch",
-      over: function(e, ui) {
-        var layoutId;
-        if (ui.draggable.hasClass("sl-layout")) {
-          layoutId = ui.draggable.data("layout-id");
-          var layout = layoutmanager.layouts[layoutId];
-          var hasBlocks = false;
-          for (var key in layout.columns) {
-            if (Object.keys(layout.columns[key].blocks).length > 0) {
-              hasBlocks = true;
-              break;
-            }
-          }
-          layout.element.addClass("deleted");
-          if (hasBlocks) {
-            layout.element.addClass("cancelDeletion");
-          }
-        } else {
-          layoutId = ui.draggable.data("layout-id");
-          var columnId = ui.draggable.data("column-id");
-          var blockId = ui.draggable.data("block-id");
-          var block = layoutmanager.getBlock(layoutId, columnId, blockId);
-          block.element.addClass("deleted");
-        }
-      },
-      drop: function(e, ui) {
-        var layoutId;
-        if (ui.draggable.hasClass("sl-layout")) {
-          layoutId = ui.draggable.data("layout-id");
-          var layout = layoutmanager.layouts[layoutId];
-          if (!layout.element.hasClass("cancelDeletion")) {
-            layoutmanager.deleteLayout(layoutId);
-          }
-          layout.element.removeClass("deleted cancelDeletion");
-        } else {
-          layoutId = ui.draggable.data("layout-id");
-          var columnId = ui.draggable.data("column-id");
-          var blockId = ui.draggable.data("block-id");
-          layoutmanager.deleteBlock(layoutId, columnId, blockId);
-        }
-      },
-      out: function(e, ui) {
-        var layoutId;
-        if (ui.draggable.hasClass("sl-layout")) {
-          layoutId = ui.draggable.data("layout-id");
-          var layout = layoutmanager.layouts[layoutId];
-          layout.element.removeClass("deleted cancelDeletion");
-        } else {
-          layoutId = ui.draggable.data("layout-id");
-          var columnId = ui.draggable.data("column-id");
-          var blockId = ui.draggable.data("block-id");
-          var block = layoutmanager.getBlock(layoutId, columnId, blockId);
-          block.element.removeClass("deleted");
-        }
-      }
-    };
-
     var LAYOUTMANAGER_SORTABLE_SETTINGS = {
       connectWith: ".sl-simplelayout",
       items: ".sl-layout",
@@ -208,12 +149,6 @@ define(["simplelayout/Layoutmanager", "simplelayout/Eventrecorder", "simplelayou
         var toolbar = new Toolbar(blockToCreateOptions.actions);
         block.attachToolbar(toolbar);
       });
-      layoutmanager.element.on("click", ".remove", function() {
-        layoutId = currentBlock.element.data("layoutId");
-        columnId = currentBlock.element.data("columnId");
-        blockId = currentBlock.element.data("blockId");
-        layoutmanager.deleteBlock(layoutId, columnId, blockId);
-      });
       layoutmanager.element.on("mouseover", ".sl-block", function() {
           data = $(this).data();
           layoutId = data.layoutId;
@@ -225,7 +160,6 @@ define(["simplelayout/Layoutmanager", "simplelayout/Eventrecorder", "simplelayou
 
     var bindToolboxEvents = function() {
       toolbox.element.find(".sl-toolbox-component, .sl-toolbox-layout").draggable(TOOLBOX_COMPONENT_DRAGGABLE_SETTINGS);
-      toolbox.element.find(".sl-toolbox-trash").droppable(TRASH_DROPPABLE_SETTINGS);
       toolbox.element.draggable(TOOLBOX_DRAGGABLE_SETTINGS);
     };
 

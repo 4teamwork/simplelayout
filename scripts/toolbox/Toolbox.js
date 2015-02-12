@@ -43,9 +43,6 @@ define([], function() {
                 </a> \
                {{/for}} \
           </div> \
-          <div class='sl-toolbox-trash'> \
-            <i class='icon-trash'></i> \
-          </div> \
         </div>");
     var components = [];
     $.each(options.components, function(key, value) {
