@@ -28,8 +28,6 @@ define(["simplelayout/Layout"], function(Layout) {
 
       id: 0,
 
-      minImageWidth: null,
-
       options: options,
 
       element: element,

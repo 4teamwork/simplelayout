@@ -8,9 +8,7 @@ define(["simplelayout/Layoutmanager", "simplelayout/Eventrecorder", "simplelayou
       throw new TypeError("Simplelayout constructor cannot be called as a function.");
     }
 
-    var options = $.extend({
-      imageCount: 1
-    }, _options || {});
+    var options = _options || {};
 
     var eventrecorder = new Eventrecorder();
 
@@ -197,7 +195,6 @@ define(["simplelayout/Layoutmanager", "simplelayout/Eventrecorder", "simplelayou
           throw new Error("Not attached to DOM element");
         }
         toolbox = toolboxRef;
-        layoutmanager.minImageWidth = layoutmanager.element.width() / Math.max.apply(null, toolbox.options.layouts) / this.options.imageCount;
         layoutmanager.toolbox = toolbox;
         bindToolboxEvents();
       },
