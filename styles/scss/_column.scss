@@ -3,8 +3,8 @@
   min-height: 40px;
   padding: 2px;
   box-sizing: border-box;
-  border-right: 1px solid $column-border-color;
   float: left;
+  background: $column-background-color;
   &:last-child {
     border-right: none;
   }
