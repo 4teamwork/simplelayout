@@ -1,5 +1,4 @@
 .sl-layout {
-  display: table;
   width: 100%;
   opacity: 1;
   position: relative;
@@ -7,6 +6,7 @@
   margin-bottom: 2px;
   min-height: 40px;
   background: $column-background-color;
+  display: inline-block;
   .placeholder {
     background-color: $block-placeholder-background-color;
     border: 1px dotted $block-placeholder-border-color;
