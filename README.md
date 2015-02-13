@@ -203,8 +203,6 @@ blocksCommitted(event)
 
 blockMoved(event, oldLayoutId, oldColumnId, blockId, newLayoutId, newColumnId)
 
-deserialized(event)
-
 # Plone-Intergration
 
 ## Endpoints
