@@ -8,16 +8,7 @@ define([], function() {
       throw new TypeError("Toolbar constructor cannot be called as a function.");
     }
 
-    var defaultActions = {
-      move: {
-        "class": "move icon-move",
-        "title": "Move this block arround."
-      },
-      remove: {
-        "class": "remove icon-remove",
-        "title": "Remove this block."
-      }
-    };
+    var defaultActions = {};
 
     var actions = $.extend(defaultActions, _actions || {});
 
