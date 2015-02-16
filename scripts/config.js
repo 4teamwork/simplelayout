@@ -8,7 +8,16 @@
       toolbox: "../scripts/toolbox",
       jquery: "jquery/dist/jquery",
       jqueryui: "jquery-ui/ui",
-      renderer: "jsrender/jsrender"
+      matchHeight: "../bower_components/matchHeight/jquery.matchHeight",
+      jsrender: "../bower_components/jsrender/jsrender"
+    },
+    shim: {
+      "matchHeight": {
+          exports: "jQuery.fn.matchHeight"
+      },
+      "jsrender": {
+          exports: "jQuery.fn.templates"
+      }
     }
   });
 }());

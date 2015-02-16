@@ -49,9 +49,10 @@ module.exports = function(grunt) {
           mainConfigFile: "scripts/config.js",
           findNestedDependencies: true,
           name: "../node_modules/almond/almond",
-          include: ["simplelayout/Simplelayout", "toolbox/Toolbox"],
+          include: ["simplelayout/Simplelayout", "toolbox/Toolbox", "matchHeight", "jsrender"],
           out: "<%= grunt.config.get('jsoutput') %>",
           optimize: "<%= grunt.config.get('optimize') %>",
+          wrapShim: true,
           wrap: {
             startFile: "build/start.frag",
             endFile: "build/end.frag"
