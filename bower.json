@@ -10,7 +10,7 @@
     "jquery": ">1.6",
     "jquery-ui": "1.10.2",
     "jsrender": "git://github.com/BorisMoore/jsrender#master",
-    "matchHeight": "0.5.2",
+    "matchHeight": "git://github.com/liabru/jquery-match-height#master",
     "requirejs": "2.1.9"
   },
   "homepage": "https://github.com/4teamwork/simplelayout-mockup",
