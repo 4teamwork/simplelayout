@@ -139,15 +139,14 @@ define(["simplelayout/Layout"], function(Layout) {
         var Block = require("simplelayout/Block");
         var Toolbar = require("simplelayout/Toolbar");
         var toolbar;
-        var layoutHandle;
         var that = this;
         $(".sl-layout", element).each(function(layoutIdx, layout) {
           var layoutNode = $(layout);
           that.layouts[layoutIdx] = new Layout(layoutNode.children(".sl-column").length);
           that.layouts[layoutIdx].element = layoutNode;
           that.layouts[layoutIdx].element.data("layoutId", layoutIdx);
-          layoutHandle = new Toolbar(that.toolbox.options.layoutActions, "vertical", "layout");
-          that.layouts[layoutIdx].appendToolbar(layoutHandle);
+          var layoutToolbar = new Toolbar(that.toolbox.options.layoutActions, "vertical", "layout");
+          that.layouts[layoutIdx].attachToolbar(layoutToolbar);
           that.id++;
           $(".sl-column", layout).each(function(columnIdx, column) {
             var columnNode = $(column);

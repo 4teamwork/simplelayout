@@ -101,6 +101,8 @@ define(["simplelayout/Layoutmanager", "simplelayout/Eventrecorder", "simplelayou
         try {
           var columns = ui.draggable.data("columns");
           var layoutId = layoutmanager.insertLayout(columns);
+          var layoutToolbar = new Toolbar(toolbox.options.layoutActions, "vertical", "layout");
+          layoutmanager.layouts[layoutId].attachToolbar(layoutToolbar);
           e.data = {
             layoutId: layoutId
           };

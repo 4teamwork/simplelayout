@@ -48,7 +48,7 @@ define(["simplelayout/Column"], function(Column) {
         this.columns[columnId].commitBlocks();
       },
 
-      appendToolbar: function(toolbar) {
+      attachToolbar: function(toolbar) {
         this.toolbar = toolbar;
         this.element.append(toolbar.element);
       },
