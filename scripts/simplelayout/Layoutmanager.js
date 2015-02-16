@@ -146,7 +146,7 @@ define(["simplelayout/Layout"], function(Layout) {
           that.layouts[layoutIdx] = new Layout(layoutNode.children(".sl-column").length);
           that.layouts[layoutIdx].element = layoutNode;
           that.layouts[layoutIdx].element.data("layoutId", layoutIdx);
-          layoutHandle = new Toolbar(that.toolbox.options.layoutActions, "vertical");
+          layoutHandle = new Toolbar(that.toolbox.options.layoutActions, "vertical", "layout");
           that.layouts[layoutIdx].appendToolbar(layoutHandle);
           that.id++;
           $(".sl-column", layout).each(function(columnIdx, column) {
@@ -160,7 +160,7 @@ define(["simplelayout/Layout"], function(Layout) {
               that.setBlock(layoutIdx, columnIdx, blockIdx, new Block());
               that.getBlock(layoutIdx, columnIdx, blockIdx).element = blockNode;
               that.getBlock(layoutIdx, columnIdx, blockIdx).type = blockNode.data("type");
-              toolbar = new Toolbar(that.toolbox.options.components[blockNode.data("type")].actions);
+              toolbar = new Toolbar(that.toolbox.options.components[blockNode.data("type")].actions, "horizontal", "block");
               that.getBlock(layoutIdx, columnIdx, blockIdx).attachToolbar(toolbar);
               that.getBlock(layoutIdx, columnIdx, blockIdx).element.data("layoutId", layoutIdx);
               that.getBlock(layoutIdx, columnIdx, blockIdx).element.data("columnId", columnIdx);
