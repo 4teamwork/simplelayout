@@ -5,7 +5,7 @@
   box-sizing: border-box;
   float: left;
   background: $column-background-color;
-  &:last-child {
+  &:last-of-type {
     border-right: none;
   }
 
