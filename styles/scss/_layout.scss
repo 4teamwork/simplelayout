@@ -3,7 +3,7 @@
   opacity: 1;
   position: relative;
   margin-bottom: 2px;
-  min-height: 40px;
+  min-height: 100px;
   display: inline-block;
   .placeholder {
     background-color: $block-placeholder-background-color;
@@ -12,5 +12,8 @@
   &.ui-sortable-helper {
     opacity: .9;
     box-shadow: 0 20px 20px 0 rgba(0, 0, 0, .3);
+  }
+  &:hover .sl-toolbar {
+    opacity: 1;
   }
 }

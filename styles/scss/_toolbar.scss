@@ -39,7 +39,17 @@
       }
     }
   }
-}
-.sl-block:hover .sl-toolbar {
-  opacity: 1;
+  &.vertical {
+    width: $editbar-height;
+    height: auto;
+    right: -$editbar-height;
+    top: 0;
+    li {
+      float: none;
+      &.delimiter {
+        height: 1px;
+        width: $editbar-height;
+      }
+    }
+  }
 }

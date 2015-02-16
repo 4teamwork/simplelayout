@@ -16,6 +16,17 @@ define([], function() {
       components: {}
     }, _options || {});
 
+    options.layoutActions = {
+      move: {
+        class: "icon-move move",
+        title: "Move this layout arround."
+      },
+      delete: {
+        class: "icon-delete delete",
+        title: "Delete this layout."
+      }
+    };
+
     var layouts = [];
     $.each(options.layouts, function(i, el) {
       layouts.push({

@@ -22,4 +22,7 @@
     display: inline-block;
     width: 100%;
   }
+  &:hover .sl-toolbar {
+    opacity: 1;
+  }
 }

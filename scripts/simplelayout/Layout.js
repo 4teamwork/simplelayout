@@ -18,6 +18,8 @@ define(["simplelayout/Column"], function(Column) {
 
       columns: {},
 
+      toolbar: null,
+
       create: function(id) {
         this.element = $(template.render());
         this.element.data("layoutId", id);
@@ -44,6 +46,11 @@ define(["simplelayout/Column"], function(Column) {
 
       commitBlocks: function(columnId) {
         this.columns[columnId].commitBlocks();
+      },
+
+      appendToolbar: function(toolbar) {
+        this.toolbar = toolbar;
+        this.element.append(toolbar.element);
       },
 
       toJSON: function() {

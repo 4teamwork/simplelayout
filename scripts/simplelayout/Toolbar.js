@@ -2,7 +2,7 @@ define([], function() {
 
   "use strict";
 
-  function Toolbar(_actions) {
+  function Toolbar(_actions, orientation) {
 
     if (!(this instanceof Toolbar)) {
       throw new TypeError("Toolbar constructor cannot be called as a function.");
@@ -19,11 +19,12 @@ define([], function() {
     });
 
     var template = $.templates(
-      "<ul class='sl-toolbar'>{{for actions}}<li><a {{props}} {{>key}}='{{>prop}}' {{/props}}></a></li><li class='delimiter'></li>{{/for}}</ul>"
+      "<ul class='sl-toolbar{{if orientation}} {{:orientation}}{{/if}}'>{{for actions}}<li><a {{props}} {{>key}}='{{>prop}}' {{/props}}></a></li><li class='delimiter'></li>{{/for}}</ul>"
     );
 
     var element = $(template.render({
-      actions: normalizedActions
+      actions: normalizedActions,
+      orientation: orientation
     }));
 
     return {

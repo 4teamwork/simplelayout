@@ -20,11 +20,14 @@ define(["simplelayout/Layoutmanager", "simplelayout/Eventrecorder", "simplelayou
 
     var currentBlock = null;
 
+    var currentLayout = null;
+
     var TOOLBOX_COMPONENT_DRAGGABLE_SETTINGS = {
       helper: "clone",
       cursor: "pointer",
       start: function(e) {
         if ($(e.target).hasClass("sl-toolbox-component") && Object.keys(layoutmanager.layouts).length === 0) {
+          layoutmanager.insertLayout(toolbox.options.layouts[0]);
           layoutmanager.commitLayouts();
         }
         blockToCreateOptions = $(e.target).data();
@@ -34,8 +37,9 @@ define(["simplelayout/Layoutmanager", "simplelayout/Eventrecorder", "simplelayou
     var LAYOUTMANAGER_SORTABLE_SETTINGS = {
       connectWith: ".sl-simplelayout",
       items: ".sl-layout",
-      handle: ".sl-column",
+      handle: ".move",
       placeholder: "placeholder",
+      tolerance: "touch",
       forcePlaceholderSize: true
     };
 
@@ -43,7 +47,7 @@ define(["simplelayout/Layoutmanager", "simplelayout/Eventrecorder", "simplelayou
       connectWith: ".sl-column",
       placeholder: "placeholder",
       forcePlaceholderSize: true,
-      handle: ".move",
+      handle: ".sl-toolbar .move",
       tolerance: "pointer",
       receive: function(e, ui) {
         if (ui && ui.item) {
@@ -154,6 +158,11 @@ define(["simplelayout/Layoutmanager", "simplelayout/Eventrecorder", "simplelayou
           blockId = data.blockId;
           currentBlock = layoutmanager.getBlock(layoutId, columnId, blockId);
       });
+      layoutmanager.element.on("mouseover", ".sl-layout", function() {
+          data = $(this).data();
+          layoutId = data.layoutId;
+          currentLayout = layoutmanager.layouts[layoutId];
+      });
     };
 
     var bindToolboxEvents = function() {
@@ -169,6 +178,10 @@ define(["simplelayout/Layoutmanager", "simplelayout/Eventrecorder", "simplelayou
 
       getCurrentBlock: function() {
         return currentBlock;
+      },
+
+      getCurrentLayout: function() {
+        return currentLayout;
       },
 
       getLayoutmanager: function() {

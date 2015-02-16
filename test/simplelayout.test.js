@@ -16,18 +16,6 @@ suite("Simplelayout", function() {
     assert.throw(Simplelayout, TypeError, "Simplelayout constructor cannot be called as a function.");
   });
 
-  test("default imageCount is 1", function() {
-    var simplelayout = new Simplelayout();
-
-    assert.equal(simplelayout.options.imageCount, "1");
-  });
-
-  test("can set imageCount to 2", function() {
-    var simplelayout = new Simplelayout({imageCount: 2});
-
-    assert.equal(simplelayout.options.imageCount, "2");
-  });
-
   test("raises exception when attaching toolbox when its not attached to DOM", function() {
     var toolbox = new Toolbox({layouts: [0]});
     var simplelayout = new Simplelayout();
@@ -35,18 +23,6 @@ suite("Simplelayout", function() {
     assert.throws(function() {
       simplelayout.attachToolbox(toolbox);
     }, Error, "Not attached to DOM element");
-  });
-
-  test("image min-width is calculated correctry depending on imageCount and layoutSettings", function() {
-    var toolbox = new Toolbox({layouts: [1, 2, 4]});
-    var simplelayout = new Simplelayout({imageCount: 1});
-    var target = $("<div>");
-    simplelayout.getLayoutmanager().element.width(1000);
-
-    simplelayout.attachTo(target);
-    simplelayout.attachToolbox(toolbox);
-    assert.equal(simplelayout.getLayoutmanager().minImageWidth, 250);
-
   });
 
   suite("Integrationtests", function() {
@@ -73,19 +49,6 @@ suite("Simplelayout", function() {
 
     test("has a layoutmanager", function() {
       assert.isDefined(simplelayout.getLayoutmanager());
-    });
-
-    test("image is rendered depending on toolbox layout and image count", function() {
-      toolbox = new Toolbox({layouts: [1, 2, 4]});
-      simplelayout = new Simplelayout({imageCount: 1});
-      var target = $("<div>");
-      simplelayout.getLayoutmanager().element.width(1000);
-      simplelayout.attachTo(target);
-      simplelayout.attachToolbox(toolbox);
-
-      var layoutId = simplelayout.getLayoutmanager().insertLayout(4);
-      simplelayout.getLayoutmanager().insertBlock(layoutId, 0, "<img />");
-      assert.equal(simplelayout.getLayoutmanager().element.find("img").css("width"), "250px");
     });
 
   });
