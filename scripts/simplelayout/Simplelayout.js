@@ -71,6 +71,8 @@ define(["simplelayout/Layoutmanager", "simplelayout/Eventrecorder", "simplelayou
           var layoutId = $(this).parent().data("layout-id");
           var columnId = $(this).data("column-id");
           var blockId = layoutmanager.insertBlock(layoutId, columnId, null, ui.draggable.data("type"));
+          var blockToolbar = new Toolbar(toolbox.options.components[ui.draggable.data("type")].actions, "horizontal", "block");
+          layoutmanager.getBlock(layoutId, columnId, blockId).attachToolbar(blockToolbar);
           e.data = {
             blockId: blockId,
             columnId: columnId,
