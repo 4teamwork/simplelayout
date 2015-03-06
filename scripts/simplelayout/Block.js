@@ -25,10 +25,7 @@ define([], function() {
       element: null,
 
       create: function() {
-        var data = {
-          "content": content,
-          "type": type
-        };
+        var data = { "content": content, "type": type };
         this.element = $(template.render(data));
         return this.element;
       },
@@ -43,10 +40,7 @@ define([], function() {
       },
 
       toJSON: function() {
-        return {
-          uid: this.uid,
-          type: type
-        };
+        return { uid: this.uid, type: type };
       }
     };
 

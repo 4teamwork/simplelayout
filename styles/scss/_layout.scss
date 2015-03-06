@@ -8,6 +8,7 @@
   .placeholder {
     background-color: $block-placeholder-background-color;
     border: 1px dotted $block-placeholder-border-color;
+    margin-bottom: 1em;
   }
   &.ui-sortable-helper {
     opacity: .9;

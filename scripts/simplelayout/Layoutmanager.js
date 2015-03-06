@@ -8,15 +8,14 @@ define(["simplelayout/Layout"], function(Layout) {
       throw new TypeError("Layoutmanager constructor cannot be called as a function.");
     }
 
-    var options = $.extend({
-      width: "100%"
-    }, _options || {});
+    var options = $.extend({ width: "100%" }, _options || {});
 
     var element;
 
     if (options.source) {
-      element = $(_options.source);
+      element = $(options.source);
       element.addClass("sl-simplelayout");
+
     } else {
       var template = $.templates("<div class='sl-simplelayout' style='width:{{:width}};''></div>");
       element = $(template.render(options));
@@ -81,15 +80,15 @@ define(["simplelayout/Layout"], function(Layout) {
       insertBlock: function(layoutId, columnId, content, type) {
         var layout = this.layouts[layoutId];
         var blockId = layout.insertBlock(columnId, content, type);
-        this.getBlock(layoutId, columnId, blockId).element.find("img").width(this.minImageWidth);
+        this.getBlock(layoutId, columnId, blockId);
         this.element.trigger("blockInserted", [layoutId, columnId, blockId]);
         return blockId;
       },
 
       deleteBlock: function(layoutId, columnId, blockId) {
         var layout = this.layouts[layoutId];
-        this.element.trigger("blockDeleted", [layoutId, columnId, blockId]);
         layout.deleteBlock(columnId, blockId);
+        this.element.trigger("blockDeleted", [layoutId, columnId, blockId]);
       },
 
       commitBlocks: function(layoutId, columnId) {

@@ -7,9 +7,7 @@ define(["simplelayout/Block"], function(Block) {
       throw new TypeError("Column constructor cannot be called as a function.");
     }
 
-    if (!column) {
-      throw new Error("Columns are not defined.");
-    }
+    if (!column) { throw new Error("Columns are not defined."); }
 
     var template = $.templates("<div class='sl-column sl-col-{{:column}}''></div>");
 
@@ -20,9 +18,7 @@ define(["simplelayout/Block"], function(Block) {
       element: null,
 
       create: function() {
-        this.element = $(template.render({
-          column: column
-        }));
+        this.element = $(template.render({ column: column }));
         return this.element;
       },
 
@@ -66,9 +62,7 @@ define(["simplelayout/Block"], function(Block) {
       },
 
       toJSON: function() {
-        return {
-          blocks: this.blocks
-        };
+        return { blocks: this.blocks };
       }
 
     };

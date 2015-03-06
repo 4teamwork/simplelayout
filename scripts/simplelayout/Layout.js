@@ -53,10 +53,19 @@ define(["simplelayout/Column"], function(Column) {
         this.element.append(toolbar.element);
       },
 
+      hasBlocks: function() {
+        var hasBlocks = false;
+        $.each(this.columns, function(columnIdx, column) {
+          if(Object.keys(column.blocks).length > 0) {
+            hasBlocks = true;
+            return false;
+          }
+        });
+        return hasBlocks;
+      },
+
       toJSON: function() {
-        return {
-          columns: this.columns
-        };
+        return { columns: this.columns };
       }
 
     };

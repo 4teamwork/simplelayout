@@ -73,11 +73,7 @@ define(["simplelayout/Layoutmanager", "simplelayout/Eventrecorder", "simplelayou
           var blockId = layoutmanager.insertBlock(layoutId, columnId, null, ui.draggable.data("type"));
           var blockToolbar = new Toolbar(toolbox.options.components[ui.draggable.data("type")].actions, "horizontal", "block");
           layoutmanager.getBlock(layoutId, columnId, blockId).attachToolbar(blockToolbar);
-          e.data = {
-            blockId: blockId,
-            columnId: columnId,
-            layoutId: layoutId
-          };
+          e.data = { blockId: blockId, columnId: columnId, layoutId: layoutId };
           eventrecorder.record(e);
         } catch (err) {}
       },
@@ -105,9 +101,7 @@ define(["simplelayout/Layoutmanager", "simplelayout/Eventrecorder", "simplelayou
           var layoutId = layoutmanager.insertLayout(columns);
           var layoutToolbar = new Toolbar(toolbox.options.layoutActions, "vertical", "layout");
           layoutmanager.layouts[layoutId].attachToolbar(layoutToolbar);
-          e.data = {
-            layoutId: layoutId
-          };
+          e.data = { layoutId: layoutId };
           eventrecorder.record(e);
         } catch (err) {}
       },
