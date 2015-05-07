@@ -174,11 +174,11 @@ define(["simplelayout/Layoutmanager", "simplelayout/Eventrecorder", "simplelayou
 
       options: options,
 
-      getCurrentBlock: function() {
+      getActiveBlock: function() {
         return currentBlock;
       },
 
-      getCurrentLayout: function() {
+      getActiveLayout: function() {
         return currentLayout;
       },
 
