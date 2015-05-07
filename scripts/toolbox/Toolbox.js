@@ -34,8 +34,6 @@ define([], function() {
       });
     });
 
-    var minImageCount = 100 / Math.max.apply(null, options.layouts) / options.imageCount;
-
     var template = $.templates(
       /*eslint no-multi-str: 0 */
       "<div id='sl-toolbox' class='sl-toolbox'> \
@@ -79,10 +77,6 @@ define([], function() {
 
       attachTo: function(target) {
         target.append(element);
-      },
-
-      getMinImageWidth: function() {
-        return minImageCount;
       }
 
     };
