@@ -51,6 +51,10 @@ define(["simplelayout/Block"], function(Block) {
         }
       },
 
+      hasBlocks: function() {
+        return Object.keys(this.blocks).length > 0;
+      },
+
       getCommittedBlocks: function() {
         var committedBlocks = {};
         for (var key in this.blocks) {

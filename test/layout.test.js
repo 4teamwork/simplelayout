@@ -2,10 +2,12 @@ suite("Layout", function() {
   "use strict";
 
   var Layout;
+  var Block;
 
   setup(function(done) {
-    require(["simplelayout/Layout"], function(_Layout) {
+    require(["simplelayout/Layout", "simplelayout/Block"], function(_Layout, _Block) {
       Layout = _Layout;
+      Block = _Block;
       done();
     });
   });
@@ -40,6 +42,17 @@ suite("Layout", function() {
       {tag: "DIV", classes: "sl-column sl-col-4", id: 3}
     ]);
 
+  });
+
+  test("hasBlocks return true if at least one block is existing on a layout", function() {
+    var layout = new Layout(4);
+    layout.create();
+
+    var block = new Block();
+
+    assert(!layout.hasBlocks(), "Layout should not have any blocks");
+    layout.insertBlock(0);
+    assert(layout.hasBlocks(), "Layout has blocks");
   });
 
   suite("Block-transactions", function() {

@@ -56,7 +56,7 @@ define(["simplelayout/Column"], function(Column) {
       hasBlocks: function() {
         var hasBlocks = false;
         $.each(this.columns, function(columnIdx, column) {
-          if(Object.keys(column.blocks).length > 0) {
+          if(column.hasBlocks()) {
             hasBlocks = true;
             return false;
           }
