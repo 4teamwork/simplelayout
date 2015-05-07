@@ -95,6 +95,28 @@ suite("Layoutmanager", function() {
       assert.deepEqual(nodesOnMovedLayout, [{layoutId: id2, columnId: 0, blockId: 0}]);
     });
 
+    test("can get inserted and committed blocks", function() {
+      var layout1 = layoutmanager.insertLayout(4);
+      var layout2 = layoutmanager.insertLayout(4);
+      layoutmanager.commitLayouts();
+      layoutmanager.layouts[layout1].insertBlock(0);
+      layoutmanager.layouts[layout2].insertBlock(0);
+      assert.deepEqual([false, false], $.map(layoutmanager.getInsertedBlocks(), function(block) {
+        return block.committed;
+      }), "should have two inserted blocks.");
+      assert.deepEqual([], $.map(layoutmanager.getCommittedBlocks(), function(block) {
+        return block.committed;
+      }), "all blocks should be inserted.");
+      layoutmanager.commitBlocks(layout1, 0);
+      layoutmanager.commitBlocks(layout2, 0);
+      assert.deepEqual([true, true], $.map(layoutmanager.getCommittedBlocks(), function(block) {
+        return block.committed;
+      }), "should have two committed");
+      assert.deepEqual([], $.map(layoutmanager.getInsertedBlocks(), function(block) {
+        return block.committed;
+      }), "all blocks should be committed.");
+    });
+
   });
 
   suite("Delegates adding and removing blocks to Layouts", function() {

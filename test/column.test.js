@@ -79,7 +79,7 @@ suite("Column", function() {
       var blockId = column.insertBlock("<p>Test</p>", "textblock");
       column.deleteBlock(blockId);
 
-      assert.deepEqual(column.getCommittedBlocks(), {}, "Should have no committed blocks without commit");
+      assert.deepEqual(column.getCommittedBlocks(), [], "Should have no committed blocks without commit");
     });
 
     test("delete a non inseted block raises an exception", function() {

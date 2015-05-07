@@ -73,6 +73,22 @@ define(["simplelayout/Layout"], function(Layout) {
         return this.layouts[layoutId].columns[columnId].blocks[blockId];
       },
 
+      getCommittedBlocks: function() {
+        var committedBlocks = [];
+        for(var key in this.layouts) {
+          committedBlocks = $.merge(this.layouts[key].getCommittedBlocks(), committedBlocks);
+        }
+        return committedBlocks;
+      },
+
+      getInsertedBlocks: function() {
+        var insertedBlocks = [];
+        for(var key in this.layouts) {
+          insertedBlocks = $.merge(this.layouts[key].getInsertedBlocks(), insertedBlocks);
+        }
+        return insertedBlocks;
+      },
+
       setBlock: function(layoutId, columnId, blockId, block) {
         this.layouts[layoutId].columns[columnId].blocks[blockId] = block;
       },

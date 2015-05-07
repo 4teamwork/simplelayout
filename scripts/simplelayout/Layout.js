@@ -53,6 +53,22 @@ define(["simplelayout/Column"], function(Column) {
         this.element.append(toolbar.element);
       },
 
+      getCommittedBlocks: function() {
+        var committedBlocks = [];
+        for(var key in this.columns) {
+          committedBlocks = $.merge(this.columns[key].getCommittedBlocks(), committedBlocks);
+        }
+        return committedBlocks;
+      },
+
+      getInsertedBlocks: function() {
+        var insertedBlocks = [];
+        for(var key in this.columns) {
+          insertedBlocks = $.merge(this.columns[key].getInsertedBlocks(), insertedBlocks);
+        }
+        return insertedBlocks;
+      },
+
       hasBlocks: function() {
         var hasBlocks = false;
         $.each(this.columns, function(columnIdx, column) {

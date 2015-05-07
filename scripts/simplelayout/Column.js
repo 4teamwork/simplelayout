@@ -56,13 +56,23 @@ define(["simplelayout/Block"], function(Block) {
       },
 
       getCommittedBlocks: function() {
-        var committedBlocks = {};
+        var committedBlocks = [];
         for (var key in this.blocks) {
           if (this.blocks[key].committed) {
-            committedBlocks[key] = this.blocks[key];
+            committedBlocks.push(this.blocks[key]);
           }
         }
         return committedBlocks;
+      },
+
+      getInsertedBlocks: function() {
+        var insertedBlocks = [];
+        for (var key in this.blocks) {
+          if (!this.blocks[key].committed) {
+            insertedBlocks.push(this.blocks[key]);
+          }
+        }
+        return insertedBlocks;
       },
 
       toJSON: function() {
