@@ -26,7 +26,7 @@ define(["simplelayout/Layoutmanager", "simplelayout/Eventrecorder", "simplelayou
       helper: "clone",
       cursor: "pointer",
       start: function(e) {
-        if ($(e.target).hasClass("sl-toolbox-component") && Object.keys(layoutmanager.layouts).length === 0) {
+        if ($(e.target).hasClass("sl-toolbox-component") && !layoutmanager.hasLayouts()) {
           var layoutId = layoutmanager.insertLayout(toolbox.options.layouts[0]);
           layoutmanager.element.append(layoutmanager.layouts[layoutId].element);
           layoutmanager.commitLayouts();
@@ -139,11 +139,9 @@ define(["simplelayout/Layoutmanager", "simplelayout/Eventrecorder", "simplelayou
           var columnId = ui.item.data("column-id");
           var layoutId = ui.item.data("layout-id");
           var blockId = ui.item.data("block-id");
-          var type = ui.item.data("type");
-          var content = ui.item.html();
           var newColumnId = target.data("column-id");
           var newLayoutId = target.data("layout-id");
-          layoutmanager.moveBlock(layoutId, columnId, blockId, newLayoutId, newColumnId, type, content);
+          layoutmanager.moveBlock(layoutId, columnId, blockId, newLayoutId, newColumnId);
         }
       }
     };
@@ -241,12 +239,7 @@ define(["simplelayout/Layoutmanager", "simplelayout/Eventrecorder", "simplelayou
         bindToolboxEvents();
       },
 
-      on: on,
-
-      bindEvents: function() {
-        bindLayoutEvents();
-        bindToolboxEvents();
-      }
+      on: on
 
     };
 

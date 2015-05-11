@@ -23,9 +23,7 @@ define(["simplelayout/Layout"], function(Layout) {
 
     return {
 
-      layouts: {},
-
-      id: 0,
+      layouts: [],
 
       options: options,
 
@@ -36,66 +34,77 @@ define(["simplelayout/Layout"], function(Layout) {
       },
 
       insertLayout: function(columns) {
-        var id = this.id;
         var layout = new Layout(columns);
+        this.layouts.push(layout);
+        var id = this.layouts.length - 1;
         layout.create(id);
-        this.layouts[id] = layout;
-        this.id++;
         this.element.trigger("layoutInserted", [id]);
         return id;
       },
 
       deleteLayout: function(layoutId) {
+        console.log(this.layouts);
+        console.log(layoutId);
         this.layouts[layoutId].element.remove();
-        delete this.layouts[layoutId];
+        this.layouts.splice(layoutId, 1);
         this.element.trigger("layoutDeleted");
       },
 
       commitLayouts: function() {
-        for (var key in this.layouts) {
-          this.layouts[key].committed = true;
-        }
+        $.each(this.layouts, function(i, layout) {
+          layout.commit();
+        });
         this.element.trigger("layoutsCommitted");
       },
 
       getCommittedLayouts: function() {
-        var committedLayouts = {};
-        for (var key in this.layouts) {
-          if (this.layouts[key].committed) {
-            committedLayouts[key] = this.layouts[key];
-          }
-        }
-        return committedLayouts;
+        return $.grep(this.layouts, function(layout) {
+          return layout.committed;
+        });
       },
 
       getBlock: function(layoutId, columnId, blockId) {
-        return this.layouts[layoutId].columns[columnId].blocks[blockId];
+        return this.layouts[layoutId].getBlock(columnId, blockId);
+      },
+
+      hasBlocks: function() {
+        var hasBlocks = false;
+        $.each(this.layouts, function(i, layout) {
+          if(layout.hasBlocks()) {
+            hasBlocks = true;
+            return false;
+          }
+        });
+        return hasBlocks;
+      },
+
+      hasLayouts: function() {
+        return this.layouts.length > 0;
       },
 
       getCommittedBlocks: function() {
         var committedBlocks = [];
-        for(var key in this.layouts) {
-          committedBlocks = $.merge(this.layouts[key].getCommittedBlocks(), committedBlocks);
-        }
+        $.each(this.layouts, function(i, layout) {
+          committedBlocks = $.merge(layout.getCommittedBlocks(), committedBlocks);
+        });
         return committedBlocks;
       },
 
       getInsertedBlocks: function() {
         var insertedBlocks = [];
-        for(var key in this.layouts) {
-          insertedBlocks = $.merge(this.layouts[key].getInsertedBlocks(), insertedBlocks);
-        }
+        $.each(this.layouts, function(i, layout) {
+          insertedBlocks = $.merge(layout.getInsertedBlocks(), insertedBlocks);
+        });
         return insertedBlocks;
       },
 
       setBlock: function(layoutId, columnId, blockId, block) {
-        this.layouts[layoutId].columns[columnId].blocks[blockId] = block;
+        this.layouts[layoutId].setBlock(columnId, blockId, block);
       },
 
       insertBlock: function(layoutId, columnId, content, type) {
         var layout = this.layouts[layoutId];
         var blockId = layout.insertBlock(columnId, content, type);
-        this.getBlock(layoutId, columnId, blockId);
         this.element.trigger("blockInserted", [layoutId, columnId, blockId]);
         return blockId;
       },
@@ -119,11 +128,11 @@ define(["simplelayout/Layout"], function(Layout) {
         var layout = this.layouts[oldLayoutId];
         var column = layout.columns[oldColumnId];
         var block = column.blocks[oldBlockId];
-        var nextBlockId = Object.keys(this.layouts[newLayoutId].columns[newColumnId].blocks).length;
+        var nextBlockId = this.layouts[newLayoutId].columns[newColumnId].blocks.length;
         block.element.data("layoutId", newLayoutId);
         block.element.data("columnId", newColumnId);
         block.element.data("blockId", nextBlockId);
-        delete column.blocks[oldBlockId];
+        column.blocks.splice(oldBlockId, 1);
         this.layouts[newLayoutId].columns[newColumnId].blocks[nextBlockId] = block;
         this.element.trigger("blockMoved", [oldLayoutId, oldColumnId, oldBlockId, newLayoutId, newColumnId, nextBlockId]);
       },

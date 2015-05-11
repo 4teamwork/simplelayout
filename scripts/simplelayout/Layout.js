@@ -16,7 +16,7 @@ define(["simplelayout/Column"], function(Column) {
 
       committed: false,
 
-      columns: {},
+      columns: [],
 
       toolbar: null,
 
@@ -25,13 +25,17 @@ define(["simplelayout/Column"], function(Column) {
         this.element.data("layoutId", id);
         for (var i = 0; i < columns; i++) {
           var column = new Column(columns);
-          this.columns[i] = column;
+          this.columns.push(column);
           var columnElement = column.create();
-          columnElement.data("column-id", i);
-          columnElement.data("layout-id", id);
+          columnElement.data("columnId", i);
+          columnElement.data("layoutId", id);
           this.element.append(columnElement);
         }
         return this.element;
+      },
+
+      commit: function() {
+        this.committed = true;
       },
 
       insertBlock: function(columnId, content, type) {
@@ -42,6 +46,14 @@ define(["simplelayout/Column"], function(Column) {
       deleteBlock: function(columnId, blockId) {
         var column = this.columns[columnId];
         column.deleteBlock(blockId);
+      },
+
+      getBlock: function(columnId, blockId) {
+        return this.columns[columnId].getBlock(blockId);
+      },
+
+      setBlock: function(columnId, blockId, block) {
+        this.columns[columnId].setBlock(blockId, block);
       },
 
       commitBlocks: function(columnId) {
@@ -55,23 +67,23 @@ define(["simplelayout/Column"], function(Column) {
 
       getCommittedBlocks: function() {
         var committedBlocks = [];
-        for(var key in this.columns) {
-          committedBlocks = $.merge(this.columns[key].getCommittedBlocks(), committedBlocks);
-        }
+        $.each(this.columns, function(i, column) {
+          committedBlocks = $.merge(column.getCommittedBlocks(), committedBlocks);
+        });
         return committedBlocks;
       },
 
       getInsertedBlocks: function() {
         var insertedBlocks = [];
-        for(var key in this.columns) {
-          insertedBlocks = $.merge(this.columns[key].getInsertedBlocks(), insertedBlocks);
-        }
+        $.each(this.columns, function(i, column) {
+          insertedBlocks = $.merge(column.getInsertedBlocks(), insertedBlocks);
+        });
         return insertedBlocks;
       },
 
       hasBlocks: function() {
         var hasBlocks = false;
-        $.each(this.columns, function(columnIdx, column) {
+        $.each(this.columns, function(i, column) {
           if(column.hasBlocks()) {
             hasBlocks = true;
             return false;

@@ -13,7 +13,7 @@ define(["simplelayout/Block"], function(Block) {
 
     return {
 
-      blocks: {},
+      blocks: [],
 
       element: null,
 
@@ -23,13 +23,14 @@ define(["simplelayout/Block"], function(Block) {
       },
 
       insertBlock: function(content, type) {
-        var nextBlockId = Object.keys(this.blocks).length;
+        var nextBlockId = this.blocks.length;
         var block = new Block(content, type);
         var blockElement = block.create();
         blockElement.data("blockId", nextBlockId);
         blockElement.data("columnId", this.element.data("columnId"));
         blockElement.data("layoutId", this.element.data("layoutId"));
-        this.blocks[nextBlockId] = block;
+        this.element.append(blockElement);
+        this.blocks.push(block);
         return nextBlockId;
       },
 
@@ -38,40 +39,40 @@ define(["simplelayout/Block"], function(Block) {
           throw new Error("No block with id " + blockId + " inserted.");
         }
         this.blocks[blockId].element.remove();
-        delete this.blocks[blockId];
+        this.blocks.splice(blockId, 1);
+      },
+
+      getBlock: function(blockId) {
+        return this.blocks[blockId];
+      },
+
+      setBlock: function(blockId, block) {
+        this.blocks[blockId] = block;
       },
 
       commitBlocks: function() {
-        if (Object.keys(this.getCommittedBlocks()).length === Object.keys(this.blocks).length) {
+        if (this.getInsertedBlocks().length === 0) {
           throw new Error("No blocks inserted.");
         }
-        for (var key in this.blocks) {
-          this.blocks[key].committed = true;
-        }
+        $.each(this.blocks, function(i, block) {
+          block.commit();
+        });
       },
 
       hasBlocks: function() {
-        return Object.keys(this.blocks).length > 0;
+        return this.blocks.length > 0;
       },
 
       getCommittedBlocks: function() {
-        var committedBlocks = [];
-        for (var key in this.blocks) {
-          if (this.blocks[key].committed) {
-            committedBlocks.push(this.blocks[key]);
-          }
-        }
-        return committedBlocks;
+        return $.grep(this.blocks, function(block) {
+          return block.committed;
+        });
       },
 
       getInsertedBlocks: function() {
-        var insertedBlocks = [];
-        for (var key in this.blocks) {
-          if (!this.blocks[key].committed) {
-            insertedBlocks.push(this.blocks[key]);
-          }
-        }
-        return insertedBlocks;
+        return $.grep(this.blocks, function(block) {
+          return !block.committed;
+        });
       },
 
       toJSON: function() {

@@ -61,6 +61,14 @@ suite("Layoutmanager", function() {
       assert.deepEqual(addedNodes, []);
     });
 
+    test("multiple insert and delete a layout keeps the id", function() {
+      var layoutId = layoutmanager.insertLayout(4);
+      assert.equal(layoutId, 0, "First id should be 0.");
+      layoutmanager.deleteLayout(layoutId);
+      var layoutId = layoutmanager.insertLayout(4);
+      assert.equal(layoutId, 0, "Id sould still be 0 after deletion.");
+    });
+
     test("can commit a Layout.", function() {
       layoutmanager.insertLayout(4);
 
