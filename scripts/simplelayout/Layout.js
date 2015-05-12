@@ -34,6 +34,10 @@ define(["simplelayout/Column"], function(Column) {
         return this.element;
       },
 
+      commit: function() {
+        this.committed = true;
+      },
+
       insertBlock: function(columnId, content, type) {
         var column = this.columns[columnId];
         return column.insertBlock(content, type);

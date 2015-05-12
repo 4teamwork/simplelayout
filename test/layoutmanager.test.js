@@ -43,11 +43,11 @@ suite("Layoutmanager", function() {
     test("can insert a Layout.", function() {
       layoutmanager.insertLayout(4);
 
-      var addedNodes = $.map(target.find(".sl-layout"), function(e) {
-        return {tag: e.tagName, classes: e.className};
+      var addedNodes = $.map(layoutmanager.layouts, function(e) {
+        return e.committed;
       });
 
-      assert.deepEqual(addedNodes, [{tag: "DIV", classes: "sl-layout"}]);
+      assert.deepEqual(addedNodes, [false]);
     });
 
     test("can delete a Layout.", function() {

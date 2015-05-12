@@ -34,6 +34,10 @@ define([], function() {
         $(".sl-block-content", this.element).html(toReplace);
       },
 
+      commit: function() {
+        this.committed = true;
+      },
+
       attachToolbar: function(toolbar) {
         this.toolbar = toolbar;
         this.element.append(toolbar.element);

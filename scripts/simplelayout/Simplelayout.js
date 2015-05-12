@@ -24,15 +24,7 @@ define(["simplelayout/Layoutmanager", "simplelayout/Eventrecorder", "simplelayou
 
     var TOOLBOX_COMPONENT_DRAGGABLE_SETTINGS = {
       helper: "clone",
-      cursor: "pointer",
-      start: function(e) {
-        if ($(e.target).hasClass("sl-toolbox-component") && Object.keys(layoutmanager.layouts).length === 0) {
-          var layoutId = layoutmanager.insertLayout(toolbox.options.layouts[0]);
-          layoutmanager.element.append(layoutmanager.layouts[layoutId].element);
-          layoutmanager.commitLayouts();
-        }
-        blockToCreateOptions = $(e.target).data();
-      }
+      cursor: "pointer"
     };
 
     var LAYOUTMANAGER_SORTABLE_SETTINGS = {
@@ -161,10 +153,9 @@ define(["simplelayout/Layoutmanager", "simplelayout/Eventrecorder", "simplelayou
     };
 
     var bindToolboxEvents = function() {
-      toolbox.element.find(".sl-toolbox-component.ui-draggable, .sl-toolbox-layout.ui-draggable").draggable("destroy");
       toolbox.element.find(".sl-toolbox-component, .sl-toolbox-layout").draggable(TOOLBOX_COMPONENT_DRAGGABLE_SETTINGS);
-      toolbox.element.find(".sl-toolbox-layout").draggable("option", "connectToSortable", layoutmanager.element);
-      toolbox.element.find(".sl-toolbox-component").draggable("option", "connectToSortable", layoutmanager.element.find(".sl-column"));
+      toolbox.element.find(".sl-toolbox-layout").draggable("option", "connectToSortable", ".sl-simplelayout");
+      toolbox.element.find(".sl-toolbox-component").draggable("option", "connectToSortable", ".sl-column");
       toolbox.element.draggable(TOOLBOX_DRAGGABLE_SETTINGS);
     };
 
@@ -174,11 +165,9 @@ define(["simplelayout/Layoutmanager", "simplelayout/Eventrecorder", "simplelayou
       var blockId;
       var data;
       layoutmanager.element.sortable(LAYOUTMANAGER_SORTABLE_SETTINGS);
-      layoutmanager.element.find(".sl-column").sortable(LAYOUT_SORTABLE_SETTINGS);
-      on("layoutsCommitted", function(e, insertedLayout) {
-        layoutmanager.element.find(".sl-column.ui-sortable").sortable("destroy");
-        layoutmanager.element.find(".sl-column").sortable(LAYOUT_SORTABLE_SETTINGS);
-        bindToolboxEvents();
+      $(".sl-column").sortable(LAYOUT_SORTABLE_SETTINGS);
+      on("layoutsCommitted", function() {
+        $(".sl-column").sortable(LAYOUT_SORTABLE_SETTINGS);
       });
       on("blockInserted", function(event, insertedLayout, insertedColumn, insertedBlock) {
         var block = layoutmanager.getBlock(insertedLayout, insertedColumn, insertedBlock);

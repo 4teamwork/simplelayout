@@ -46,7 +46,7 @@ define(["simplelayout/Block"], function(Block) {
           throw new Error("No blocks inserted.");
         }
         for (var key in this.blocks) {
-          this.blocks[key].committed = true;
+          this.blocks[key].commit();
         }
       },
 

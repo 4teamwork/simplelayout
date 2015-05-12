@@ -53,7 +53,7 @@ define(["simplelayout/Layout"], function(Layout) {
 
       commitLayouts: function() {
         for (var key in this.layouts) {
-          this.layouts[key].committed = true;
+          this.layouts[key].commit();
         }
         this.element.trigger("layoutsCommitted");
       },
