@@ -39,7 +39,6 @@ define(["simplelayout/Layout"], function(Layout) {
         var id = this.id;
         var layout = new Layout(columns);
         layout.create(id);
-        element.append(layout.element);
         this.layouts[id] = layout;
         this.id++;
         this.element.trigger("layoutInserted", [id]);
@@ -110,6 +109,10 @@ define(["simplelayout/Layout"], function(Layout) {
       commitBlocks: function(layoutId, columnId) {
         this.layouts[layoutId].commitBlocks(columnId);
         this.element.trigger("blocksCommitted", [layoutId, columnId]);
+      },
+
+      moveLayout: function(layoutId) {
+        this.element.trigger("layoutMoved", [layoutId]);
       },
 
       moveBlock: function(oldLayoutId, oldColumnId, oldBlockId, newLayoutId, newColumnId) {

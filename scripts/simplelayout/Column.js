@@ -29,7 +29,6 @@ define(["simplelayout/Block"], function(Block) {
         blockElement.data("blockId", nextBlockId);
         blockElement.data("columnId", this.element.data("columnId"));
         blockElement.data("layoutId", this.element.data("layoutId"));
-        this.element.append(blockElement);
         this.blocks[nextBlockId] = block;
         return nextBlockId;
       },
