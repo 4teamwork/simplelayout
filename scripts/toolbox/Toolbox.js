@@ -38,19 +38,21 @@ define([], function() {
       /*eslint no-multi-str: 0 */
       "<div id='sl-toolbox' class='sl-toolbox'> \
           <div class='components'> \
+            <div class='addables'> \
+              <a class='sl-toolbox-header'>Komponenten</a> \
+                {{for components}} \
+                  <a class='sl-toolbox-component' title='{{:description}}' data-type='{{:contentType}}' data-form_url='{{:formUrl}}'> \
+                    <i class='icon-{{:contentType}}'></i>{{:title}} \
+                  </a> \
+                {{/for}} \
+              <a class='sl-toolbox-header'>Layout</a> \
+                {{for layouts}} \
+                  <a class='sl-toolbox-layout' data-columns='{{:columns}}'> \
+                    <i class='icon-layout'></i>{{:columns}} - Spalten Layout \
+                  </a> \
+                 {{/for}} \
+            </div> \
             <a class='sl-toolbox-header sl-toolbox-handle'>Toolbox</a> \
-            <a class='sl-toolbox-header'>Komponenten</a> \
-              {{for components}} \
-                <a class='sl-toolbox-component' title='{{:description}}' data-type='{{:contentType}}' data-form_url='{{:formUrl}}'> \
-                  <i class='icon-{{:contentType}}'></i>{{:title}} \
-                </a> \
-              {{/for}} \
-            <a class='sl-toolbox-header'>Layout</a> \
-              {{for layouts}} \
-                <a class='sl-toolbox-layout' data-columns='{{:columns}}'> \
-                  <i class='icon-layout'></i>{{:columns}} - Spalten Layout \
-                </a> \
-               {{/for}} \
           </div> \
         </div>");
     var components = [];
@@ -67,6 +69,10 @@ define([], function() {
 
     $(".sl-toolbox-component", element).each(function(i, el) {
       $(el).data("actions", options.components[$(el).data("type")].actions);
+    });
+
+    $(".sl-toolbox-handle", element).on("click", function() {
+      $(".addables").toggleClass("close");
     });
 
     return {

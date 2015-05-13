@@ -140,12 +140,6 @@ define(["simplelayout/Layoutmanager", "simplelayout/Eventrecorder", "simplelayou
       }
     };
 
-    var TOOLBOX_DRAGGABLE_SETTINGS = {
-      cursor: "pointer",
-      containment: "window",
-      handle: ".sl-toolbox-handle"
-    };
-
     var on = function(eventType, callback) {
       layoutmanager.element.on(eventType, function() {
         callback.apply(this, arguments);
@@ -156,7 +150,6 @@ define(["simplelayout/Layoutmanager", "simplelayout/Eventrecorder", "simplelayou
       toolbox.element.find(".sl-toolbox-component, .sl-toolbox-layout").draggable(TOOLBOX_COMPONENT_DRAGGABLE_SETTINGS);
       toolbox.element.find(".sl-toolbox-layout").draggable("option", "connectToSortable", ".sl-simplelayout");
       toolbox.element.find(".sl-toolbox-component").draggable("option", "connectToSortable", ".sl-column");
-      toolbox.element.draggable(TOOLBOX_DRAGGABLE_SETTINGS);
     };
 
     var bindLayoutEvents = function() {
