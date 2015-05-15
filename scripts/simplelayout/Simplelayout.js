@@ -40,7 +40,9 @@ define(["simplelayout/Layoutmanager", "simplelayout/Eventrecorder", "simplelayou
         layoutmanager.commitLayouts();
       },
       update: function(event, ui) {
-        layoutmanager.moveLayout(ui.item.data("layoutId"));
+        if(typeof ui.item.data("layoutId") !== "undefined") {
+          layoutmanager.moveLayout(ui.item.data("layoutId"));
+        }
       }
     };
 
@@ -66,15 +68,17 @@ define(["simplelayout/Layoutmanager", "simplelayout/Eventrecorder", "simplelayou
         layoutmanager.commitBlocks(this.layoutId, this.columnId);
       },
       update: function(event, ui) {
-        var target = $(event.target);
-        var columnId = ui.item.data("column-id");
-        var layoutId = ui.item.data("layout-id");
-        var blockId = ui.item.data("block-id");
-        var type = ui.item.data("type");
-        var content = ui.item.html();
-        var newColumnId = target.data("column-id");
-        var newLayoutId = target.data("layout-id");
-        layoutmanager.moveBlock(layoutId, columnId, blockId, newLayoutId, newColumnId, type, content);
+        if(typeof ui.item.data("layoutId") !== "undefined") {
+          var target = $(event.target);
+          var columnId = ui.item.data("columnId");
+          var layoutId = ui.item.data("layoutId");
+          var blockId = ui.item.data("blockId");
+          var type = ui.item.data("type");
+          var content = ui.item.html();
+          var newColumnId = target.data("columnId");
+          var newLayoutId = target.data("layoutId");
+          layoutmanager.moveBlock(layoutId, columnId, blockId, newLayoutId, newColumnId, type, content);
+        }
       }
     };
 
