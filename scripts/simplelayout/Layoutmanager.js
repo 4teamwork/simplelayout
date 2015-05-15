@@ -116,7 +116,7 @@ define(["simplelayout/Layout"], function(Layout) {
       },
 
       hasLayouts: function() {
-        return Object.keys(this.layouts) > 0;
+        return Object.keys(this.layouts).length > 0;
       },
 
       moveBlock: function(oldLayoutId, oldColumnId, oldBlockId, newLayoutId, newColumnId) {
