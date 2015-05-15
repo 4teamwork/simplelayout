@@ -60,7 +60,10 @@
       }
 
       i {
-        padding-right: 5px;
+          height: 17px;
+          width: 30px;
+          display: inline-block;
+          vertical-align: middle;
       }
 
       &.sl-toolbox-header {
