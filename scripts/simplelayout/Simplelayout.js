@@ -28,9 +28,9 @@ define(["simplelayout/Layoutmanager", "simplelayout/Eventrecorder", "simplelayou
       connectWith: ".sl-simplelayout",
       items: ".sl-layout",
       handle: ".sl-toolbar-layout .move",
-      placeholder: "placeholder",
+      placeholder: "placeholder-layout",
       layoutId: null,
-      tolerance: "touch",
+      axis: "y",
       forcePlaceholderSize: true,
       clone: null,
       start: function(event, ui) {
@@ -71,7 +71,7 @@ define(["simplelayout/Layoutmanager", "simplelayout/Eventrecorder", "simplelayou
 
     var LAYOUT_SORTABLE_SETTINGS = {
       connectWith: ".sl-column",
-      placeholder: "placeholder",
+      placeholder: "placeholder-block",
       layoutId: null,
       columnId: null,
       blockId: null,

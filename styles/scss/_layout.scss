@@ -3,8 +3,8 @@
   opacity: 1;
   position: relative;
   min-height: 100px;
-  display: inline-block;
-  .placeholder {
+  float: left;
+  .placeholder-block {
     background-color: $block-placeholder-background-color;
     border: 1px dotted $block-placeholder-border-color;
     margin-bottom: 1em;
