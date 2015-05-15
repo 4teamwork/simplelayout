@@ -115,6 +115,10 @@ define(["simplelayout/Layout"], function(Layout) {
         this.element.trigger("layoutMoved", [layoutId]);
       },
 
+      hasLayouts: function() {
+        return Object.keys(this.layouts) > 0;
+      },
+
       moveBlock: function(oldLayoutId, oldColumnId, oldBlockId, newLayoutId, newColumnId) {
         var layout = this.layouts[oldLayoutId];
         var column = layout.columns[oldColumnId];

@@ -40,11 +40,13 @@ define([], function() {
           <div class='components'> \
             <div class='addables'> \
               <a class='sl-toolbox-header'>Komponenten</a> \
-                {{for components}} \
-                  <a class='sl-toolbox-component' title='{{:description}}' data-type='{{:contentType}}' data-form_url='{{:formUrl}}'> \
-                    <i class='icon-{{:contentType}}'></i>{{:title}} \
-                  </a> \
-                {{/for}} \
+                <div class='sl-toolbox-components'> \
+                  {{for components}} \
+                    <a class='sl-toolbox-component' title='{{:description}}' data-type='{{:contentType}}' data-form_url='{{:formUrl}}'> \
+                      <i class='icon-{{:contentType}}'></i>{{:title}} \
+                    </a> \
+                  {{/for}} \
+                </div> \
               <a class='sl-toolbox-header'>Layout</a> \
                 {{for layouts}} \
                   <a class='sl-toolbox-layout' data-columns='{{:columns}}'> \
@@ -80,6 +82,14 @@ define([], function() {
       options: options,
 
       element: element,
+
+      disableComponents: function() {
+        $(".sl-toolbox-components", this.element).addClass("disabled");
+      },
+
+      enableComponents: function() {
+        $(".sl-toolbox-components", this.element).removeClass("disabled");
+      },
 
       attachTo: function(target) {
         target.append(element);

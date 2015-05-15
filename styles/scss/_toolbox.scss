@@ -8,6 +8,7 @@
   background: white;
   padding: 10px;
   box-shadow: 0 0 40px 0 rgba(0, 0, 0, .75);
+  @include noselect();
   .components {
 
     overflow: hidden;
@@ -23,6 +24,22 @@
       &.close {
         max-height: 0;
         opacity: 0;
+      }
+    }
+
+    .sl-toolbox-components {
+      &.disabled {
+        position: relative;
+        &:before {
+          content: "";
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          background: rgba(0,0,0,0.5);
+          top: 0;
+          left: 0;
+          z-index: 1;
+        }
       }
     }
 

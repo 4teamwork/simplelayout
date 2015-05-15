@@ -26,6 +26,17 @@ suite("Toolbox", function() {
     assert.deepEqual(addedNodes, [{tag: "DIV", id: "sl-toolbox", classes: "sl-toolbox"}]);
   });
 
+  test("disables components", function() {
+    var toolbox = new Toolbox({layouts: [0]});
+    var target = $("<div></div>");
+
+    toolbox.attachTo(target);
+
+    toolbox.disableComponents();
+
+    assert.equal("sl-toolbox-components disabled", toolbox.element.find(".sl-toolbox-components")[0].className);
+  });
+
   suite("components", function() {
 
     test("can set components", function() {
