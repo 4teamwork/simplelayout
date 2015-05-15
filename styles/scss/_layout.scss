@@ -4,10 +4,12 @@
   position: relative;
   min-height: 100px;
   float: left;
-  .placeholder-block {
+  .block-placeholder {
     background-color: $block-placeholder-background-color;
     border: 1px dotted $block-placeholder-border-color;
-    margin-bottom: 1em;
+    width: 100%;
+    min-height: 100px;
+    float: left;
   }
   &.ui-sortable-helper {
     opacity: .9;
