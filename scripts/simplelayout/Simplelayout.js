@@ -56,16 +56,18 @@ define(["simplelayout/Layoutmanager", "simplelayout/Eventrecorder", "simplelayou
       handle: ".sl-toolbar-block .move",
       tolerance: "pointer",
       receive: function(event, ui) {
-        var item = $(this).find(".ui-draggable");
-        this.layoutId = $(this).data("layoutId");
-        this.columnId = $(this).data("columnId");
-        var type = ui.item.data("type");
-        this.blockId = layoutmanager.insertBlock(this.layoutId, this.columnId, null, type);
-        var blockToolbar = new Toolbar(toolbox.options.components[type].actions, "horizontal", "block");
-        layoutmanager.getBlock(this.layoutId, this.columnId, this.blockId).attachToolbar(blockToolbar);
-        layoutmanager.getBlock(this.layoutId, this.columnId, this.blockId).element.insertAfter(item);
-        item.remove();
-        layoutmanager.commitBlocks(this.layoutId, this.columnId);
+        if(typeof ui.item.data("layoutId") === "undefined") {
+          var item = $(this).find(".ui-draggable");
+          this.layoutId = $(this).data("layoutId");
+          this.columnId = $(this).data("columnId");
+          var type = ui.item.data("type");
+          this.blockId = layoutmanager.insertBlock(this.layoutId, this.columnId, null, type);
+          var blockToolbar = new Toolbar(toolbox.options.components[type].actions, "horizontal", "block");
+          layoutmanager.getBlock(this.layoutId, this.columnId, this.blockId).attachToolbar(blockToolbar);
+          layoutmanager.getBlock(this.layoutId, this.columnId, this.blockId).element.insertAfter(item);
+          item.remove();
+          layoutmanager.commitBlocks(this.layoutId, this.columnId);
+        }
       },
       update: function(event, ui) {
         if(typeof ui.item.data("layoutId") !== "undefined") {
