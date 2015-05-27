@@ -20,37 +20,29 @@ define(["simplelayout/Column"], function(Column) {
 
       toolbar: null,
 
-      create: function(id) {
+      create: function(id, container) {
         this.element = $(template.render());
         this.element.data("layoutId", id);
+        this.element.data("container", container);
         for (var i = 0; i < columns; i++) {
           var column = new Column(columns);
           this.columns[i] = column;
           var columnElement = column.create();
-          columnElement.data("column-id", i);
-          columnElement.data("layout-id", id);
+          columnElement.data("columnId", i);
+          columnElement.data("layoutId", id);
+          columnElement.data("container", container);
           this.element.append(columnElement);
         }
         return this.element;
       },
 
-      commit: function() {
-        this.committed = true;
-      },
+      commit: function() { this.committed = true; },
 
-      insertBlock: function(columnId, content, type) {
-        var column = this.columns[columnId];
-        return column.insertBlock(content, type);
-      },
+      insertBlock: function(columnId, content, type) { return this.columns[columnId].insertBlock(content, type); },
 
-      deleteBlock: function(columnId, blockId) {
-        var column = this.columns[columnId];
-        column.deleteBlock(blockId);
-      },
+      deleteBlock: function(columnId, blockId) { this.columns[columnId].deleteBlock(blockId); },
 
-      commitBlocks: function(columnId) {
-        this.columns[columnId].commitBlocks();
-      },
+      commitBlocks: function(columnId) { this.columns[columnId].commitBlocks(); },
 
       attachToolbar: function(toolbar) {
         this.toolbar = toolbar;
@@ -84,8 +76,13 @@ define(["simplelayout/Column"], function(Column) {
         return hasBlocks;
       },
 
-      toJSON: function() {
-        return { columns: this.columns };
+      toJSON: function() { return { columns: this.columns }; },
+
+      toObject: function(columnsToCreate) {
+        var self = this;
+        $.each(columnsToCreate, function(idx, column) {
+          self.columns[idx].toObject(column.blocks);
+        });
       }
 
     };

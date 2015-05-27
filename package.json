@@ -16,7 +16,8 @@
     "grunt-lib-phantomjs": "~0.3",
     "grunt-mocha": "~0.4.11",
     "requirejs": "~2.1.4",
-    "underscore": "~1.5.2"
+    "underscore": "~1.5.2",
+    "js-fixtures": "1.5.3"
   },
   "main": "index.html",
   "directories": {

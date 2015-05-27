@@ -2,13 +2,14 @@
 <html>
 
 <head>
-  <script type="text/javascript" src="../bower_components/sinonjs/sinon.js"></script>
-  <script type="text/javascript" src="../bower_components/mocha/mocha.js"></script>
-  <script type="text/javascript" src="../bower_components/chai/chai.js"></script>
-  <script type="text/javascript" src="../bower_components/jquery/dist/jquery.min.js"></script>
-  <script type="text/javascript" src="../bower_components/jquery-ui/ui/minified/jquery-ui.custom.min.js"></script>
-  <script type="text/javascript" src="../bower_components/jsrender/jsrender.js"></script>
-  <script type="text/javascript" src="../bower_components/requirejs/require.js"></script>
+  <script src="../node_modules/js-fixtures/fixtures.js"></script>
+  <script src="../bower_components/sinonjs/sinon.js"></script>
+  <script src="../bower_components/mocha/mocha.js"></script>
+  <script src="../bower_components/chai/chai.js"></script>
+  <script src="../bower_components/jquery/dist/jquery.min.js"></script>
+  <script src="../bower_components/jquery-ui/ui/minified/jquery-ui.custom.min.js"></script>
+  <script src="../bower_components/jsrender/jsrender.js"></script>
+  <script src="../bower_components/requirejs/require.js"></script>
   <link rel="stylesheet" href="../bower_components/mocha/mocha.css" />
 
   <script type="text/javascript">
@@ -24,6 +25,9 @@
     global._TEST_MODE = true;
 
     global.mocha.setup("tdd");
+
+    fixtures.path = "fixtures"
+
   }(window));
 </script>
 </head>
@@ -39,7 +43,6 @@
   <script type="text/javascript" src="layout.test.js"></script>
   <script type="text/javascript" src="layoutmanager.test.js"></script>
   <script type="text/javascript" src="toolbox.test.js"></script>
-  <script type="text/javascript" src="eventRecorder.test.js"></script>
   <script type="text/javascript" src="simplelayout.test.js"></script>
   <script type="text/javascript" src="toolbar.test.js"></script>
 

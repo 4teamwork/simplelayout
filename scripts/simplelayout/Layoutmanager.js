@@ -12,10 +12,11 @@ define(["simplelayout/Layout"], function(Layout) {
 
     var element;
 
+    var id = 0;
+
     if (options.source) {
       element = $(options.source);
       element.addClass("sl-simplelayout");
-
     } else {
       var template = $.templates("<div class='sl-simplelayout' style='width:{{:width}};''></div>");
       element = $(template.render(options));
@@ -25,37 +26,32 @@ define(["simplelayout/Layout"], function(Layout) {
 
       layouts: {},
 
-      id: 0,
-
       options: options,
 
       element: element,
 
-      attachTo: function(target) {
-        $(target).append(element);
-      },
+      attachTo: function(target) { $(target).append(element); },
 
       insertLayout: function(columns) {
-        var id = this.id;
         var layout = new Layout(columns);
-        layout.create(id);
+        layout.create(id, element.data("container"));
         this.layouts[id] = layout;
-        this.id++;
-        this.element.trigger("layoutInserted", [id]);
-        return id;
+        this.element.trigger("layoutInserted", [this, layout]);
+        id++;
+        return layout;
       },
 
       deleteLayout: function(layoutId) {
         this.layouts[layoutId].element.remove();
         delete this.layouts[layoutId];
-        this.element.trigger("layoutDeleted");
+        this.element.trigger("layoutDeleted", [this]);
       },
 
       commitLayouts: function() {
         for (var key in this.layouts) {
           this.layouts[key].commit();
         }
-        this.element.trigger("layoutsCommitted");
+        this.element.trigger("layoutsCommitted", [this]);
       },
 
       getCommittedLayouts: function() {
@@ -68,9 +64,7 @@ define(["simplelayout/Layout"], function(Layout) {
         return committedLayouts;
       },
 
-      getBlock: function(layoutId, columnId, blockId) {
-        return this.layouts[layoutId].columns[columnId].blocks[blockId];
-      },
+      getBlock: function(layoutId, columnId, blockId) { return this.layouts[layoutId].columns[columnId].blocks[blockId]; },
 
       getCommittedBlocks: function() {
         var committedBlocks = [];
@@ -88,36 +82,32 @@ define(["simplelayout/Layout"], function(Layout) {
         return insertedBlocks;
       },
 
-      setBlock: function(layoutId, columnId, blockId, block) {
-        this.layouts[layoutId].columns[columnId].blocks[blockId] = block;
-      },
+      setBlock: function(layoutId, columnId, blockId, block) { this.layouts[layoutId].columns[columnId].blocks[blockId] = block; },
 
       insertBlock: function(layoutId, columnId, content, type) {
         var layout = this.layouts[layoutId];
-        var blockId = layout.insertBlock(columnId, content, type);
-        this.getBlock(layoutId, columnId, blockId);
-        this.element.trigger("blockInserted", [layoutId, columnId, blockId]);
-        return blockId;
+        var block = layout.insertBlock(columnId, content, type);
+        this.element.trigger("blockInserted", [this, block]);
+        return block;
       },
 
       deleteBlock: function(layoutId, columnId, blockId) {
         var layout = this.layouts[layoutId];
         layout.deleteBlock(columnId, blockId);
-        this.element.trigger("blockDeleted", [layoutId, columnId, blockId]);
+        this.element.trigger("blockDeleted", [this, layoutId, columnId, blockId]);
       },
 
       commitBlocks: function(layoutId, columnId) {
         this.layouts[layoutId].commitBlocks(columnId);
-        this.element.trigger("blocksCommitted", [layoutId, columnId]);
+        this.element.trigger("blocksCommitted", [this, layoutId, columnId]);
       },
 
+      // Todo: implement move layout
       moveLayout: function(layoutId) {
-        this.element.trigger("layoutMoved", [layoutId]);
+        this.element.trigger("layoutMoved", [this, layoutId]);
       },
 
-      hasLayouts: function() {
-        return Object.keys(this.layouts).length > 0;
-      },
+      hasLayouts: function() { return Object.keys(this.layouts).length > 0; },
 
       moveBlock: function(oldLayoutId, oldColumnId, oldBlockId, newLayoutId, newColumnId) {
         var layout = this.layouts[oldLayoutId];
@@ -129,67 +119,18 @@ define(["simplelayout/Layout"], function(Layout) {
         block.element.data("blockId", nextBlockId);
         delete column.blocks[oldBlockId];
         this.layouts[newLayoutId].columns[newColumnId].blocks[nextBlockId] = block;
-        this.element.trigger("blockMoved", [oldLayoutId, oldColumnId, oldBlockId, newLayoutId, newColumnId, nextBlockId]);
+        this.element.trigger("blockMoved", [this, oldLayoutId, oldColumnId, oldBlockId, newLayoutId, newColumnId, nextBlockId]);
       },
 
-      serialize: function() {
-        var that = this;
-        var output = {
-          "layouts": [],
-          "blocks": []
-        };
-        $(".sl-layout", this.element).each(function(layoutIdx, layout) {
-          output.layouts.push(Object.keys(that.layouts[$(layout).data("layoutId")].columns).length);
-          $(".sl-column", layout).each(function(columnIdx, column) {
-            $(".sl-block", column).each(function(blockIdx, blockNode) {
-              blockNode = $(blockNode);
-              var uid = blockNode.data("uid");
-              var blockData = {};
-              blockData.layoutPos = layoutIdx;
-              blockData.columnPos = columnIdx;
-              blockData.blockPos = blockIdx;
-              blockData.uid = uid;
-              output.blocks.push(blockData);
-            });
-          });
+      toObject: function(layouts) {
+        var self = this;
+        $.each(layouts, function(idx, layout) {
+          var layoutInstance = self.insertLayout(Object.keys(layout.columns).length);
+          layoutInstance.toObject(layout.columns);
         });
-        return JSON.stringify(output);
       },
 
-      deserialize: function() {
-        var Column = require("simplelayout/Column");
-        var Block = require("simplelayout/Block");
-        var Toolbar = require("simplelayout/Toolbar");
-        var toolbar;
-        var that = this;
-        $(".sl-layout", element).each(function(layoutIdx, layout) {
-          var layoutNode = $(layout);
-          that.layouts[layoutIdx] = new Layout(layoutNode.children(".sl-column").length);
-          that.layouts[layoutIdx].element = layoutNode;
-          that.layouts[layoutIdx].element.data("layoutId", layoutIdx);
-          var layoutToolbar = new Toolbar(that.toolbox.options.layoutActions, "vertical", "layout");
-          that.layouts[layoutIdx].attachToolbar(layoutToolbar);
-          that.id++;
-          $(".sl-column", layout).each(function(columnIdx, column) {
-            var columnNode = $(column);
-            that.layouts[layoutIdx].columns[columnIdx] = new Column(layoutNode.children(".sl-column").length);
-            that.layouts[layoutIdx].columns[columnIdx].element = columnNode;
-            that.layouts[layoutIdx].columns[columnIdx].element.data("layoutId", layoutIdx);
-            that.layouts[layoutIdx].columns[columnIdx].element.data("columnId", columnIdx);
-            $(".sl-block", column).each(function(blockIdx, block) {
-              var blockNode = $(block);
-              that.setBlock(layoutIdx, columnIdx, blockIdx, new Block());
-              that.getBlock(layoutIdx, columnIdx, blockIdx).element = blockNode;
-              that.getBlock(layoutIdx, columnIdx, blockIdx).type = blockNode.data("type");
-              toolbar = new Toolbar(that.toolbox.options.components[blockNode.data("type")].actions, "horizontal", "block");
-              that.getBlock(layoutIdx, columnIdx, blockIdx).attachToolbar(toolbar);
-              that.getBlock(layoutIdx, columnIdx, blockIdx).element.data("layoutId", layoutIdx);
-              that.getBlock(layoutIdx, columnIdx, blockIdx).element.data("columnId", columnIdx);
-              that.getBlock(layoutIdx, columnIdx, blockIdx).element.data("blockId", blockIdx);
-            });
-          });
-        });
-      }
+      toJSON: function() { return { layouts: this.layouts, container: this.element.attr("id") }; }
     };
 
   }

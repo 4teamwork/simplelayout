@@ -29,8 +29,9 @@ define(["simplelayout/Block"], function(Block) {
         blockElement.data("blockId", nextBlockId);
         blockElement.data("columnId", this.element.data("columnId"));
         blockElement.data("layoutId", this.element.data("layoutId"));
+        blockElement.data("container", this.element.data("container"));
         this.blocks[nextBlockId] = block;
-        return nextBlockId;
+        return block;
       },
 
       deleteBlock: function(blockId) {
@@ -50,9 +51,7 @@ define(["simplelayout/Block"], function(Block) {
         }
       },
 
-      hasBlocks: function() {
-        return Object.keys(this.blocks).length > 0;
-      },
+      hasBlocks: function() { return Object.keys(this.blocks).length > 0; },
 
       getCommittedBlocks: function() {
         var committedBlocks = [];
@@ -74,9 +73,14 @@ define(["simplelayout/Block"], function(Block) {
         return insertedBlocks;
       },
 
-      toJSON: function() {
-        return { blocks: this.blocks };
-      }
+      toObject: function(blocks) {
+        var self = this;
+        $.each(blocks, function(idx, block) {
+          self.insertBlock(null, block.type);
+        });
+      },
+
+      toJSON: function() { return { blocks: this.blocks }; }
 
     };
   }
