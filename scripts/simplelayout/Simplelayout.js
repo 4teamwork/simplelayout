@@ -172,7 +172,7 @@ define(["simplelayout/Layoutmanager", "simplelayout/Toolbar"], function(Layoutma
         id = 0;
         var objectStructure = JSON.parse(objectString);
         $.each(objectStructure, function(idx, manager) {
-          self.insertManager().toObject(manager.layouts);
+          self.insertManager({ source: manager.source }).toObject(manager.layouts);
         });
       },
 
