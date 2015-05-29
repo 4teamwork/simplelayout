@@ -11,6 +11,7 @@
     "quotes": [1, "double", "avoid-escape"]
   },
   "globals": {
-    "assert": true
+    "assert": true,
+    "fixtures": true
   }
 }

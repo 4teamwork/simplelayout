@@ -6,7 +6,7 @@
 
   $(document).ready(function() {
     var simplelayout = new Simplelayout({
-      source: "#simplelayout"
+      source: ".sl-simplelayout"
     });
 
     var toolbox = new Toolbox({

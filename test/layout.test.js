@@ -2,12 +2,19 @@ suite("Layout", function() {
   "use strict";
 
   var Layout;
+  var layout;
 
-  setup(function(done) {
+  suiteSetup(function(done) {
     require(["simplelayout/Layout"], function(_Layout) {
       Layout = _Layout;
       done();
     });
+  });
+
+  setup(function(done) {
+    layout = new Layout(4);
+    layout.create();
+    done();
   });
 
   test("is a constructor function", function() {
@@ -16,15 +23,12 @@ suite("Layout", function() {
 
   test("defining an empty layout raises an exception", function() {
     assert.throw(function() {
-      var layout = new Layout();
+      layout = new Layout();
       layout();
     }, Error, "Columns are not defined.");
   });
 
   test("each column of 4 column layout has sl-col-4 class", function() {
-    var layout = new Layout(4);
-    layout.create();
-
     var columns = layout.columns;
 
     var nodes = $.map(columns, function(column) {
@@ -43,9 +47,6 @@ suite("Layout", function() {
   });
 
   test("hasBlocks return true if at least one block is existing on a layout", function() {
-    var layout = new Layout(4);
-    layout.create();
-
     assert(!layout.hasBlocks(), "Layout should not have any blocks");
     layout.insertBlock(0);
     assert(layout.hasBlocks(), "Layout has blocks");
@@ -54,8 +55,6 @@ suite("Layout", function() {
   suite("Block-transactions", function() {
 
     test("can insert a block", function() {
-      var layout = new Layout(2);
-      layout.create();
       layout.insertBlock(0, "<p>Test</p>", "textblock");
 
       var blocks = $.map(layout.columns[0].blocks, function(block) {
@@ -66,21 +65,17 @@ suite("Layout", function() {
     });
 
     test("can delete a block", function() {
-      var layout = new Layout(2);
-      layout.create();
-      var blockId = layout.insertBlock(0, "<p>Test</p>", "textblock");
-      layout.deleteBlock(0, blockId);
+      var block = layout.insertBlock(0, "<p>Test</p>", "textblock");
+      layout.deleteBlock(0, block.element.data("blockId"));
 
-      var blocks = $.map(layout.columns[0].blocks, function(block) {
-        return {committed: block.committed, columnId: block.element.data("columnId"), blockId: block.element.data("block-id"), type: block.type};
+      var blocks = $.map(layout.columns[0].blocks, function(e) {
+        return {committed: e.committed, columnId: e.element.data("columnId"), blockId: e.element.data("block-id"), type: e.type};
       });
 
       assert.deepEqual(blocks, [], "Should have no blocks after deleting them");
     });
 
     test("can commit a block", function() {
-      var layout = new Layout(2);
-      layout.create();
       layout.insertBlock(0, "<p>Test</p>", "textblock");
       layout.commitBlocks(0);
       var blocks = $.map(layout.columns[0].getCommittedBlocks(), function(block) {
