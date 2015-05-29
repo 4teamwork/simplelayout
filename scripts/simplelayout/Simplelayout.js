@@ -20,16 +20,6 @@ define(["simplelayout/Layoutmanager", "simplelayout/Toolbar"], function(Layoutma
 
     var id = 0;
 
-    var insertManager = function(managerOptions) {
-      var manager = new Layoutmanager(managerOptions);
-      manager.element.data("container", id);
-      managers[id] = manager;
-      id++;
-      return manager;
-    };
-
-    $(options.source).each(function(idx, container) { insertManager({ source: container }); });
-
     var TOOLBOX_COMPONENT_DRAGGABLE_SETTINGS = { helper: "clone", cursor: "pointer" };
 
     var LAYOUTMANAGER_SORTABLE_SETTINGS = {
@@ -68,18 +58,15 @@ define(["simplelayout/Layoutmanager", "simplelayout/Toolbar"], function(Layoutma
       receive: function(event, ui) {
         var manager = managers[$(this).data("container")];
         if(originalBlock) {
-          var data = originalBlock.element.data();
           var newData = $(this).data();
-          var originalLayoutId = data.layoutId;
-          var originalColumnId = data.columnId;
-          var originalBlockId = data.blockId;
           var newLayoutId = newData.layoutId;
           var newColumnId = newData.columnId;
           var newContainerId = newData.container;
           originalBlock.element.data("layoutId", newLayoutId);
           originalBlock.element.data("columnId", newColumnId);
           originalBlock.element.data("container", newContainerId);
-          manager.layouts[originalLayoutId].columns[originalColumnId].blocks[originalBlockId] = originalBlock;
+          var nextBlockId = Object.keys(this.layouts[newLayoutId].columns[newColumnId].blocks).length;
+          manager.layouts[newLayoutId].columns[newColumnId].blocks[nextBlockId] = originalBlock;
         }
         else if(typeof ui.item.data("layoutId") === "undefined") {
           var item = $(this).find(".ui-draggable");
@@ -165,13 +152,19 @@ define(["simplelayout/Layoutmanager", "simplelayout/Toolbar"], function(Layoutma
 
       options: options,
 
-      insertManager: insertManager,
-
       getActiveBlock: function() { return currentBlock; },
 
       getActiveLayout: function() { return currentLayout; },
 
       serialize: function() { return JSON.stringify(this.managers); },
+
+      insertManager: function(managerOptions) {
+        var manager = new Layoutmanager(managerOptions);
+        manager.element.data("container", id);
+        managers[id] = manager;
+        id++;
+        return manager;
+      },
 
       deserialize: function(objectString) {
         var self = this;

@@ -3,23 +3,20 @@ suite("Simplelayout", function() {
 
   var Simplelayout;
   var Toolbox;
-  var containers;
   var simplelayout;
-  var layoutmanager;
+  var manager;
 
   suiteSetup(function(done) {
     require(["simplelayout/Simplelayout", "toolbox/Toolbox"], function(_Simplelayout, _Toolbox) {
       Simplelayout = _Simplelayout;
       Toolbox = _Toolbox;
-      fixtures.set('<div class="sl-simplelayout" id="slot1"></div><div class="sl-simplelayout" id="slot2"></div>');
-      containers = $(".sl-simplelayout", fixtures.window().document);
       done();
     });
   });
 
   setup(function(done) {
-    simplelayout = new Simplelayout({ source: containers });
-    layoutmanager = simplelayout.managers[0];
+    simplelayout = new Simplelayout();
+    manager = simplelayout.insertManager();
     done();
   });
 
@@ -37,16 +34,11 @@ suite("Simplelayout", function() {
     }, Error, "Not attached to DOM element");
   });
 
-  test("manager stores information", function() {
-    var data = $.map(containers, function(container) {
-      return $(container).data().container;
-    });
-    assert.deepEqual(data, [0, 1]);
-  });
+  test("manager stores information", function() { assert.deepEqual(manager.element.data("container"), 0); });
 
   test("layout stores information", function() {
-    layoutmanager.insertLayout(4);
-    var data = $.map(layoutmanager.layouts[0].element, function(e) {
+    manager.insertLayout(4);
+    var data = $.map(manager.layouts[0].element, function(e) {
       e = $(e);
       return { container: e.data().container, layoutId: e.data().layoutId };
     });
@@ -54,8 +46,8 @@ suite("Simplelayout", function() {
   });
 
   test("column stores information", function() {
-    layoutmanager.insertLayout(4);
-    var data = $.map(layoutmanager.layouts[0].columns, function(e) {
+    manager.insertLayout(4);
+    var data = $.map(manager.layouts[0].columns, function(e) {
       data = e.element.data();
       return { container: data.container, layoutId: data.layoutId, columnId: data.columnId };
     });
@@ -68,9 +60,9 @@ suite("Simplelayout", function() {
   });
 
   test("block stores information", function() {
-    layoutmanager.insertLayout(4);
-    layoutmanager.insertBlock(0, 0);
-    var data = $.map(layoutmanager.layouts[0].columns[0].blocks, function(e) {
+    manager.insertLayout(4);
+    manager.insertBlock(0, 0);
+    var data = $.map(manager.layouts[0].columns[0].blocks, function(e) {
       data = e.element.data();
       return { container: data.container, layoutId: data.layoutId, columnId: data.columnId, blockId: data.blockId };
     });
@@ -79,16 +71,14 @@ suite("Simplelayout", function() {
   });
 
   test("can de- and serialize", function() {
-    simplelayout = new Simplelayout();
-    var manager1 = simplelayout.insertManager();
     var manager2 = simplelayout.insertManager();
-    manager1.insertLayout(4);
-    manager1.insertLayout(4);
+    manager.insertLayout(4);
+    manager.insertLayout(4);
     manager2.insertLayout(4);
     manager2.insertLayout(4);
-    manager1.insertBlock(0, 0, null, "textblock");
-    manager1.insertBlock(0, 1, null, "textblock");
-    manager1.insertBlock(0, 2, null, "textblock");
+    manager.insertBlock(0, 0, null, "textblock");
+    manager.insertBlock(0, 1, null, "textblock");
+    manager.insertBlock(0, 2, null, "textblock");
     manager2.insertBlock(1, 0, null, "listingblock");
     manager2.insertBlock(1, 1, null, "listingblock");
     manager2.insertBlock(1, 2, null, "listingblock");

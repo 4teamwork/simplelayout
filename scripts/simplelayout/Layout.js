@@ -45,8 +45,8 @@ define(["simplelayout/Column"], function(Column) {
 
       getBlocks: function() {
         var blocks = [];
-        $.each(this.columns, function(idx, column) {
-          $.each(column.blocks, function(idx, block) {
+        $.each(this.columns, function(columnIdx, column) {
+          $.each(column.blocks, function(blockIdx, block) {
             blocks.push(block);
           });
         });
