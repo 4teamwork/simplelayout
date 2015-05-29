@@ -47,42 +47,17 @@ define(["simplelayout/Layout"], function(Layout) {
         this.element.trigger("layoutDeleted", [this]);
       },
 
-      commitLayouts: function() {
-        for (var key in this.layouts) {
-          this.layouts[key].commit();
-        }
-        this.element.trigger("layoutsCommitted", [this]);
-      },
-
-      getCommittedLayouts: function() {
-        var committedLayouts = {};
-        for (var key in this.layouts) {
-          if (this.layouts[key].committed) {
-            committedLayouts[key] = this.layouts[key];
-          }
-        }
-        return committedLayouts;
-      },
+      setBlock: function(layoutId, columnId, blockId, block) { this.layouts[layoutId].columns[columnId].blocks[blockId] = block; },
 
       getBlock: function(layoutId, columnId, blockId) { return this.layouts[layoutId].columns[columnId].blocks[blockId]; },
 
-      getCommittedBlocks: function() {
-        var committedBlocks = [];
-        for(var key in this.layouts) {
-          committedBlocks = $.merge(this.layouts[key].getCommittedBlocks(), committedBlocks);
-        }
-        return committedBlocks;
+      getBlocks: function() {
+        var blocks = [];
+        $.each(this.layouts, function(idx, layout) {
+          blocks = $.merge(layout.getBlocks(), blocks);
+        });
+        return blocks;
       },
-
-      getInsertedBlocks: function() {
-        var insertedBlocks = [];
-        for(var key in this.layouts) {
-          insertedBlocks = $.merge(this.layouts[key].getInsertedBlocks(), insertedBlocks);
-        }
-        return insertedBlocks;
-      },
-
-      setBlock: function(layoutId, columnId, blockId, block) { this.layouts[layoutId].columns[columnId].blocks[blockId] = block; },
 
       insertBlock: function(layoutId, columnId, content, type) {
         var layout = this.layouts[layoutId];
@@ -95,11 +70,6 @@ define(["simplelayout/Layout"], function(Layout) {
         var layout = this.layouts[layoutId];
         layout.deleteBlock(columnId, blockId);
         this.element.trigger("blockDeleted", [this, layoutId, columnId, blockId]);
-      },
-
-      commitBlocks: function(layoutId, columnId) {
-        this.layouts[layoutId].commitBlocks(columnId);
-        this.element.trigger("blocksCommitted", [this, layoutId, columnId]);
       },
 
       // Todo: implement move layout

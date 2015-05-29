@@ -46,7 +46,6 @@ suite("Simplelayout", function() {
 
   test("layout stores information", function() {
     layoutmanager.insertLayout(4);
-    layoutmanager.commitLayouts();
     var data = $.map(layoutmanager.layouts[0].element, function(e) {
       e = $(e);
       return { container: e.data().container, layoutId: e.data().layoutId };
@@ -56,7 +55,6 @@ suite("Simplelayout", function() {
 
   test("column stores information", function() {
     layoutmanager.insertLayout(4);
-    layoutmanager.commitLayouts();
     var data = $.map(layoutmanager.layouts[0].columns, function(e) {
       data = e.element.data();
       return { container: data.container, layoutId: data.layoutId, columnId: data.columnId };
@@ -71,7 +69,6 @@ suite("Simplelayout", function() {
 
   test("block stores information", function() {
     layoutmanager.insertLayout(4);
-    layoutmanager.commitLayouts();
     layoutmanager.insertBlock(0, 0);
     var data = $.map(layoutmanager.layouts[0].columns[0].blocks, function(e) {
       data = e.element.data();

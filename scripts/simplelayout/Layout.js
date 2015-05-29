@@ -14,8 +14,6 @@ define(["simplelayout/Column"], function(Column) {
 
     return {
 
-      committed: false,
-
       columns: {},
 
       toolbar: null,
@@ -36,33 +34,23 @@ define(["simplelayout/Column"], function(Column) {
         return this.element;
       },
 
-      commit: function() { this.committed = true; },
-
       insertBlock: function(columnId, content, type) { return this.columns[columnId].insertBlock(content, type); },
 
       deleteBlock: function(columnId, blockId) { this.columns[columnId].deleteBlock(blockId); },
-
-      commitBlocks: function(columnId) { this.columns[columnId].commitBlocks(); },
 
       attachToolbar: function(toolbar) {
         this.toolbar = toolbar;
         this.element.append(toolbar.element);
       },
 
-      getCommittedBlocks: function() {
-        var committedBlocks = [];
-        for(var key in this.columns) {
-          committedBlocks = $.merge(this.columns[key].getCommittedBlocks(), committedBlocks);
-        }
-        return committedBlocks;
-      },
-
-      getInsertedBlocks: function() {
-        var insertedBlocks = [];
-        for(var key in this.columns) {
-          insertedBlocks = $.merge(this.columns[key].getInsertedBlocks(), insertedBlocks);
-        }
-        return insertedBlocks;
+      getBlocks: function() {
+        var blocks = [];
+        $.each(this.columns, function(idx, column) {
+          $.each(column.blocks, function(idx, block) {
+            blocks.push(block);
+          });
+        });
+        return blocks;
       },
 
       hasBlocks: function() {

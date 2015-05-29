@@ -73,9 +73,7 @@ define([], function() {
       $(el).data("actions", options.components[$(el).data("type")].actions);
     });
 
-    $(".sl-toolbox-handle", element).on("click", function() {
-      $(".addables").toggleClass("close");
-    });
+    $(".sl-toolbox-handle", element).on("click", function() { $(".addables").toggleClass("close"); });
 
     return {
 
@@ -83,17 +81,11 @@ define([], function() {
 
       element: element,
 
-      disableComponents: function() {
-        $(".sl-toolbox-components", this.element).addClass("disabled");
-      },
+      disableComponents: function() { $(".sl-toolbox-components", this.element).addClass("disabled"); },
 
-      enableComponents: function() {
-        $(".sl-toolbox-components", this.element).removeClass("disabled");
-      },
+      enableComponents: function() { $(".sl-toolbox-components", this.element).removeClass("disabled"); },
 
-      attachTo: function(target) {
-        target.append(element);
-      }
+      attachTo: function(target) { target.append(element); }
 
     };
 
