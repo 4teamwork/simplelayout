@@ -5,14 +5,18 @@ suite("Layoutmanager", function() {
   var layoutmanager;
   var target;
 
-  setup(function(done) {
+  suiteSetup(function(done) {
     require(["simplelayout/Layoutmanager"], function(_Layoutmanager) {
       Layoutmanager = _Layoutmanager;
-      layoutmanager = new Layoutmanager();
-      target = $("<div></div>");
-      layoutmanager.attachTo(target);
       done();
     });
+  });
+
+  setup(function(done) {
+    layoutmanager = new Layoutmanager();
+    target = $("<div></div>");
+    layoutmanager.attachTo(target);
+    done();
   });
 
   test("is a constructor function", function() {
@@ -33,13 +37,6 @@ suite("Layoutmanager", function() {
 
   suite("Layout-transactions", function() {
 
-    setup(function(done) {
-      layoutmanager = new Layoutmanager();
-      target = $("<div></div>");
-      layoutmanager.attachTo(target);
-      done();
-    });
-
     test("can insert a Layout.", function() {
       layoutmanager.insertLayout(4);
 
@@ -51,8 +48,8 @@ suite("Layoutmanager", function() {
     });
 
     test("can delete a Layout.", function() {
-      var layoutId = layoutmanager.insertLayout(4);
-      layoutmanager.deleteLayout(layoutId);
+      var layout = layoutmanager.insertLayout(4);
+      layoutmanager.deleteLayout(layout.element.data("layoutId"));
 
       var addedNodes = $.map(target.find(".sl-layout"), function(e) {
         return {tag: e.tagName, classes: e.className};
@@ -74,41 +71,41 @@ suite("Layoutmanager", function() {
     });
 
     test("can move a block", function() {
-      var id1 = layoutmanager.insertLayout(4);
-      var id2 = layoutmanager.insertLayout(4);
+      var layout1 = layoutmanager.insertLayout(4);
+      var layout2 = layoutmanager.insertLayout(4);
       layoutmanager.commitLayouts();
-      var blockId = layoutmanager.insertBlock(id1, 0, "<p>Test</p>", "textblock");
-      layoutmanager.commitBlocks(id1, 0);
+      var block = layout1.insertBlock(0, "<p>Test</p>", "textblock");
+      layout1.commitBlocks(0);
 
-      layoutmanager.moveBlock(id1, 0, blockId, id2, 0);
-      var blocksOnOriginalLayout = layoutmanager.layouts[id1].columns[0].blocks;
-      var blocksOnMovedLayout = layoutmanager.layouts[id2].columns[0].blocks;
+      layoutmanager.moveBlock(layout1.element.data("layoutId"), 0, block.element.data("blockId"), layout2.element.data("layoutId"), 0);
+      var blocksOnOriginalLayout = layout1.columns[0].blocks;
+      var blocksOnMovedLayout = layout2.columns[0].blocks;
 
-      var nodesOnOriginalLayout = $.map(blocksOnOriginalLayout, function(block) {
-        return {layoutId: block.element.data("layoutId"), columnId: block.element.data("columnId"), blockId: block.element.data("blockId")};
+      var nodesOnOriginalLayout = $.map(blocksOnOriginalLayout, function(e) {
+        return {layoutId: e.element.data("layoutId"), columnId: e.element.data("columnId"), blockId: e.element.data("blockId")};
       });
       assert.deepEqual(nodesOnOriginalLayout, []);
 
-      var nodesOnMovedLayout = $.map(blocksOnMovedLayout, function(block) {
-        return {layoutId: block.element.data("layoutId"), columnId: block.element.data("columnId"), blockId: block.element.data("blockId")};
+      var nodesOnMovedLayout = $.map(blocksOnMovedLayout, function(e) {
+        return {layoutId: e.element.data("layoutId"), columnId: e.element.data("columnId"), blockId: e.element.data("blockId")};
       });
-      assert.deepEqual(nodesOnMovedLayout, [{layoutId: id2, columnId: 0, blockId: 0}]);
+      assert.deepEqual(nodesOnMovedLayout, [{layoutId: layout2.element.data("layoutId"), columnId: 0, blockId: 0}]);
     });
 
     test("can get inserted and committed blocks", function() {
       var layout1 = layoutmanager.insertLayout(4);
       var layout2 = layoutmanager.insertLayout(4);
       layoutmanager.commitLayouts();
-      layoutmanager.layouts[layout1].insertBlock(0);
-      layoutmanager.layouts[layout2].insertBlock(0);
+      layout1.insertBlock(0);
+      layout2.insertBlock(0);
       assert.deepEqual([false, false], $.map(layoutmanager.getInsertedBlocks(), function(block) {
         return block.committed;
       }), "should have two inserted blocks.");
       assert.deepEqual([], $.map(layoutmanager.getCommittedBlocks(), function(block) {
         return block.committed;
       }), "all blocks should be inserted.");
-      layoutmanager.commitBlocks(layout1, 0);
-      layoutmanager.commitBlocks(layout2, 0);
+      layout1.commitBlocks(0);
+      layout2.commitBlocks(0);
       assert.deepEqual([true, true], $.map(layoutmanager.getCommittedBlocks(), function(block) {
         return block.committed;
       }), "should have two committed");
@@ -126,46 +123,46 @@ suite("Layoutmanager", function() {
     var content = "<p>Test</p>";
 
     test("can add a block into a specific Layout", function() {
-      var layoutId = layoutmanager.insertLayout(4);
+      var layout = layoutmanager.insertLayout(4);
       layoutmanager.commitLayouts();
 
-      var blockId = layoutmanager.insertBlock(layoutId, columnId, content, type);
+      var block = layout.insertBlock(columnId, content, type);
 
-      var blocks = $.map(layoutmanager.layouts[layoutId].columns[columnId].blocks, function(block) {
-        return {committed: block.committed, layoutId: block.element.data("layoutId"), columnId: block.element.data("columnId"), blockId: block.element.data("blockId"), type: block.element.data("type")};
+      var blocks = $.map(layout.columns[columnId].blocks, function(e) {
+        return {committed: e.committed, layoutId: e.element.data("layoutId"), columnId: e.element.data("columnId"), blockId: e.element.data("blockId"), type: e.element.data("type")};
       });
 
-      assert.deepEqual(blocks, [{committed: false, layoutId: layoutId, columnId: columnId, blockId: blockId, type: type}]);
+      assert.deepEqual(blocks, [{committed: false, layoutId: layout.element.data("layoutId"), columnId: columnId, blockId: block.element.data("blockId"), type: type}]);
     });
 
     test("can delete a specific block from a specific layout", function() {
-      var layoutId = layoutmanager.insertLayout(4);
+      var layout = layoutmanager.insertLayout(4);
       layoutmanager.commitLayouts();
 
-      var blockId1 = layoutmanager.insertBlock(layoutId, columnId, content, type);
-      var blockId2 = layoutmanager.insertBlock(layoutId, columnId, content, type);
+      var block1 = layout.insertBlock(columnId, content, type);
+      var block2 = layout.insertBlock(columnId, content, type);
 
-      layoutmanager.deleteBlock(layoutId, columnId, blockId1);
+      layout.deleteBlock(columnId, block1.element.data("blockId"));
 
-      var blocks = $.map(layoutmanager.layouts[layoutId].columns[columnId].blocks, function(block) {
-        return {committed: block.committed, layoutId: block.element.data("layoutId"), columnId: block.element.data("columnId"), blockId: block.element.data("blockId"), type: block.element.data("type")};
+      var blocks = $.map(layout.columns[columnId].blocks, function(e) {
+        return {committed: e.committed, layoutId: e.element.data("layoutId"), columnId: e.element.data("columnId"), blockId: e.element.data("blockId"), type: e.element.data("type")};
       });
 
-      assert.deepEqual(blocks, [{committed: false, layoutId: layoutId, columnId: columnId, blockId: blockId2, type: type}]);
+      assert.deepEqual(blocks, [{committed: false, layoutId: layout.element.data("layoutId"), columnId: columnId, blockId: block2.element.data("blockId"), type: type}]);
     });
 
     test("can commit blocks", function() {
-      var layoutId = layoutmanager.insertLayout(4);
+      var layout = layoutmanager.insertLayout(4);
       layoutmanager.commitLayouts();
 
-      var blockId = layoutmanager.insertBlock(layoutId, columnId, content, type);
-      layoutmanager.commitBlocks(layoutId, columnId);
+      var block = layout.insertBlock(columnId, content, type);
+      layout.commitBlocks(columnId);
 
-      var blocks = $.map(layoutmanager.layouts[layoutId].columns[columnId].getCommittedBlocks(), function(block) {
-        return {committed: block.committed, layoutId: block.element.data("layoutId"), columnId: block.element.data("columnId"), blockId: block.element.data("blockId"), type: block.element.data("type")};
+      var blocks = $.map(layout.columns[columnId].getCommittedBlocks(), function(e) {
+        return {committed: e.committed, layoutId: e.element.data("layoutId"), columnId: e.element.data("columnId"), blockId: e.element.data("blockId"), type: e.element.data("type")};
       });
 
-      assert.deepEqual(blocks, [{committed: true, layoutId: layoutId, columnId: columnId, blockId: blockId, type: type}]);
+      assert.deepEqual(blocks, [{committed: true, layoutId: layout.element.data("layoutId"), columnId: columnId, blockId: block.element.data("blockId"), type: type}]);
     });
 
   });

@@ -3,8 +3,9 @@ suite("Block", function() {
 
   var Block;
   var Toolbar;
+  var block;
 
-  setup(function(done) {
+  suiteSetup(function(done) {
     require(["simplelayout/Block", "simplelayout/Toolbar"], function(_Block, _Toolbar) {
       Block = _Block;
       Toolbar = _Toolbar;
@@ -12,14 +13,17 @@ suite("Block", function() {
     });
   });
 
+  setup(function(done) {
+    block = new Block("<p>Test</p>", "textblock");
+    block.create();
+    done();
+  });
+
   test("is a constructor function", function() {
     assert.throw(Block, TypeError, "Block constructor cannot be called as a function.");
   });
 
   test("can create a block", function() {
-    var block = new Block("<p>Test</p>", "textblock");
-    block.create();
-
     var node = $.map(block.element, function(blockNode) {
       return {tagName: blockNode.tagName, content: blockNode.innerHTML, type: blockNode.dataset.type};
     });
@@ -28,8 +32,6 @@ suite("Block", function() {
   });
 
   test("can set block-content", function() {
-    var block = new Block("<p>Test</p>", "textblock");
-    block.create();
     block.content("<p>Hallo</p>");
 
     var node = $.map(block.element, function(blockNode) {
@@ -40,8 +42,6 @@ suite("Block", function() {
   });
 
   test("can attach a toolbar", function() {
-    var block = new Block("<p>Test</p>", "textblock");
-    block.create();
     var toolbar = new Toolbar();
     block.attachToolbar(toolbar);
 
