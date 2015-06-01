@@ -188,6 +188,14 @@ define(["simplelayout/Layoutmanager", "simplelayout/Toolbar"], function(Layoutma
         return blocks;
       },
 
+      getCommittedBlocks: function() {
+        var committedBlocks = [];
+        for(var key in this.managers) {
+          committedBlocks = $.merge(this.managers[key].getCommittedBlocks(), committedBlocks);
+        }
+        return committedBlocks;
+      },
+
       getToolbox: function() { return toolbox; },
 
       attachTo: function(target) {

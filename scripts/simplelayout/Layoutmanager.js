@@ -56,17 +56,42 @@ define(["simplelayout/Layout"], function(Layout) {
         this.element.trigger("layoutDeleted", [this]);
       },
 
-      setBlock: function(layoutId, columnId, blockId, block) { this.layouts[layoutId].columns[columnId].blocks[blockId] = block; },
+      commitLayouts: function() {
+        for (var key in this.layouts) {
+          this.layouts[key].commit();
+        }
+        this.element.trigger("layoutsCommitted", [this]);
+      },
+
+      getCommittedLayouts: function() {
+        var committedLayouts = {};
+        for (var key in this.layouts) {
+          if (this.layouts[key].committed) {
+            committedLayouts[key] = this.layouts[key];
+          }
+        }
+        return committedLayouts;
+      },
 
       getBlock: function(layoutId, columnId, blockId) { return this.layouts[layoutId].columns[columnId].blocks[blockId]; },
 
-      getBlocks: function() {
-        var blocks = [];
-        $.each(this.layouts, function(idx, layout) {
-          blocks = $.merge(layout.getBlocks(), blocks);
-        });
-        return blocks;
+      getCommittedBlocks: function() {
+        var committedBlocks = [];
+        for(var key in this.layouts) {
+          committedBlocks = $.merge(this.layouts[key].getCommittedBlocks(), committedBlocks);
+        }
+        return committedBlocks;
       },
+
+      getInsertedBlocks: function() {
+        var insertedBlocks = [];
+        for(var key in this.layouts) {
+          insertedBlocks = $.merge(this.layouts[key].getInsertedBlocks(), insertedBlocks);
+        }
+        return insertedBlocks;
+      },
+
+      setBlock: function(layoutId, columnId, blockId, block) { this.layouts[layoutId].columns[columnId].blocks[blockId] = block; },
 
       insertBlock: function(layoutId, columnId, content, type) {
         var layout = this.layouts[layoutId];
@@ -91,6 +116,11 @@ define(["simplelayout/Layout"], function(Layout) {
           });
         });
         this.element.trigger("layoutMoved", [this, newLayoutId]);
+      },
+
+      commitBlocks: function(layoutId, columnId) {
+        this.layouts[layoutId].commitBlocks(columnId);
+        this.element.trigger("blocksCommitted", [this, layoutId, columnId]);
       },
 
       hasLayouts: function() { return Object.keys(this.layouts).length > 0; },

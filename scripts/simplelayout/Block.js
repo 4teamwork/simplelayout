@@ -14,6 +14,8 @@ define([], function() {
 
     return {
 
+      committed: false,
+
       uid: null,
 
       toolbar: null,
@@ -23,11 +25,14 @@ define([], function() {
       element: null,
 
       create: function() {
-        this.element = $(template.render({ "content": content, "type": type }));
+        var data = { "content": content, "type": type };
+        this.element = $(template.render(data));
         return this.element;
       },
 
       content: function(toReplace) { $(".sl-block-content", this.element).html(toReplace); },
+
+      commit: function() { this.committed = true; },
 
       attachToolbar: function(toolbar) {
         this.toolbar = toolbar;

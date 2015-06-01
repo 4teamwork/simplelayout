@@ -42,10 +42,10 @@ suite("Column", function() {
       column.insertBlock( { content: "<p>Test</p>", type: "textblock"} );
 
       var blocks = $.map(column.blocks, function(block) {
-        return { blockId: block.element.data("block-id"), type: block.type };
+        return {committed: block.committed, blockId: block.element.data("block-id"), type: block.type};
       });
 
-      assert.deepEqual(blocks, [{ blockId: 0, type: "textblock" }]);
+      assert.deepEqual(blocks, [{committed: false, blockId: 0, type: "textblock"}]);
     });
 
     test("can delete a block", function() {
@@ -59,10 +59,35 @@ suite("Column", function() {
       assert.deepEqual(blocks, [], "Should have no blocks after deleting them");
     });
 
+    test("can commit a block", function() {
+      column.insertBlock("<p>Test</p>", "textblock");
+      column.commitBlocks();
+      var blocks = $.map(column.getCommittedBlocks(), function(block) {
+        return {committed: block.committed};
+      });
+
+      assert.deepEqual(blocks, [{committed: true}]);
+
+    });
+
+    test("inserting and deleting blocks does not commit them", function() {
+      column.insertBlock("<p>Test</p>", "textblock");
+      var block = column.insertBlock("<p>Test</p>", "textblock");
+      column.deleteBlock(block.element.data("blockId"));
+
+      assert.deepEqual(column.getCommittedBlocks(), [], "Should have no committed blocks without commit");
+    });
+
     test("delete a non inseted block raises an exception", function() {
       assert.throws(function() {
         column.deleteBlock(2);
       }, Error, "No block with id 2 inserted.");
+    });
+
+    test("commit non inserted blocks raises exception", function() {
+      assert.throws(function() {
+        column.commitBlocks();
+      }, Error, "No blocks inserted.");
     });
 
   });

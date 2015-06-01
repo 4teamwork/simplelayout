@@ -58,10 +58,10 @@ suite("Layout", function() {
       layout.insertBlock(0, "<p>Test</p>", "textblock");
 
       var blocks = $.map(layout.columns[0].blocks, function(block) {
-        return { columnId: block.element.data("columnId"), blockId: block.element.data("block-id"), type: block.type };
+        return {committed: block.committed, columnId: block.element.data("columnId"), blockId: block.element.data("block-id"), type: block.type};
       });
 
-      assert.deepEqual(blocks, [{ columnId: 0, blockId: 0, type: "textblock" }]);
+      assert.deepEqual(blocks, [{committed: false, columnId: 0, blockId: 0, type: "textblock"}]);
     });
 
     test("can delete a block", function() {
@@ -73,6 +73,17 @@ suite("Layout", function() {
       });
 
       assert.deepEqual(blocks, [], "Should have no blocks after deleting them");
+    });
+
+    test("can commit a block", function() {
+      layout.insertBlock(0, "<p>Test</p>", "textblock");
+      layout.commitBlocks(0);
+      var blocks = $.map(layout.columns[0].getCommittedBlocks(), function(block) {
+        return {committed: block.committed};
+      });
+
+      assert.deepEqual(blocks, [{committed: true}]);
+
     });
 
   });

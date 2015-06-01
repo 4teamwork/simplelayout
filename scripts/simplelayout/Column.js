@@ -51,6 +51,15 @@ define(["simplelayout/Block"], function(Block) {
         delete this.blocks[blockId];
       },
 
+      commitBlocks: function() {
+        if (Object.keys(this.getCommittedBlocks()).length === Object.keys(this.blocks).length) {
+          throw new Error("No blocks inserted.");
+        }
+        for (var key in this.blocks) {
+          this.blocks[key].commit();
+        }
+      },
+
       hasBlocks: function() { return Object.keys(this.blocks).length > 0; },
 
       deserialize: function() {
@@ -58,6 +67,26 @@ define(["simplelayout/Block"], function(Block) {
         $(".sl-block", this.element).each(function(idx, e) {
           self.insertBlock({ source: e });
         });
+      },
+
+      getCommittedBlocks: function() {
+        var committedBlocks = [];
+        for (var key in this.blocks) {
+          if (this.blocks[key].committed) {
+            committedBlocks.push(this.blocks[key]);
+          }
+        }
+        return committedBlocks;
+      },
+
+      getInsertedBlocks: function() {
+        var insertedBlocks = [];
+        for (var key in this.blocks) {
+          if (!this.blocks[key].committed) {
+            insertedBlocks.push(this.blocks[key]);
+          }
+        }
+        return insertedBlocks;
       },
 
       toJSON: function() { return { blocks: this.blocks }; }
