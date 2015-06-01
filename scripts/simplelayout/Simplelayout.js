@@ -20,7 +20,20 @@ define(["simplelayout/Layoutmanager", "simplelayout/Toolbar"], function(Layoutma
 
     var id = 0;
 
+    var moveLayout = function(oldManagerId, oldLayoutId, newManagerId) {
+      var manager = managers[oldManagerId];
+      var layout = manager.layouts[oldLayoutId];
+      var nextLayoutId = Object.keys(managers[newManagerId].layouts).length;
+      $.extend(layout.element.data(), { layoutId: nextLayoutId, container: newManagerId });
+      delete manager.layouts[oldLayoutId];
+      managers[newManagerId].layouts[nextLayoutId] = layout;
+      managers[newManagerId].moveLayout(oldLayoutId, nextLayoutId);
+      manager.element.trigger("layoutMoved", [this, oldManagerId, oldLayoutId, newManagerId, layout]);
+    };
+
     var TOOLBOX_COMPONENT_DRAGGABLE_SETTINGS = { helper: "clone", cursor: "pointer" };
+
+    var originalLayout;
 
     var LAYOUTMANAGER_SORTABLE_SETTINGS = {
       connectWith: ".sl-simplelayout",
@@ -31,23 +44,21 @@ define(["simplelayout/Layoutmanager", "simplelayout/Toolbar"], function(Layoutma
       forcePlaceholderSize: true,
       receive: function(event, ui) {
         var manager = managers[$(this).data("container")];
-        var item = $(this).find(".ui-draggable");
-        var layout = manager.insertLayout(ui.item.data("columns"));
-        var layoutToolbar = new Toolbar(toolbox.options.layoutActions, "vertical", "layout");
-        layout.attachToolbar(layoutToolbar);
-        layout.element.insertAfter(item);
-        item.remove();
-        manager.commitLayouts();
-      },
-      update: function(event, ui) {
-        if(typeof ui.item.data("layoutId") !== "undefined") {
-          var manager = managers[$(this).data("container")];
-          manager.moveLayout(ui.item.data("layoutId"));
+        if(originalLayout) {
+          moveLayout(originalLayout.element.data("container"), originalLayout.element.data("layoutId"), $(this).data("container"));
+          originalLayout = null;
+        } else {
+          var item = $(this).find(".ui-draggable");
+          var layout = manager.insertLayout(ui.item.data("columns"));
+          layout.element.insertAfter(item);
+          item.remove();
         }
-      }
+      },
+      remove: function(event, ui) { originalLayout = managers[$(this).data("container")].layouts[ui.item.data("layoutId")]; }
     };
 
     var originalBlock;
+
 
     var LAYOUT_SORTABLE_SETTINGS = {
       connectWith: ".sl-column",
@@ -59,49 +70,27 @@ define(["simplelayout/Layoutmanager", "simplelayout/Toolbar"], function(Layoutma
         var manager = managers[$(this).data("container")];
         if(originalBlock) {
           var newData = $(this).data();
-          var newLayoutId = newData.layoutId;
-          var newColumnId = newData.columnId;
-          var newContainerId = newData.container;
-          originalBlock.element.data("layoutId", newLayoutId);
-          originalBlock.element.data("columnId", newColumnId);
-          originalBlock.element.data("container", newContainerId);
-          var nextBlockId = Object.keys(this.layouts[newLayoutId].columns[newColumnId].blocks).length;
-          manager.layouts[newLayoutId].columns[newColumnId].blocks[nextBlockId] = originalBlock;
+          var nextBlockId = Object.keys(manager.layouts[newData.layoutId].columns[newData.columnId].blocks).length;
+          $.extend(originalBlock.element.data(), newData);
+          manager.layouts[newData.layoutId].columns[newData.columnId].blocks[nextBlockId] = originalBlock;
+          manager.element.trigger("blockMoved", [this, manager, nextBlockId]);
+          originalBlock = null;
         }
         else if(typeof ui.item.data("layoutId") === "undefined") {
           var item = $(this).find(".ui-draggable");
-          var layoutId = $(this).data("layoutId");
-          var columnId = $(this).data("columnId");
+          var data = $(this).data();
           var type = ui.item.data("type");
-          var block = manager.insertBlock(layoutId, columnId, null, type);
+          var block = manager.insertBlock(data.layoutId, data.columnId, null, type);
           var blockToolbar = new Toolbar(toolbox.options.components[type].actions, "horizontal", "block");
           block.attachToolbar(blockToolbar);
           block.element.insertAfter(item);
           item.remove();
-          manager.commitBlocks(layoutId, columnId);
         }
       },
       remove: function(event, ui) {
-        var columnId = ui.item.data("columnId");
-        var layoutId = ui.item.data("layoutId");
-        var blockId = ui.item.data("blockId");
-        var manager = managers[$(this).data("container")];
-        originalBlock = manager.getBlock(layoutId, columnId, blockId);
-        delete manager.layouts[layoutId].columns[columnId].blocks[blockId];
-      },
-      update: function(event, ui) {
-        if(typeof ui.item.data("layoutId") !== "undefined" && !originalBlock) {
-          var manager = managers[$(this).data("container")];
-          var target = $(event.target);
-          var columnId = ui.item.data("columnId");
-          var layoutId = ui.item.data("layoutId");
-          var blockId = ui.item.data("blockId");
-          var newColumnId = target.data("columnId");
-          var newLayoutId = target.data("layoutId");
-          manager.moveBlock(layoutId, columnId, blockId, newLayoutId, newColumnId);
-        } else {
-          originalBlock = null;
-        }
+        var itemData = ui.item.data();
+        originalBlock = managers[itemData.container].getBlock(itemData.layoutId, itemData.columnId, itemData.blockId);
+        delete managers[itemData.container].layouts[itemData.layoutId].columns[itemData.columnId].blocks[itemData.blockId];
       }
     };
 
@@ -146,17 +135,42 @@ define(["simplelayout/Layoutmanager", "simplelayout/Toolbar"], function(Layoutma
 
     bindLayoutEvents();
 
+    on("layoutInserted", function(event, manager, layout) {
+      var layoutToolbar = new Toolbar(toolbox.options.layoutActions, "vertical", "layout");
+      layout.attachToolbar(layoutToolbar);
+    });
+
+    on("blockInserted", function(event, column, block) {
+      var blockToolbar = new Toolbar(toolbox.options.components[block.type].actions, "horizontal", "block");
+      block.attachToolbar(blockToolbar);
+    });
+
     return {
 
-      managers: managers,
-
       options: options,
+
+      moveLayout: moveLayout,
 
       getActiveBlock: function() { return currentBlock; },
 
       getActiveLayout: function() { return currentLayout; },
 
-      serialize: function() { return JSON.stringify(this.managers); },
+      getManagers: function() { return managers; },
+
+      serialize: function() { return JSON.stringify(managers); },
+
+      deserialize: function(target) {
+        if(!toolbox) {
+          throw new Error("Deserialize was called prior attaching a toolbox.");
+        }
+        managers = {};
+        id = 0;
+        var self = this;
+        $(".sl-simplelayout", target).each(function(idx, e) {
+          var manager = self.insertManager({ source: e });
+          manager.deserialize();
+        });
+      },
 
       insertManager: function(managerOptions) {
         var manager = new Layoutmanager(managerOptions);
@@ -166,20 +180,10 @@ define(["simplelayout/Layoutmanager", "simplelayout/Toolbar"], function(Layoutma
         return manager;
       },
 
-      deserialize: function(objectString) {
-        var self = this;
-        managers = {};
-        id = 0;
-        var objectStructure = JSON.parse(objectString);
-        $.each(objectStructure, function(idx, manager) {
-          self.insertManager({ source: manager.source }).toObject(manager.layouts);
-        });
-      },
-
       getBlocks: function() {
         var blocks = [];
-        for(var key in this.managers) {
-          blocks = $.merge(this.managers[key].getBlocks(), blocks);
+        for(var key in managers) {
+          blocks = $.merge(managers[key].getBlocks(), blocks);
         }
         return blocks;
       },
@@ -187,7 +191,7 @@ define(["simplelayout/Layoutmanager", "simplelayout/Toolbar"], function(Layoutma
       getToolbox: function() { return toolbox; },
 
       attachTo: function(target) {
-        $.each(this.managers, function(idx, manager) {
+        $.each(managers, function(idx, manager) {
           manager.attachTo(target);
         });
       },
@@ -196,11 +200,8 @@ define(["simplelayout/Layoutmanager", "simplelayout/Toolbar"], function(Layoutma
         if (!toolboxRef) {
           throw new Error("No toolbox defined");
         }
-        if (managers[0].element.parent().length === 0) {
-          throw new Error("Not attached to DOM element");
-        }
         toolbox = toolboxRef;
-        $.each(this.managers, function(idx, manager) {
+        $.each(managers, function(idx, manager) {
           manager.toolbox = toolbox;
         });
         bindToolboxEvents();

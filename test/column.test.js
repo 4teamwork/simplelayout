@@ -39,7 +39,7 @@ suite("Column", function() {
   suite("Block-transactions", function() {
 
     test("can insert a block", function() {
-      column.insertBlock("<p>Test</p>", "textblock");
+      column.insertBlock( { content: "<p>Test</p>", type: "textblock"} );
 
       var blocks = $.map(column.blocks, function(block) {
         return { blockId: block.element.data("block-id"), type: block.type };

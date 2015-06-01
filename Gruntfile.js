@@ -98,7 +98,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks("grunt-contrib-sass");
   grunt.loadNpmTasks("grunt-contrib-watch");
   grunt.loadNpmTasks("grunt-mocha");
-  grunt.loadNpmTasks('grunt-shell');
+  grunt.loadNpmTasks("grunt-shell");
 
   grunt.registerTask("btest", ["shell:test"]);
   grunt.registerTask("lint", ["eslint"]);

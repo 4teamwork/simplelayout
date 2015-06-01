@@ -5,9 +5,7 @@
   var Toolbox = global.Toolbox;
 
   $(document).ready(function() {
-    var simplelayout = new Simplelayout({
-      source: ".sl-simplelayout"
-    });
+    var simplelayout = new Simplelayout();
 
     var toolbox = new Toolbox({
       layouts: [1, 2, 4],
@@ -19,7 +17,7 @@
           formUrl: "http://www.google.com",
           actions: {
             edit: {
-              name: "edit",
+              class: "edit",
               description: "Edit this block"
             }
           }
@@ -31,12 +29,12 @@
           formUrl: "http://www.bing.com",
           actions: {
             edit: {
-              name: "edit",
+              class: "edit",
               description: "Edit this block"
             },
-            download: {
-              name: "download",
-              description: "Download this content"
+            move: {
+              class: "move",
+              description: "Move this block"
             }
           }
         }
@@ -45,18 +43,7 @@
 
     toolbox.attachTo($("body"));
     simplelayout.attachToolbox(toolbox);
-    simplelayout.getLayoutmanager().deserialize();
-    $("#ser").on("click", function() {
-      console.log(simplelayout.getLayoutmanager().serialize());
-    });
-    $("#mark").on("click", function() {
-      for(var lkey in simplelayout.getLayoutmanager().layouts) {
-        for(var ckey in simplelayout.getLayoutmanager().layouts[lkey].columns){
-          for(var bkey in simplelayout.getLayoutmanager().layouts[lkey].columns[ckey].blocks) {
-            simplelayout.getLayoutmanager().layouts[lkey].columns[ckey].blocks[bkey].mark();
-          }
-        }
-      }
-    });
+    simplelayout.deserialize();
+    global.simplelayout = simplelayout;
   });
 }(window));

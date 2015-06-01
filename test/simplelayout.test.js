@@ -24,14 +24,12 @@ suite("Simplelayout", function() {
     assert.throw(Simplelayout, TypeError, "Simplelayout constructor cannot be called as a function.");
   });
 
-  test("raises exception when attaching toolbox when its not attached to DOM", function() {
-    var toolbox = new Toolbox({layouts: [0]});
+  test("raises exception when deserialize is called prior to attaching a toolbox", function() {
     simplelayout = new Simplelayout();
-    simplelayout.insertManager();
 
     assert.throws(function() {
-      simplelayout.attachToolbox(toolbox);
-    }, Error, "Not attached to DOM element");
+      simplelayout.deserialize();
+    }, Error, "Deserialize was called prior attaching a toolbox.");
   });
 
   test("manager stores information", function() { assert.deepEqual(manager.element.data("container"), 0); });
@@ -70,20 +68,29 @@ suite("Simplelayout", function() {
       { container: 0, layoutId: 0, columnId: 0, blockId: 0 } ]);
   });
 
-  test("can de- and serialize", function() {
+  test("can move layout", function() {
     var manager2 = simplelayout.insertManager();
-    manager.insertLayout(4);
+    var layout = manager.insertLayout(4);
     manager.insertLayout(4);
     manager2.insertLayout(4);
     manager2.insertLayout(4);
-    manager.insertBlock(0, 0, null, "textblock");
+    var block = manager.insertBlock(0, 0, null, "textblock");
     manager.insertBlock(0, 1, null, "textblock");
     manager.insertBlock(0, 2, null, "textblock");
     manager2.insertBlock(1, 0, null, "listingblock");
     manager2.insertBlock(1, 1, null, "listingblock");
     manager2.insertBlock(1, 2, null, "listingblock");
-    var objectString = '{"0":{"layouts":{"0":{"columns":{"0":{"blocks":{"0":{"uid":null,"type":"textblock"}}},"1":{"blocks":{"0":{"uid":null,"type":"textblock"}}},"2":{"blocks":{"0":{"uid":null,"type":"textblock"}}},"3":{"blocks":{}}}},"1":{"columns":{"0":{"blocks":{}},"1":{"blocks":{}},"2":{"blocks":{}},"3":{"blocks":{}}}}}},"1":{"layouts":{"0":{"columns":{"0":{"blocks":{}},"1":{"blocks":{}},"2":{"blocks":{}},"3":{"blocks":{}}}},"1":{"columns":{"0":{"blocks":{"0":{"uid":null,"type":"listingblock"}}},"1":{"blocks":{"0":{"uid":null,"type":"listingblock"}}},"2":{"blocks":{"0":{"uid":null,"type":"listingblock"}}},"3":{"blocks":{}}}}}}}';
-    assert.equal(simplelayout.serialize(simplelayout.deserialize(simplelayout.serialize())), objectString);
+    simplelayout.moveLayout(manager.element.data("container"), layout.element.data("layoutId"), manager2.element.data("container"));
+    assert.deepEqual(layout.element.data(), { container: 1, layoutId: 2 });
+    assert.deepEqual(block.element.data(), { blockId: 0, type: "textblock", columnId: 0, layoutId: 2, container: 1 });
+  });
+
+  test("can de- and serialize", function() {
+    fixtures.load("simplelayout.html");
+    var toolbox = new Toolbox({ layouts: [1] });
+    simplelayout.attachToolbox(toolbox);
+    simplelayout.deserialize($(fixtures.body()));
+    assert.equal(fixtures.read("simplelayout.json"), simplelayout.serialize());
   });
 
 });

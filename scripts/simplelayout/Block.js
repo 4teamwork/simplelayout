@@ -34,7 +34,7 @@ define([], function() {
         this.element.append(toolbar.element);
       },
 
-      toJSON: function() { return { uid: this.uid, type: type }; }
+      toJSON: function() { return { uid: this.uid, type: this.type }; }
     };
 
   }

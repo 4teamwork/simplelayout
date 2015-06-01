@@ -26,15 +26,13 @@ define(["simplelayout/Column"], function(Column) {
           var column = new Column(columns);
           this.columns[i] = column;
           var columnElement = column.create();
-          columnElement.data("columnId", i);
-          columnElement.data("layoutId", id);
-          columnElement.data("container", container);
+          $.extend(columnElement.data(), { columnId: i, layoutId: id, container: container });
           this.element.append(columnElement);
         }
         return this.element;
       },
 
-      insertBlock: function(columnId, content, type) { return this.columns[columnId].insertBlock(content, type); },
+      insertBlock: function(columnId, content, type) { return this.columns[columnId].insertBlock({ content: content, type: type }); },
 
       deleteBlock: function(columnId, blockId) { this.columns[columnId].deleteBlock(blockId); },
 
@@ -66,10 +64,17 @@ define(["simplelayout/Column"], function(Column) {
 
       toJSON: function() { return { columns: this.columns }; },
 
-      toObject: function(columnsToCreate) {
+      deserialize: function() {
         var self = this;
-        $.each(columnsToCreate, function(idx, column) {
-          self.columns[idx].toObject(column.blocks);
+        $(".sl-column", this.element).each(function(idx, e) {
+          e = $(e);
+          var column = self.columns[idx];
+          var data = column.element.data();
+          var stylingClass = column.element.attr("class");
+          column.element = e;
+          column.element.attr("class", stylingClass);
+          $.extend(column.element.data(), data);
+          column.deserialize();
         });
       }
 

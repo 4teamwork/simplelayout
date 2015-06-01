@@ -22,15 +22,24 @@ define(["simplelayout/Block"], function(Block) {
         return this.element;
       },
 
-      insertBlock: function(content, type) {
+      insertBlock: function(blockOptions) {
+        blockOptions = $.extend({
+          type: "",
+          content: ""
+        }, blockOptions || {});
         var nextBlockId = Object.keys(this.blocks).length;
-        var block = new Block(content, type);
+        var block = new Block(blockOptions.content, blockOptions.type);
         var blockElement = block.create();
         blockElement.data("blockId", nextBlockId);
-        blockElement.data("columnId", this.element.data("columnId"));
-        blockElement.data("layoutId", this.element.data("layoutId"));
-        blockElement.data("container", this.element.data("container"));
+        $.extend(blockElement.data(), this.element.data());
+        if(blockOptions.source) {
+          var data = $.extend(block.element.data(), $(blockOptions.source).data());
+          block.element = $(blockOptions.source);
+          $.extend(block.element.data(), data);
+          block.type = block.element.data("type");
+        }
         this.blocks[nextBlockId] = block;
+        this.element.trigger("blockInserted", [this, block]);
         return block;
       },
 
@@ -44,10 +53,10 @@ define(["simplelayout/Block"], function(Block) {
 
       hasBlocks: function() { return Object.keys(this.blocks).length > 0; },
 
-      toObject: function(blocks) {
+      deserialize: function() {
         var self = this;
-        $.each(blocks, function(idx, block) {
-          self.insertBlock(null, block.type);
+        $(".sl-block", this.element).each(function(idx, e) {
+          self.insertBlock({ source: e });
         });
       },
 

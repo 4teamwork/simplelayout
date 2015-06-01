@@ -32,9 +32,18 @@ define(["simplelayout/Layout"], function(Layout) {
 
       attachTo: function(target) { $(target).append(element); },
 
-      insertLayout: function(columns) {
+      insertLayout: function(layoutOptions) {
+        layoutOptions = $.extend({
+          columns: 4
+        }, layoutOptions || {});
+        var columns = $(".sl-column", layoutOptions.source).length > 0 ? $(".sl-column", layoutOptions.source).length : layoutOptions.columns;
         var layout = new Layout(columns);
         layout.create(id, element.data("container"));
+        if(layoutOptions.source) {
+          var data = layout.element.data();
+          layout.element = layoutOptions.source;
+          $.extend(layout.element.data(), data);
+        }
         this.layouts[id] = layout;
         this.element.trigger("layoutInserted", [this, layout]);
         id++;
@@ -62,7 +71,6 @@ define(["simplelayout/Layout"], function(Layout) {
       insertBlock: function(layoutId, columnId, content, type) {
         var layout = this.layouts[layoutId];
         var block = layout.insertBlock(columnId, content, type);
-        this.element.trigger("blockInserted", [this, block]);
         return block;
       },
 
@@ -72,31 +80,36 @@ define(["simplelayout/Layout"], function(Layout) {
         this.element.trigger("blockDeleted", [this, layoutId, columnId, blockId]);
       },
 
-      // Todo: implement move layout
-      moveLayout: function(layoutId) {
-        this.element.trigger("layoutMoved", [this, layoutId]);
+      moveLayout: function(oldLayout, newLayoutId) {
+        var self = this;
+        $.each(this.layouts[newLayoutId].columns, function(colIdx, column) {
+          column.element.data("layoutId", newLayoutId);
+          column.element.data("container", self.element.data("container"));
+          $.each(column.blocks, function(bloIdx, block) {
+            block.element.data("layoutId", newLayoutId);
+            block.element.data("container", self.element.data("container"));
+          });
+        });
+        this.element.trigger("layoutMoved", [this, newLayoutId]);
       },
 
       hasLayouts: function() { return Object.keys(this.layouts).length > 0; },
 
       moveBlock: function(oldLayoutId, oldColumnId, oldBlockId, newLayoutId, newColumnId) {
-        var layout = this.layouts[oldLayoutId];
-        var column = layout.columns[oldColumnId];
-        var block = column.blocks[oldBlockId];
+        var block = this.layouts[oldLayoutId].columns[oldColumnId].blocks[oldBlockId];
         var nextBlockId = Object.keys(this.layouts[newLayoutId].columns[newColumnId].blocks).length;
-        block.element.data("layoutId", newLayoutId);
-        block.element.data("columnId", newColumnId);
-        block.element.data("blockId", nextBlockId);
-        delete column.blocks[oldBlockId];
+        $.extend(block.element.data(), { layoutId: newLayoutId, columnId: newColumnId, blockId: nextBlockId });
+        delete this.layouts[oldLayoutId].columns[oldColumnId].blocks[oldBlockId];
         this.layouts[newLayoutId].columns[newColumnId].blocks[nextBlockId] = block;
         this.element.trigger("blockMoved", [this, oldLayoutId, oldColumnId, oldBlockId, newLayoutId, newColumnId, nextBlockId]);
       },
 
-      toObject: function(layouts) {
+      deserialize: function() {
         var self = this;
-        $.each(layouts, function(idx, layout) {
-          var layoutInstance = self.insertLayout(Object.keys(layout.columns).length);
-          layoutInstance.toObject(layout.columns);
+        $(".sl-layout", this.element).each(function(idx, e) {
+          e = $(e);
+          var layout = self.insertLayout({ source: e });
+          layout.deserialize();
         });
       },
 
