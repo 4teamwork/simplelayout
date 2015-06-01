@@ -33,7 +33,7 @@ module.exports = function(grunt) {
     mocha: {
       test: {
         // Test all files ending in .html anywhere inside the test directory.
-        src: ["test/**/*.html"],
+        src: ["test/test.html"],
         options: {
           log: true,
           reporter: "Spec",
@@ -83,6 +83,11 @@ module.exports = function(grunt) {
     clean: ["dist"],
     eslint: {
         target: ["Gruntfile.js", "test/**/*.js", "scripts/**/*.js"]
+    },
+    shell: {
+        test: {
+            command: "open http://localhost:8000/test/test.html ; python -m SimpleHTTPServer"
+        }
     }
   });
 
@@ -93,7 +98,9 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks("grunt-contrib-sass");
   grunt.loadNpmTasks("grunt-contrib-watch");
   grunt.loadNpmTasks("grunt-mocha");
+  grunt.loadNpmTasks('grunt-shell');
 
+  grunt.registerTask("btest", ["shell:test"]);
   grunt.registerTask("lint", ["eslint"]);
   grunt.registerTask("test", ["mocha"]);
   grunt.registerTask("dev", ["clean", "config:dev", "lint", "requirejs", "sass", "watch"]);
