@@ -52,6 +52,7 @@ define(["simplelayout/Layoutmanager", "simplelayout/Toolbar"], function(Layoutma
           var layout = manager.insertLayout(ui.item.data("columns"));
           layout.element.insertAfter(item);
           item.remove();
+          manager.commitLayouts();
         }
       },
       remove: function(event, ui) { originalLayout = managers[$(this).data("container")].layouts[ui.item.data("layoutId")]; }
