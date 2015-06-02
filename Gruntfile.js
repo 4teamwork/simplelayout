@@ -81,12 +81,25 @@ module.exports = function(grunt) {
     },
     clean: ["dist"],
     eslint: {
-        target: ["Gruntfile.js", "test/**/*.js", "scripts/**/*.js"]
+      target: ["Gruntfile.js", "test/**/*.js", "scripts/**/*.js"]
     },
     shell: {
-        test: {
-            command: "open http://localhost:8000/test/test.html ; python -m SimpleHTTPServer"
-        }
+      serve: {
+        command: "open http://localhost:8000/index.html"
+      },
+      test: {
+        command: "open http://localhost:8282/test/test.html"
+      }
+    },
+    "http-server": {
+      serve: {
+        port: 8000,
+        host: "localhost"
+      },
+      test: {
+        port: 8282,
+        host: "localhost"
+      }
     }
   });
 
@@ -98,8 +111,10 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks("grunt-contrib-watch");
   grunt.loadNpmTasks("grunt-mocha");
   grunt.loadNpmTasks("grunt-shell");
+  grunt.loadNpmTasks("grunt-http-server");
 
-  grunt.registerTask("btest", ["shell:test"]);
+  grunt.registerTask("browser-test", ["shell:test", "http-server:test"]);
+  grunt.registerTask("serve", ["clean", "config:dev", "requirejs", "sass", "shell:serve", "http-server:serve"]);
   grunt.registerTask("lint", ["eslint"]);
   grunt.registerTask("test", ["mocha"]);
   grunt.registerTask("dev", ["clean", "config:dev", "lint", "requirejs", "sass", "watch"]);
