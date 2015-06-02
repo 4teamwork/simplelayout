@@ -36,7 +36,9 @@ define(["simplelayout/Column"], function(Column) {
 
       insertBlock: function(columnId, content, type) { return this.columns[columnId].insertBlock({ content: content, type: type }); },
 
-      commit: function() { this.committed = true; },
+      commit: function() {this.committed = true;
+        this.element.trigger("layoutsCommitted", [this]);
+      },
 
       deleteBlock: function(columnId, blockId) { this.columns[columnId].deleteBlock(blockId); },
 

@@ -60,7 +60,6 @@ define(["simplelayout/Layout"], function(Layout) {
         for (var key in this.layouts) {
           this.layouts[key].commit();
         }
-        this.element.trigger("layoutsCommitted", [this]);
       },
 
       getCommittedLayouts: function() {
