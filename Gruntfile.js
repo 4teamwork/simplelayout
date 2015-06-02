@@ -103,7 +103,7 @@ module.exports = function(grunt) {
   grunt.registerTask("lint", ["eslint"]);
   grunt.registerTask("test", ["mocha"]);
   grunt.registerTask("dev", ["clean", "config:dev", "lint", "requirejs", "sass", "watch"]);
-  grunt.registerTask("prod", ["clean", "config:prod", "lint", "requirejs", "sass"]);
+  grunt.registerTask("prod", ["clean", "config:prod", "lint", "test", "requirejs", "sass"]);
   grunt.registerTask("default", ["dev"]);
 
 };
