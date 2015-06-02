@@ -36,7 +36,7 @@ define(["simplelayout/Layout"], function(Layout) {
         layoutOptions = $.extend({
           columns: 4
         }, layoutOptions || {});
-        var columns = $(".sl-column", layoutOptions.source).length > 0 ? $(".sl-column", layoutOptions.source).length : layoutOptions.columns;
+        var columns = layoutOptions.source ? $(".sl-column", layoutOptions.source).length : layoutOptions.columns;
         var layout = new Layout(columns);
         layout.create(id, element.data("container"));
         if(layoutOptions.source) {

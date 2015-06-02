@@ -165,5 +165,30 @@ suite("Layoutmanager", function() {
       assert.deepEqual(blocks, [{committed: true, layoutId: layout.element.data("layoutId"), columnId: columnId, blockId: block.element.data("blockId"), type: type}]);
     });
 
+    test("default layout is 4", function() {
+      var layout = layoutmanager.insertLayout();
+      var columns = $.map(layout.columns, function(e) {
+        return e.element.data().columnId;
+      });
+      assert.deepEqual(columns, [0, 1, 2, 3]);
+    });
+
+    test("adding a layout with undefined source takes layoutoptions", function() {
+      var layout = layoutmanager.insertLayout({ columns: 2 });
+      var columns = $.map(layout.columns, function(e) {
+        return e.element.data().columnId;
+      });
+      assert.deepEqual(columns, [0, 1]);
+    });
+
+    test("adding a layout with source takes columncount from source", function() {
+      var layoutSource = $(fixtures.read("layoutSource.html"));
+      var layout = layoutmanager.insertLayout({ source: layoutSource });
+      var columns = $.map(layout.columns, function(e) {
+        return e.element.data().columnId;
+      });
+      assert.deepEqual(columns, [0, 1]);
+    });
+
   });
 });
