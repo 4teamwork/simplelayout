@@ -52,7 +52,7 @@ define(["simplelayout/Layoutmanager", "simplelayout/Toolbar"], function(Layoutma
           var layout = manager.insertLayout({ columns: ui.item.data("columns") });
           layout.element.insertAfter(item);
           item.remove();
-          manager.commitLayouts();
+          layout.commit();
         }
         canMove = false;
       },
@@ -94,6 +94,7 @@ define(["simplelayout/Layoutmanager", "simplelayout/Toolbar"], function(Layoutma
           block.attachToolbar(blockToolbar);
           block.element.insertAfter(item);
           item.remove();
+          block.commit();
         }
         canMove = false;
       },
@@ -200,8 +201,8 @@ define(["simplelayout/Layoutmanager", "simplelayout/Toolbar"], function(Layoutma
 
       getCommittedBlocks: function() {
         var committedBlocks = [];
-        for(var key in this.managers) {
-          committedBlocks = $.merge(this.managers[key].getCommittedBlocks(), committedBlocks);
+        for(var key in managers) {
+          committedBlocks = $.merge(managers[key].getCommittedBlocks(), committedBlocks);
         }
         return committedBlocks;
       },

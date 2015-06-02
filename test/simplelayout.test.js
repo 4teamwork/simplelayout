@@ -85,6 +85,18 @@ suite("Simplelayout", function() {
     assert.deepEqual(block.element.data(), { blockId: 0, type: "textblock", columnId: 0, layoutId: 2, container: 1 });
   });
 
+  test("can get committed blocks", function() {
+    var layout = manager.insertLayout(4);
+    var block = layout.insertBlock(0);
+    assert.deepEqual([], $.map(simplelayout.getCommittedBlocks(), function(e) {
+        return e.committed;
+      }), "should have no committed blocks.");
+    block.commit();
+    assert.deepEqual([true], $.map(simplelayout.getCommittedBlocks(), function(e) {
+        return e.committed;
+      }), "should have one committed blocks.");
+  });
+
   test("can de- and serialize", function() {
     fixtures.load("simplelayout.html");
     var toolbox = new Toolbox({ layouts: [1] });
