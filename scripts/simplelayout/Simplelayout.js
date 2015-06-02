@@ -28,12 +28,12 @@ define(["simplelayout/Layoutmanager", "simplelayout/Toolbar"], function(Layoutma
       delete manager.layouts[oldLayoutId];
       managers[newManagerId].layouts[nextLayoutId] = layout;
       managers[newManagerId].moveLayout(oldLayoutId, nextLayoutId);
-      manager.element.trigger("layoutMoved", [this, oldManagerId, oldLayoutId, newManagerId, layout]);
     };
 
     var TOOLBOX_COMPONENT_DRAGGABLE_SETTINGS = { helper: "clone", cursor: "pointer" };
 
     var originalLayout;
+    var canMove = true;
 
     var LAYOUTMANAGER_SORTABLE_SETTINGS = {
       connectWith: ".sl-simplelayout",
@@ -49,13 +49,21 @@ define(["simplelayout/Layoutmanager", "simplelayout/Toolbar"], function(Layoutma
           originalLayout = null;
         } else {
           var item = $(this).find(".ui-draggable");
-          var layout = manager.insertLayout(ui.item.data("columns"));
+          var layout = manager.insertLayout({ columns: ui.item.data("columns") });
           layout.element.insertAfter(item);
           item.remove();
           manager.commitLayouts();
         }
+        canMove = false;
       },
-      remove: function(event, ui) { originalLayout = managers[$(this).data("container")].layouts[ui.item.data("layoutId")]; }
+      remove: function(event, ui) { originalLayout = managers[$(this).data("container")].layouts[ui.item.data("layoutId")]; },
+      start: function() { canMove = true; },
+      stop: function(event, ui) {
+        if(canMove) {
+          var itemData = ui.item.data();
+          managers[itemData.container].element.trigger("layoutMoved");
+        }
+      }
     };
 
     var originalBlock;
@@ -87,11 +95,20 @@ define(["simplelayout/Layoutmanager", "simplelayout/Toolbar"], function(Layoutma
           block.element.insertAfter(item);
           item.remove();
         }
+        canMove = false;
       },
       remove: function(event, ui) {
         var itemData = ui.item.data();
         originalBlock = managers[itemData.container].getBlock(itemData.layoutId, itemData.columnId, itemData.blockId);
         delete managers[itemData.container].layouts[itemData.layoutId].columns[itemData.columnId].blocks[itemData.blockId];
+      },
+      start: function() { canMove = true },
+      stop: function(event, ui) {
+        if(canMove) {
+          var itemData = ui.item.data();
+          var data = $(this).data();
+          managers[itemData.container].moveBlock(itemData.layoutId, itemData.columnId, itemData.blockId, data.layoutId, data.columnId);
+        }
       }
     };
 
