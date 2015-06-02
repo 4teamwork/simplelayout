@@ -32,7 +32,6 @@ module.exports = function(grunt) {
 
     mocha: {
       test: {
-        // Test all files ending in .html anywhere inside the test directory.
         src: ["test/test.html"],
         options: {
           log: true,

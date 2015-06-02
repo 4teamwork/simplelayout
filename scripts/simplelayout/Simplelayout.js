@@ -102,7 +102,7 @@ define(["simplelayout/Layoutmanager", "simplelayout/Toolbar"], function(Layoutma
         originalBlock = managers[itemData.container].getBlock(itemData.layoutId, itemData.columnId, itemData.blockId);
         delete managers[itemData.container].layouts[itemData.layoutId].columns[itemData.columnId].blocks[itemData.blockId];
       },
-      start: function() { canMove = true },
+      start: function() { canMove = true; },
       stop: function(event, ui) {
         if(canMove) {
           var itemData = ui.item.data();
