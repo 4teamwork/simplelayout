@@ -50,6 +50,7 @@ define(["app/simplelayout/Layoutmanager", "app/simplelayout/Toolbar", "app/toolb
         return layout.item[0];
       });
       $(elements).not(ui.item).toggleClass("inactive");
+      $(LAYOUTMANAGER_SORTABLE_SETTINGS.connectWith).sortable('refreshPositions');
     };
 
     var originalLayout;
