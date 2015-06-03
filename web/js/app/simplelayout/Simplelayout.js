@@ -39,9 +39,9 @@ define(["app/simplelayout/Layoutmanager", "app/simplelayout/Toolbar", "app/toolb
       };
 
     var animatedrop = function(ui){
-      ui.item.addClass('animated');
+      ui.item.addClass("animated");
       setTimeout(function(){
-        ui.item.removeClass('animated');
+        ui.item.removeClass("animated");
       }, 1);
     };
 
@@ -50,7 +50,7 @@ define(["app/simplelayout/Layoutmanager", "app/simplelayout/Toolbar", "app/toolb
         return layout.item[0];
       });
       $(elements).not(ui.item).toggleClass("inactive");
-      $(LAYOUTMANAGER_SORTABLE_SETTINGS.connectWith).sortable('refreshPositions');
+      $(".sl-column").sortable("refreshPositions");
     };
 
     var originalLayout;
