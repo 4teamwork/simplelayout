@@ -34,6 +34,17 @@ define(["app/simplelayout/Layoutmanager", "app/simplelayout/Toolbar", "app/toolb
 
     var TOOLBOX_COMPONENT_DRAGGABLE_SETTINGS = { helper: "clone", cursor: "pointer" };
 
+    var sortableHelper = function(){
+        return $('<div class="draggableHelper"><div>');
+      };
+
+    var animatedrop = function(ui){
+      ui.item.addClass('animated');
+      setTimeout(function(){
+        ui.item.removeClass('animated');
+      }, 1);
+    };
+
     var originalLayout;
     var canMove = true;
 
@@ -44,6 +55,7 @@ define(["app/simplelayout/Layoutmanager", "app/simplelayout/Toolbar", "app/toolb
       placeholder: "layout-placeholder",
       axis: "y",
       forcePlaceholderSize: true,
+      helper: sortableHelper,
       receive: function(event, ui) {
         var manager = managers[$(this).data("container")];
         if(originalLayout) {
@@ -59,8 +71,14 @@ define(["app/simplelayout/Layoutmanager", "app/simplelayout/Toolbar", "app/toolb
         canMove = false;
       },
       remove: function(event, ui) { originalLayout = managers[$(this).data("container")].layouts[ui.item.data("layoutId")]; },
-      start: function() { canMove = true; },
+      start: function(event, ui) {
+        canMove = true;
+
+        // var toBlur = $(event.target).data('ui-sortable').items;
+        // toBlur.css('-webkit-filter','blur(7px)').css('height','50px').css('overflow', 'hidden');
+      },
       stop: function(event, ui) {
+        animatedrop(ui);
         if(canMove) {
           var itemData = ui.item.data();
           managers[itemData.container].element.trigger("layoutMoved");
@@ -76,6 +94,7 @@ define(["app/simplelayout/Layoutmanager", "app/simplelayout/Toolbar", "app/toolb
       placeholder: "block-placeholder",
       forcePlaceholderSize: true,
       handle: ".sl-toolbar-block .move",
+      helper: sortableHelper,
       tolerance: "pointer",
       receive: function(event, ui) {
         var manager = managers[$(this).data("container")];
@@ -107,6 +126,7 @@ define(["app/simplelayout/Layoutmanager", "app/simplelayout/Toolbar", "app/toolb
       },
       start: function() { canMove = true; },
       stop: function(event, ui) {
+        animatedrop(ui);
         if(canMove) {
           var itemData = ui.item.data();
           var data = $(this).data();

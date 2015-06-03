@@ -13,8 +13,17 @@
     background-color: $layout-placeholder-background-color;
     border: 1px dotted $layout-placeholder-border-color;
     width: 100%;
+    margin:-1px;
     min-height: 100px;
     float: left;
+  }
+  .draggableHelper {
+    background-color: $layout-placeholder-background-color;
+    border: 1px dashed $layout-placeholder-border-color;
+    margin: -1px;
+    // Needs to be important, since jquery.ui always sets the height style attr on the helper element.
+    // Check http://bugs.jqueryui.com/ticket/4345
+    height: 100px !important;
   }
 }
 

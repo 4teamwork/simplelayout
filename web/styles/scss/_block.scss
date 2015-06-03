@@ -6,6 +6,7 @@
   opacity: 1;
   display: inline-block;
   position: relative;
+  transition: opacity .2s, background .2s;
   &.ui-sortable-helper {
     opacity: .8;
   }
@@ -27,5 +28,9 @@
   }
   &:hover .sl-toolbar-block {
     opacity: 1;
+  }
+  &.animated {
+    opacity: 0;
+    background: $block-placeholder-background-color;
   }
 }

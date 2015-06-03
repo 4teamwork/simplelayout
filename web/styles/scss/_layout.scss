@@ -4,10 +4,12 @@
   position: relative;
   min-height: 100px;
   float: left;
+  transition: opacity .2s, background .2s;
   .block-placeholder {
     background-color: $block-placeholder-background-color;
     border: 1px dotted $block-placeholder-border-color;
     width: 100%;
+    margin:-1px;
     min-height: 100px;
     float: left;
   }
@@ -20,5 +22,9 @@
   }
   &:hover .sl-toolbar-layout {
     opacity: 1;
+  }
+  &.animated {
+    opacity: 0;
+    background: $block-placeholder-background-color;
   }
 }
