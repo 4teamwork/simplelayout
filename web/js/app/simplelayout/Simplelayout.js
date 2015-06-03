@@ -45,6 +45,13 @@ define(["app/simplelayout/Layoutmanager", "app/simplelayout/Toolbar", "app/toolb
       }, 1);
     };
 
+    var toggleActiveLayouts = function(event, ui) {
+      var elements = $.map($(event.target).data("ui-sortable").items, function(layout){
+        return layout.item[0];
+      });
+      $(elements).not(ui.item).toggleClass("inactive");
+    };
+
     var originalLayout;
     var canMove = true;
 
@@ -73,12 +80,11 @@ define(["app/simplelayout/Layoutmanager", "app/simplelayout/Toolbar", "app/toolb
       remove: function(event, ui) { originalLayout = managers[$(this).data("container")].layouts[ui.item.data("layoutId")]; },
       start: function(event, ui) {
         canMove = true;
-
-        // var toBlur = $(event.target).data('ui-sortable').items;
-        // toBlur.css('-webkit-filter','blur(7px)').css('height','50px').css('overflow', 'hidden');
+        toggleActiveLayouts(event, ui);
       },
       stop: function(event, ui) {
         animatedrop(ui);
+        toggleActiveLayouts(event, ui);
         if(canMove) {
           var itemData = ui.item.data();
           managers[itemData.container].element.trigger("layoutMoved");
