@@ -52,12 +52,8 @@ define(["app/simplelayout/Layoutmanager", "app/simplelayout/Toolbar", "app/toolb
       $(elements).not(ui.item).toggleClass("inactive");
       $(elements).filter(".inactive").animate({"height": "140px"}, 200);
 
-      $(elements).not(ui.item).not(".inactive").each(function(i, element){
-        var layout = $(element);
-        var toHeight = layout.css("height", "auto").height();
-        layout.css("height", "140px");
-        layout.animate({"height": toHeight}, 200);
-      });
+      $(elements).css("height", "auto");
+      $(window).scrollTop(ui.item.offset().top);
 
       $(".sl-simplelayout").sortable("refreshPositions");
     };
