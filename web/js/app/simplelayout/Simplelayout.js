@@ -50,7 +50,16 @@ define(["app/simplelayout/Layoutmanager", "app/simplelayout/Toolbar", "app/toolb
         return layout.item[0];
       });
       $(elements).not(ui.item).toggleClass("inactive");
-      $(".sl-column").sortable("refreshPositions");
+      $(elements).filter(".inactive").animate({"height": "140px"}, 200);
+
+      $(elements).not(ui.item).not(".inactive").each(function(i, element){
+        var layout = $(element);
+        var toHeight = layout.css("height", "auto").height();
+        layout.css("height", "140px");
+        layout.animate({"height": toHeight}, 200);
+      });
+
+      $(".sl-simplelayout").sortable("refreshPositions");
     };
 
     var originalLayout;
