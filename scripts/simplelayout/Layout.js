@@ -36,7 +36,8 @@ define(["simplelayout/Column"], function(Column) {
 
       insertBlock: function(columnId, content, type) { return this.columns[columnId].insertBlock({ content: content, type: type }); },
 
-      commit: function() {this.committed = true;
+      commit: function() {
+        this.committed = true;
         this.element.trigger("layoutsCommitted", [this]);
       },
 
@@ -50,13 +51,11 @@ define(["simplelayout/Column"], function(Column) {
       },
 
       getBlocks: function() {
-        var blocks = [];
-        $.each(this.columns, function(columnIdx, column) {
-          $.each(column.blocks, function(blockIdx, block) {
-            blocks.push(block);
+        return $.map(this.columns, function(column) {
+          return $.map(column.blocks, function(block) {
+            return block;
           });
         });
-        return blocks;
       },
 
       getCommittedBlocks: function() {

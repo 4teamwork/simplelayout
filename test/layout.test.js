@@ -52,6 +52,15 @@ suite("Layout", function() {
     assert(layout.hasBlocks(), "Layout has blocks");
   });
 
+  test("can get all blocks", function() {
+    layout.insertBlock(0);
+    layout.insertBlock(0);
+    var blocks = $.map(layout.getBlocks(), function(block) {
+      return block.committed;
+    });
+    assert.deepEqual(blocks, [false, false]);
+  });
+
   suite("Block-transactions", function() {
 
     test("can insert a block", function() {
