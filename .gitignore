@@ -1,5 +1,5 @@
 ### Bower ###
-bower_components
+web/js/lib
 
 ### Node ###
 node_modules
