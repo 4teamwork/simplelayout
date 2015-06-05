@@ -34,6 +34,30 @@ define(["app/simplelayout/Layoutmanager", "app/simplelayout/Toolbar", "app/toolb
 
     var TOOLBOX_COMPONENT_DRAGGABLE_SETTINGS = { helper: "clone", cursor: "pointer" };
 
+    var sortableHelper = function(){
+        return $('<div class="draggableHelper"><div>');
+      };
+
+    var animatedrop = function(ui){
+      ui.item.addClass("animated");
+      setTimeout(function(){
+        ui.item.removeClass("animated");
+      }, 1);
+    };
+
+    var toggleActiveLayouts = function(event, ui) {
+      var elements = $.map($(event.target).data("ui-sortable").items, function(layout){
+        return layout.item[0];
+      });
+      $(elements).not(ui.item).toggleClass("inactive");
+      $(elements).filter(".inactive").animate({"height": "140px"}, 200);
+
+      $(elements).css("height", "auto");
+      $(window).scrollTop(ui.item.offset().top);
+
+      $(".sl-simplelayout").sortable("refreshPositions");
+    };
+
     var originalLayout;
     var canMove = true;
 
@@ -44,6 +68,7 @@ define(["app/simplelayout/Layoutmanager", "app/simplelayout/Toolbar", "app/toolb
       placeholder: "layout-placeholder",
       axis: "y",
       forcePlaceholderSize: true,
+      helper: sortableHelper,
       receive: function(event, ui) {
         var manager = managers[$(this).data("container")];
         if(originalLayout) {
@@ -59,8 +84,13 @@ define(["app/simplelayout/Layoutmanager", "app/simplelayout/Toolbar", "app/toolb
         canMove = false;
       },
       remove: function(event, ui) { originalLayout = managers[$(this).data("container")].layouts[ui.item.data("layoutId")]; },
-      start: function() { canMove = true; },
+      start: function(event, ui) {
+        canMove = true;
+        toggleActiveLayouts(event, ui);
+      },
       stop: function(event, ui) {
+        animatedrop(ui);
+        toggleActiveLayouts(event, ui);
         if(canMove) {
           var itemData = ui.item.data();
           managers[itemData.container].element.trigger("layoutMoved");
@@ -76,6 +106,7 @@ define(["app/simplelayout/Layoutmanager", "app/simplelayout/Toolbar", "app/toolb
       placeholder: "block-placeholder",
       forcePlaceholderSize: true,
       handle: ".sl-toolbar-block .move",
+      helper: sortableHelper,
       tolerance: "pointer",
       receive: function(event, ui) {
         var manager = managers[$(this).data("container")];
@@ -107,6 +138,7 @@ define(["app/simplelayout/Layoutmanager", "app/simplelayout/Toolbar", "app/toolb
       },
       start: function() { canMove = true; },
       stop: function(event, ui) {
+        animatedrop(ui);
         if(canMove) {
           var itemData = ui.item.data();
           var data = $(this).data();
