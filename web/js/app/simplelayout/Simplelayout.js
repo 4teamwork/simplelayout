@@ -22,21 +22,32 @@ define(["app/simplelayout/Layoutmanager", "app/simplelayout/Toolbar", "app/toolb
 
     var id = 0;
 
-    var moveLayout = function(oldManagerId, oldLayoutId, newManagerId) {
-      var manager = managers[oldManagerId];
-      var layout = manager.layouts[oldLayoutId];
+    var moveLayout = function(layout, newManagerId) {
+      var layoutData = layout.element.data();
+      var manager = managers[layoutData.container];
       var nextLayoutId = Object.keys(managers[newManagerId].layouts).length;
       $.extend(layout.element.data(), { layoutId: nextLayoutId, container: newManagerId });
-      delete manager.layouts[oldLayoutId];
+      delete manager.layouts[layoutData.layoutId];
       managers[newManagerId].layouts[nextLayoutId] = layout;
-      managers[newManagerId].moveLayout(oldLayoutId, nextLayoutId);
+      managers[newManagerId].moveLayout(layout, nextLayoutId);
     };
+
+    var moveBlock = function(block, newManagerId, newLayoutId, newColumnId) {
+      var blockData = block.element.data();
+      var newData = { container: newManagerId, layoutId: newLayoutId, columnId: newColumnId };
+      var newManager = managers[newManagerId];
+      delete managers[blockData.container].layouts[blockData.layoutId].columns[blockData.columnId].blocks[blockData.blockId];
+      var nextBlockId = Object.keys(managers[newManagerId].layouts[newLayoutId].columns[newColumnId].blocks).length;
+      $.extend(block.element.data(), newData);
+      newManager.setBlock(newLayoutId, newColumnId, nextBlockId, block);
+      eventEmitter.trigger("blockMoved", [block]);
+    }
 
     var TOOLBOX_COMPONENT_DRAGGABLE_SETTINGS = { helper: "clone", cursor: "pointer" };
 
     var sortableHelper = function(){
-        return $('<div class="draggableHelper"><div>');
-      };
+      return $('<div class="draggableHelper"><div>');
+    };
 
     var animatedrop = function(ui){
       ui.item.addClass("animated");
@@ -59,9 +70,8 @@ define(["app/simplelayout/Layoutmanager", "app/simplelayout/Toolbar", "app/toolb
     };
 
     var originalLayout;
-    var canMove = true;
 
-    var LAYOUTMANAGER_SORTABLE_SETTINGS = {
+    var LAYOUT_SORTABLE = {
       connectWith: ".sl-simplelayout",
       items: ".sl-layout",
       handle: ".sl-toolbar-layout .move",
@@ -72,7 +82,7 @@ define(["app/simplelayout/Layoutmanager", "app/simplelayout/Toolbar", "app/toolb
       receive: function(event, ui) {
         var manager = managers[$(this).data("container")];
         if(originalLayout) {
-          moveLayout(originalLayout.element.data("container"), originalLayout.element.data("layoutId"), $(this).data("container"));
+          moveLayout(originalLayout, $(this).data("container"));
           originalLayout = null;
         } else {
           var item = $(this).find(".ui-draggable");
@@ -81,27 +91,23 @@ define(["app/simplelayout/Layoutmanager", "app/simplelayout/Toolbar", "app/toolb
           item.remove();
           layout.commit();
         }
-        canMove = false;
       },
-      remove: function(event, ui) { originalLayout = managers[$(this).data("container")].layouts[ui.item.data("layoutId")]; },
+      remove: function(event, ui) {
+        originalLayout = managers[$(this).data("container")].layouts[ui.item.data("layoutId")];
+      },
       start: function(event, ui) {
-        canMove = true;
         toggleActiveLayouts(event, ui);
       },
       stop: function(event, ui) {
         animatedrop(ui);
         toggleActiveLayouts(event, ui);
-        if(canMove) {
-          var itemData = ui.item.data();
-          managers[itemData.container].element.trigger("layoutMoved");
-        }
       }
     };
 
     var originalBlock;
+    var canMove = true;
 
-
-    var LAYOUT_SORTABLE_SETTINGS = {
+    var BLOCK_SORTABLE = {
       connectWith: ".sl-column",
       placeholder: "block-placeholder",
       forcePlaceholderSize: true,
@@ -111,11 +117,8 @@ define(["app/simplelayout/Layoutmanager", "app/simplelayout/Toolbar", "app/toolb
       receive: function(event, ui) {
         var manager = managers[$(this).data("container")];
         if(originalBlock) {
-          var newData = $(this).data();
-          var nextBlockId = Object.keys(manager.layouts[newData.layoutId].columns[newData.columnId].blocks).length;
-          $.extend(originalBlock.element.data(), newData);
-          manager.layouts[newData.layoutId].columns[newData.columnId].blocks[nextBlockId] = originalBlock;
-          manager.element.trigger("blockMoved", [this, manager, nextBlockId]);
+          var data = $(this).data();
+          moveBlock(originalBlock, data.container, data.layoutId, data.columnId);
           originalBlock = null;
         }
         else if(typeof ui.item.data("layoutId") === "undefined") {
@@ -123,8 +126,6 @@ define(["app/simplelayout/Layoutmanager", "app/simplelayout/Toolbar", "app/toolb
           var data = $(this).data();
           var type = ui.item.data("type");
           var block = manager.insertBlock(data.layoutId, data.columnId, null, type);
-          var blockToolbar = new Toolbar(options.toolbox.options.components[type].actions, "horizontal", "block");
-          block.attachToolbar(blockToolbar);
           block.element.insertAfter(item);
           item.remove();
           block.commit();
@@ -134,7 +135,6 @@ define(["app/simplelayout/Layoutmanager", "app/simplelayout/Toolbar", "app/toolb
       remove: function(event, ui) {
         var itemData = ui.item.data();
         originalBlock = managers[itemData.container].getBlock(itemData.layoutId, itemData.columnId, itemData.blockId);
-        delete managers[itemData.container].layouts[itemData.layoutId].columns[itemData.columnId].blocks[itemData.blockId];
       },
       start: function() { canMove = true; },
       stop: function(event, ui) {
@@ -161,10 +161,10 @@ define(["app/simplelayout/Layoutmanager", "app/simplelayout/Toolbar", "app/toolb
       var columnId;
       var blockId;
       var data;
-      $(".sl-simplelayout").sortable(LAYOUTMANAGER_SORTABLE_SETTINGS);
-      $(".sl-column").sortable(LAYOUT_SORTABLE_SETTINGS);
-      on("layoutsCommitted", function() {
-        $(".sl-column").sortable(LAYOUT_SORTABLE_SETTINGS);
+      $(".sl-simplelayout").sortable(LAYOUT_SORTABLE);
+      $(".sl-column").sortable(BLOCK_SORTABLE);
+      on("layoutCommitted", function() {
+        $(".sl-column").sortable(BLOCK_SORTABLE);
       });
       $(".sl-simplelayout").on("mouseover", ".sl-block", function() {
           data = $(this).data();
@@ -200,6 +200,8 @@ define(["app/simplelayout/Layoutmanager", "app/simplelayout/Toolbar", "app/toolb
       options: options,
 
       moveLayout: moveLayout,
+
+      moveBlock: moveBlock,
 
       getActiveBlock: function() { return currentBlock; },
 

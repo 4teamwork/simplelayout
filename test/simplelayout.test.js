@@ -82,7 +82,7 @@ suite("Simplelayout", function() {
       { container: 0, layoutId: 0, columnId: 0, blockId: 0 } ]);
   });
 
-  test("can move layout", function() {
+  test("can move a layout", function() {
     var manager2 = simplelayout.insertManager();
     var layout = manager.insertLayout(4);
     manager.insertLayout(4);
@@ -94,9 +94,22 @@ suite("Simplelayout", function() {
     manager2.insertBlock(1, 0, null, "textblock");
     manager2.insertBlock(1, 1, null, "textblock");
     manager2.insertBlock(1, 2, null, "textblock");
-    simplelayout.moveLayout(manager.element.data("container"), layout.element.data("layoutId"), manager2.element.data("container"));
+    simplelayout.moveLayout(layout, manager2.element.data("container"));
     assert.deepEqual(layout.element.data(), { container: 1, layoutId: 2 });
     assert.deepEqual(block.element.data(), { blockId: 0, type: "textblock", columnId: 0, layoutId: 2, container: 1 });
+  });
+
+  test("can move a block", function() {
+    var manager2 = simplelayout.insertManager();
+    manager.insertLayout(4);
+    manager2.insertLayout(4);
+    var block = manager.insertBlock(0, 0, null, "textblock");
+    block.commit();
+    simplelayout.moveBlock(block, 1, 0, 0);
+    var blocks = $.map(manager2.getCommittedBlocks(), function(block) {
+      return block.element.data();
+    });
+    assert.deepEqual(blocks, [{ blockId: 0, type: 'textblock', columnId: 0, layoutId: 0, container: 1 }]);
   });
 
   test("can get committed blocks", function() {
