@@ -5,31 +5,45 @@ suite("Simplelayout", function() {
   var Toolbox;
   var simplelayout;
   var manager;
+  var toolbox;
 
   suiteSetup(function(done) {
-    require(["simplelayout/Simplelayout", "toolbox/Toolbox"], function(_Simplelayout, _Toolbox) {
-      Simplelayout = _Simplelayout;
+    require(["app/simplelayout/Simplelayout", "app/toolbox/Toolbox"], function(_Simplelayout, _Toolbox) {
       Toolbox = _Toolbox;
+      toolbox = new Toolbox({
+        layouts: [1, 2, 4],
+        components: {
+          textblock: {
+            title: "Textblock",
+            description: "can show text",
+            contentType: "textblock",
+            formUrl: "http://www.bing.com",
+            actions: {
+              edit: {
+                class: "edit",
+                description: "Edit this block"
+              },
+              move: {
+                class: "move",
+                description: "Move this block"
+              }
+            }
+          }
+        }
+      });
+      Simplelayout = _Simplelayout;
       done();
     });
   });
 
   setup(function(done) {
-    simplelayout = new Simplelayout();
+    simplelayout = new Simplelayout({toolbox: toolbox});
     manager = simplelayout.insertManager();
     done();
   });
 
   test("is a constructor function", function() {
     assert.throw(Simplelayout, TypeError, "Simplelayout constructor cannot be called as a function.");
-  });
-
-  test("raises exception when deserialize is called prior to attaching a toolbox", function() {
-    simplelayout = new Simplelayout();
-
-    assert.throws(function() {
-      simplelayout.deserialize();
-    }, Error, "Deserialize was called prior attaching a toolbox.");
   });
 
   test("manager stores information", function() { assert.deepEqual(manager.element.data("container"), 0); });
@@ -59,7 +73,7 @@ suite("Simplelayout", function() {
 
   test("block stores information", function() {
     manager.insertLayout(4);
-    manager.insertBlock(0, 0);
+    manager.insertBlock(0, 0, null, "textblock");
     var data = $.map(manager.layouts[0].columns[0].blocks, function(e) {
       data = e.element.data();
       return { container: data.container, layoutId: data.layoutId, columnId: data.columnId, blockId: data.blockId };
@@ -77,9 +91,9 @@ suite("Simplelayout", function() {
     var block = manager.insertBlock(0, 0, null, "textblock");
     manager.insertBlock(0, 1, null, "textblock");
     manager.insertBlock(0, 2, null, "textblock");
-    manager2.insertBlock(1, 0, null, "listingblock");
-    manager2.insertBlock(1, 1, null, "listingblock");
-    manager2.insertBlock(1, 2, null, "listingblock");
+    manager2.insertBlock(1, 0, null, "textblock");
+    manager2.insertBlock(1, 1, null, "textblock");
+    manager2.insertBlock(1, 2, null, "textblock");
     simplelayout.moveLayout(manager.element.data("container"), layout.element.data("layoutId"), manager2.element.data("container"));
     assert.deepEqual(layout.element.data(), { container: 1, layoutId: 2 });
     assert.deepEqual(block.element.data(), { blockId: 0, type: "textblock", columnId: 0, layoutId: 2, container: 1 });
@@ -87,7 +101,7 @@ suite("Simplelayout", function() {
 
   test("can get committed blocks", function() {
     var layout = manager.insertLayout(4);
-    var block = layout.insertBlock(0);
+    var block = layout.insertBlock(0, null, "textblock");
     assert.deepEqual([], $.map(simplelayout.getCommittedBlocks(), function(e) {
         return e.committed;
       }), "should have no committed blocks.");
@@ -99,8 +113,6 @@ suite("Simplelayout", function() {
 
   test("can de- and serialize", function() {
     fixtures.load("simplelayout.html");
-    var toolbox = new Toolbox({ layouts: [1] });
-    simplelayout.attachToolbox(toolbox);
     simplelayout.deserialize($(fixtures.body()));
     assert.equal(fixtures.read("simplelayout.json"), simplelayout.serialize());
   });

@@ -1,17 +1,16 @@
 {
   "name": "simplelayout",
   "version": "1.0.0",
-  "devDependencies": {
-    "chai": "~1.10.0",
-    "mocha": "~1.18",
-    "sinonjs": "~1.7.3"
-  },
   "dependencies": {
     "jquery": ">1.6",
     "jquery-ui": "1.10.2",
     "jsrender": "git://github.com/BorisMoore/jsrender#master",
-    "matchHeight": "git://github.com/liabru/jquery-match-height#master",
-    "requirejs": "2.1.9"
+    "requirejs": "2.1.9",
+    "eventEmitter": "4.2.11",
+    "chai": "2.1.0",
+    "mocha": "2.2.5",
+    "fixtures": "1.5.3",
+    "almond": "0.3.1"
   },
   "homepage": "https://github.com/4teamwork/simplelayout-mockup",
   "authors": [

@@ -44,18 +44,12 @@ module.exports = function(grunt) {
       compile: {
         options: {
           almond: true,
-          baseUrl: "scripts",
-          mainConfigFile: "scripts/config.js",
-          findNestedDependencies: true,
-          name: "../node_modules/almond/almond",
-          include: ["simplelayout/Simplelayout", "toolbox/Toolbox", "matchHeight", "jsrender"],
-          out: "<%= grunt.config.get('jsoutput') %>",
+          name: "almond/almond",
+          baseUrl: "web/js/lib",
           optimize: "<%= grunt.config.get('optimize') %>",
-          wrapShim: true,
-          wrap: {
-            startFile: "build/start.frag",
-            endFile: "build/end.frag"
-          }
+          mainConfigFile: "web/js/app.js",
+          include: ["app", "jsrender"],
+          out: "<%= grunt.config.get('jsoutput') %>"
         }
       }
     },
@@ -66,14 +60,14 @@ module.exports = function(grunt) {
           sourcemap: "<%= grunt.config.get('sourcemap') %>"
         },
         files: {
-          "<%= grunt.config.get('cssoutput') %>": "styles/scss/main.scss"
+          "<%= grunt.config.get('cssoutput') %>": "web/styles/scss/main.scss"
         }
       }
     },
     watch: {
       scripts: {
-        files: ["scripts/**/*.js", "styles/scss/*.scss"],
-        tasks: ["requirejs", "sass"],
+        files: ["scripts/**/*.js", "web/styles/scss/*.scss"],
+        tasks: ["sass"],
         options: {
           spawn: false
         }
@@ -85,7 +79,7 @@ module.exports = function(grunt) {
     },
     shell: {
       serve: {
-        command: "open http://localhost:8000/index.html"
+        command: "open http://localhost:8000/web/app.html"
       },
       test: {
         command: "open http://localhost:8282/test/test.html"
@@ -118,7 +112,7 @@ module.exports = function(grunt) {
   grunt.registerTask("lint", ["eslint"]);
   grunt.registerTask("test", ["mocha"]);
   grunt.registerTask("dev", ["clean", "config:dev", "lint", "requirejs", "sass", "watch"]);
-  grunt.registerTask("prod", ["clean", "config:prod", "lint", "test", "requirejs", "sass"]);
+  grunt.registerTask("prod", ["clean", "config:prod", "requirejs", "sass"]);
   grunt.registerTask("default", ["dev"]);
 
 };
