@@ -1,7 +1,5 @@
 define(["app/simplelayout/Simplelayout", "app/toolbox/Toolbox", "EventEmitter", "jquery", "jqueryui", "jsrender"], function(Simplelayout, Toolbox, EE) {
   $(document).ready(function() {
-    var simplelayout = new Simplelayout();
-
     var toolbox = new Toolbox({
       layouts: [1, 2, 4],
       components: {
@@ -37,7 +35,7 @@ define(["app/simplelayout/Simplelayout", "app/toolbox/Toolbox", "EventEmitter", 
     });
 
     toolbox.attachTo($("body"));
-    simplelayout.attachToolbox(toolbox);
+    var simplelayout = new Simplelayout({toolbox: toolbox});
     simplelayout.deserialize();
   });
 });
