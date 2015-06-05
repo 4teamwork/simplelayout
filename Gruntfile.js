@@ -11,8 +11,7 @@ module.exports = function(grunt) {
             "optimize": "none",
             "sass-style": "expanded",
             "sourcemap": "inline",
-            "cssoutput": "dist/simplelayout.css",
-            "jsoutput": "dist/simplelayout.js"
+            "cssoutput": "dist/simplelayout.css"
           }
         }
       },
@@ -28,15 +27,10 @@ module.exports = function(grunt) {
         }
       }
     },
-
-
-    mocha: {
-      test: {
-        src: ["test/test.html"],
-        options: {
-          log: true,
-          reporter: "Spec",
-          run: true
+    mocha_phantomjs: {
+      all: {
+      options: {
+        urls: ['http://localhost:8282/test/test.html']
         }
       }
     },
@@ -66,14 +60,13 @@ module.exports = function(grunt) {
     },
     watch: {
       scripts: {
-        files: ["scripts/**/*.js", "web/styles/scss/*.scss"],
+        files: ["web/styles/scss/*.scss"],
         tasks: ["sass"],
         options: {
           spawn: false
         }
       }
     },
-    clean: ["dist"],
     eslint: {
       target: ["Gruntfile.js", "test/**/*.js", "scripts/**/*.js"]
     },
@@ -92,27 +85,27 @@ module.exports = function(grunt) {
       },
       test: {
         port: 8282,
-        host: "localhost"
+        host: "localhost",
+        runInBackground: true
       }
     }
   });
 
   grunt.loadNpmTasks("grunt-config");
-  grunt.loadNpmTasks("grunt-contrib-clean");
   grunt.loadNpmTasks("grunt-eslint");
   grunt.loadNpmTasks("grunt-contrib-requirejs");
   grunt.loadNpmTasks("grunt-contrib-sass");
   grunt.loadNpmTasks("grunt-contrib-watch");
-  grunt.loadNpmTasks("grunt-mocha");
   grunt.loadNpmTasks("grunt-shell");
   grunt.loadNpmTasks("grunt-http-server");
+  grunt.loadNpmTasks('grunt-mocha-phantomjs');
 
+  grunt.registerTask("default", ["browser-test"]);
+  grunt.registerTask("test", ["http-server:test", "mocha_phantomjs"]);
   grunt.registerTask("browser-test", ["shell:test", "http-server:test"]);
-  grunt.registerTask("serve", ["clean", "config:dev", "requirejs", "sass", "shell:serve", "http-server:serve"]);
+  grunt.registerTask("dev", ["config:dev", "sass", "watch"]);
+  grunt.registerTask("serve", ["shell:serve", "http-server:serve"]);
   grunt.registerTask("lint", ["eslint"]);
-  grunt.registerTask("test", ["mocha"]);
-  grunt.registerTask("dev", ["clean", "config:dev", "lint", "requirejs", "sass", "watch"]);
-  grunt.registerTask("prod", ["clean", "config:prod", "requirejs", "sass"]);
-  grunt.registerTask("default", ["dev"]);
+  grunt.registerTask("prod", ["config:prod", "requirejs", "sass"]);
 
 };

@@ -40,7 +40,10 @@ define(["chai", "fixtures", "mocha", "jquery", "jqueryui", "jsrender"], function
     "toolbar.test",
     "toolbox.test"
   ], function() {
-    if (navigator.userAgent.indexOf("PhantomJS") < 0) {
+    if(window.mochaPhantomJS){
+      mochaPhantomJS.run();
+    }
+    else{
       mocha.run();
     }
   });
