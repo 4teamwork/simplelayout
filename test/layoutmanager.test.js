@@ -6,7 +6,7 @@ suite("Layoutmanager", function() {
   var target;
 
   suiteSetup(function(done) {
-    require(["simplelayout/Layoutmanager"], function(_Layoutmanager) {
+    require(["app/simplelayout/Layoutmanager"], function(_Layoutmanager) {
       Layoutmanager = _Layoutmanager;
       done();
     });
@@ -96,8 +96,8 @@ suite("Layoutmanager", function() {
       var layout1 = layoutmanager.insertLayout(4);
       var layout2 = layoutmanager.insertLayout(4);
       layoutmanager.commitLayouts();
-      layout1.insertBlock(0);
-      layout2.insertBlock(0);
+      layout1.insertBlock(0, null, "textblock");
+      layout2.insertBlock(0, null, "textblock");
       assert.deepEqual([false, false], $.map(layoutmanager.getInsertedBlocks(), function(block) {
         return block.committed;
       }), "should have two inserted blocks.");

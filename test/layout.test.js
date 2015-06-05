@@ -5,7 +5,7 @@ suite("Layout", function() {
   var layout;
 
   suiteSetup(function(done) {
-    require(["simplelayout/Layout"], function(_Layout) {
+    require(["app/simplelayout/Layout"], function(_Layout) {
       Layout = _Layout;
       done();
     });

@@ -6,7 +6,7 @@ suite("Block", function() {
   var block;
 
   suiteSetup(function(done) {
-    require(["simplelayout/Block", "simplelayout/Toolbar"], function(_Block, _Toolbar) {
+    require(["app/simplelayout/Block", "app/simplelayout/Toolbar"], function(_Block, _Toolbar) {
       Block = _Block;
       Toolbar = _Toolbar;
       done();
@@ -50,6 +50,14 @@ suite("Block", function() {
     });
 
     assert.deepEqual(node, [{tagName: "DIV", content: '<div class="sl-block-content"><p>Test</p></div><ul class="sl-toolbar"></ul>', type: "textblock"}]);
+  });
+
+  test("triggers event on commit", function() {
+    // var eventBlock = new Block("I was triggered", "eventBlock");
+    // ee.on("blockCommitted", function(b) {
+    //   assert.equal(b.type, "eventBlock");
+    // });
+    // eventBlock.commit();
   });
 
 });
