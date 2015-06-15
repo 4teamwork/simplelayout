@@ -106,10 +106,10 @@ suite("Simplelayout", function() {
     var block = manager.insertBlock(0, 0, null, "textblock");
     block.commit();
     simplelayout.moveBlock(block, 1, 0, 0);
-    var blocks = $.map(manager2.getCommittedBlocks(), function(block) {
-      return block.element.data();
+    var blocks = $.map(manager2.getCommittedBlocks(), function(e) {
+      return e.element.data();
     });
-    assert.deepEqual(blocks, [{ blockId: 0, type: 'textblock', columnId: 0, layoutId: 0, container: 1 }]);
+    assert.deepEqual(blocks, [{ blockId: 0, type: "textblock", columnId: 0, layoutId: 0, container: 1 }]);
   });
 
   test("can get committed blocks", function() {

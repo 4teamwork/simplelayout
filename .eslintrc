@@ -11,7 +11,9 @@
     "quotes": [1, "double", "avoid-escape"]
   },
   "globals": {
+    "mochaPhantomJS": true,
     "assert": true,
+    "mocha": true,
     "fixtures": true
   }
 }

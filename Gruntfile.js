@@ -27,10 +27,10 @@ module.exports = function(grunt) {
         }
       }
     },
-    mocha_phantomjs: {
+    "mocha_phantomjs": {
       all: {
       options: {
-        urls: ['http://localhost:8282/test/test.html']
+        urls: ["http://localhost:8282/test/test.html"]
         }
       }
     },
@@ -97,7 +97,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks("grunt-contrib-watch");
   grunt.loadNpmTasks("grunt-shell");
   grunt.loadNpmTasks("grunt-http-server");
-  grunt.loadNpmTasks('grunt-mocha-phantomjs');
+  grunt.loadNpmTasks("grunt-mocha-phantomjs");
 
   grunt.registerTask("default", ["browser-test"]);
   grunt.registerTask("test", ["http-server:test", "mocha_phantomjs"]);
