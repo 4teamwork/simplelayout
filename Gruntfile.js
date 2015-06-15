@@ -83,9 +83,15 @@ module.exports = function(grunt) {
         port: 8000,
         host: "localhost"
       },
-      test: {
+      browserTest: {
         port: 8282,
         host: "localhost"
+      },
+      test: {
+        port: 8282,
+        host: "localhost",
+        runInBackground: true,
+        logFn: function() {}
       }
     }
   });
@@ -101,7 +107,7 @@ module.exports = function(grunt) {
 
   grunt.registerTask("default", ["browser-test"]);
   grunt.registerTask("test", ["http-server:test", "mocha_phantomjs"]);
-  grunt.registerTask("browser-test", ["shell:test", "http-server:test"]);
+  grunt.registerTask("browser-test", ["shell:test", "http-server:browserTest"]);
   grunt.registerTask("dev", ["config:dev", "sass", "watch"]);
   grunt.registerTask("serve", ["shell:serve", "http-server:serve"]);
   grunt.registerTask("lint", ["eslint"]);
