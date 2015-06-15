@@ -53,7 +53,7 @@ define(["app/simplelayout/Layout", "app/simplelayout/EventEmitter"], function(La
       deleteLayout: function(layoutId) {
         this.layouts[layoutId].element.remove();
         delete this.layouts[layoutId];
-        this.element.trigger("layoutDeleted", [this]);
+        eventEmitter.trigger("layoutDeleted", [this]);
       },
 
       commitLayouts: function() {
