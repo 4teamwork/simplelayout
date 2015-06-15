@@ -42,7 +42,7 @@ define([], function() {
               <a class='sl-toolbox-header'>Komponenten</a> \
                 <div class='sl-toolbox-components'> \
                   {{for components}} \
-                    <a class='sl-toolbox-component' title='{{:description}}' data-type='{{:contentType}}'> \
+                    <a class='sl-toolbox-component' title='{{:description}}' data-type='{{:contentType}}' data-form_url='{{:formUrl}}'> \
                       <i class='icon-{{:contentType}}'></i>{{:title}} \
                     </a> \
                   {{/for}} \

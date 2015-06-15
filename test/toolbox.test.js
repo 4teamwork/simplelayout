@@ -40,16 +40,16 @@ suite("Toolbox", function() {
   suite("components", function() {
 
     test("can set components", function() {
-      var toolbox = new Toolbox({layouts: [0], components: {listingblock: {title: "Listingblock", description: "can list things", contentType: "listingblock", actions: {edit: {name: "edit", description: "Edit this block"}}},
-        textblock: {title: "Textblock", description: "can show text", contentType: "textblock", actions: {edit: {name: "edit", description: "Edit this block"}}}}});
+      var toolbox = new Toolbox({layouts: [0], components: {listingblock: {title: "Listingblock", description: "can list things", contentType: "listingblock", formUrl: "http://www.google.com", actions: {edit: {name: "edit", description: "Edit this block"}}},
+        textblock: {title: "Textblock", description: "can show text", contentType: "textblock", formUrl: "http://www.bing.com", actions: {edit: {name: "edit", description: "Edit this block"}}}}});
       var target = $("<div></div>");
       toolbox.attachTo(target);
 
       var addedNodes = $.map(target.find(".sl-toolbox-component"), function(e) {
-        return {title: $(e).text().trim(), description: $(e).attr("title"), iconClass: $("i", e).attr("class")};
+        return {title: $(e).text().trim(), description: $(e).attr("title"), iconClass: $("i", e).attr("class"), formUrl: $(e).data("form_url")};
       });
 
-      assert.deepEqual(addedNodes, [{title: "Listingblock", description: "can list things", iconClass: "icon-listingblock"}, {title: "Textblock", description: "can show text", iconClass: "icon-textblock"}]);
+      assert.deepEqual(addedNodes, [{title: "Listingblock", description: "can list things", iconClass: "icon-listingblock", formUrl: "http://www.google.com"}, {title: "Textblock", description: "can show text", iconClass: "icon-textblock", formUrl: "http://www.bing.com"}]);
     });
 
     test("raises exception when no layout is defined", function() {
