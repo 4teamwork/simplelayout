@@ -30,6 +30,7 @@ define(["app/simplelayout/Layoutmanager", "app/simplelayout/Toolbar", "app/toolb
       delete manager.layouts[layoutData.layoutId];
       managers[newManagerId].layouts[nextLayoutId] = layout;
       managers[newManagerId].moveLayout(layout, nextLayoutId);
+      eventEmitter.trigger("layoutMoved", [layout]);
     };
 
     var moveBlock = function(block, newManagerId, newLayoutId, newColumnId) {
@@ -45,9 +46,7 @@ define(["app/simplelayout/Layoutmanager", "app/simplelayout/Toolbar", "app/toolb
 
     var TOOLBOX_COMPONENT_DRAGGABLE_SETTINGS = { helper: "clone", cursor: "pointer" };
 
-    var sortableHelper = function(){
-      return $('<div class="draggableHelper"><div>');
-    };
+    var sortableHelper = function(){ return $('<div class="draggableHelper"><div>'); };
 
     var animatedrop = function(ui){
       ui.item.addClass("animated");
@@ -69,6 +68,7 @@ define(["app/simplelayout/Layoutmanager", "app/simplelayout/Toolbar", "app/toolb
       $(".sl-simplelayout").sortable("refreshPositions");
     };
 
+    var canMove = true;
     var originalLayout;
 
     var LAYOUT_SORTABLE = {
@@ -91,21 +91,28 @@ define(["app/simplelayout/Layoutmanager", "app/simplelayout/Toolbar", "app/toolb
           item.remove();
           layout.commit();
         }
+        canMove = false;
       },
       remove: function(event, ui) {
         originalLayout = managers[$(this).data("container")].layouts[ui.item.data("layoutId")];
       },
       start: function(event, ui) {
+        canMove = true;
         toggleActiveLayouts(event, ui);
       },
       stop: function(event, ui) {
         animatedrop(ui);
         toggleActiveLayouts(event, ui);
+        if(canMove) {
+          var itemData = ui.item.data();
+          var manager = managers[itemData.container];
+          var layout = manager.layouts[itemData.layoutId];
+          manager.moveLayout(layout, itemData.layoutId);
+        }
       }
     };
 
     var originalBlock;
-    var canMove = true;
 
     var BLOCK_SORTABLE = {
       connectWith: ".sl-column",
