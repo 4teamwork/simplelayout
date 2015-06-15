@@ -10,9 +10,9 @@ jsrender 1.0.0-beta (https://github.com/BorisMoore/jsrender)
 
 JQueryUI 1.10.2 (draggable/droppable/sortable)
 
-npm 2.0.0
+nodejs
 
-## Install
+## Installation
 
 ### Install Node Dependencies
 ```bash
@@ -22,317 +22,177 @@ npm install
 ```bash
 bower install
 ```
-### Build
+### Build Targets
 
-Dev (default):
-Does not optimize javascript and CSS files.
-Starts grunt watcher.
-Executes eslinter.
+browser-test (default)
+
+Starts up a http-server and opens tests in browser.
 ```bash
 grunt
 ```
 
-Prod:
-Optimizes javascript and CSS files for production. Executes eslinter.
+test
+
+Starts up a http-server and runs tests in console with phantomjs
+```bash
+grunt test
+```
+
+dev
+
+Builds and starts a watcher for all sass files.
+```bash
+grunt dev
+```
+
+serve
+
+Starts up a http-server and runs the example application.
+```bash
+grunt serve
+```
+
+lint
+
+Lints all the javascript files.
+```bash
+grunt lint
+```
+
+prod
+
+Lints and builds the application for distribution.
 ```bash
 grunt prod
 ```
-## Get started
+## Getting started
 
-With existing DOM ready to serialize.
+### Toolbox
+
+Provide a toolbox instance for the simplelayout.
 
 ```javascript
-(function() {
-  "use strict";
-  $(document).ready(function() {
-    var simplelayout = new Simplelayout({
-      width: "900px",
-      source: "#simplelayout"
-    });
-
-    var toolbox = new Toolbox({
-      layouts: [1, 2, 4],
-      components: {
-        listingblock: {
-          title: "Listingblock",
-          description: "can list things",
-          contentType: "listingblock",
-          formUrl: "http://www.google.com",
-          actions: {
-            edit: {
-              name: "edit",
-              description: "Edit this block"
-            }
-          }
+var toolbox = new Toolbox({
+  layouts: [1, 2, 4],
+  components: {
+    textblock: {
+      title: "Textblock",
+      description: "Can show some text",
+      contentType: "textblock",
+      formUrl: "http://www.google.com",
+      actions: {
+        edit: {
+          class="edit",
+          description: "Edit this block",
+          someCustomAttribute: "someCustomValue"
         },
-        textblock: {
-          title: "Textblock",
-          description: "can show text",
-          contentType: "textblock",
-          formUrl: "http://www.bing.com",
-          actions: {
-            edit: {
-              name: "edit",
-              description: "Edit this block"
-            },
-            download: {
-              name: "download",
-              description: "Download this content"
-            }
-          }
+        move: {
+          class: "move",
+          description: "Move this block"
         }
-      }
-    });
-
-    toolbox.attachTo($("body"));
-    simplelayout.attachToolbox(toolbox);
-    simplelayout.getLayoutmanager().deserialize();
-  });
-}());
-```
-
-#Toolbox
-
-## Options
-
-Select layouts that can be dragged from the toolbox.
-```javascript
-{layouts : [1]} // --> Raises exeption when no layouts are defined
-```
-
-Select the provided components
-```javascript
-components: {
-  listingblock: {
-    title: "Listingblock",
-    description: "can list things",
-    contentType: "listingblock",
-    formUrl: "http://www.google.com",
-    actions: {
-      edit: {
-        name: "edit",
-        description: "Edit this block"
-      }
-    }
-  },
-  textblock: {
-    title: "Textblock",
-    description: "can show text",
-    contentType: "textblock",
-    formUrl: "http://www.bing.com",
-    actions: {
-      edit: {
-        name: "edit",
-        description: "Edit this block"
-      },
-      download: {
-        name: "download",
-        description: "Download this content"
       }
     }
   }
-}
+});
 ```
 
-title --> Title in toolbox.
-description --> Used for title attribute
-contentType --> Must be unique. Used for internal reasons.
-formUrl --> URL will be called when adding that block.
-actions --> Define actions for this block.
-  name --> Used for generating elements class.
-  description --> Used for title attribute.
+####Componets
 
-## API
+| Key | is required | Description |
+|---|---|---|
+| title | optional | Title in the toolbox |
+| description | optional | Used for titleattribute |
+|   contentType | required | Represents the type for each block |
+| actions | required | Title in the toolbox |
 
-Attach Element to JQuery Node
-```javascript
-toolbox.attachTo($('body'));
-```
+####Actions
 
-#Simplelayout
+| Key | is required | Description |
+|---|---|---|
+| key | required | Name for the action |
+| class | optional | Classattribute for the action |
+| description | optional | Used for title attribute |
+| custom | optional | Will be provided as data attribute |
 
-## Options
+### Simplelayout
 
-Select number of image per column (oriented on biggest layout in toolbox)
-```javascript
-{imageCount : 1} // Default is 1
-```
-
-Define width of layoutmanager
-```javascript
-{width : '800px'} // Default is 100%
-```
-
-## API
-
-Attach Element
-
-Must have been called before attaching a toolbox. Otherwise will raise an exception so the layoutmanager knows his context
-```javascript
-simplelayout.attachTo($('body'));
-```
-
-Get JQuery Element
-```javascript
-simplelayout.getElement();
-```
-
-Attach Toolbox
-```javascript
-simplelayout.attachToolbox(toolbox);
-```
-
-Eventbinding
-```javascript
-simplelayout.on(eventType, callbackFunction);
-```
-
-## Eventtypes
-
-layoutInserted(event, layoutId)
-
-layoutDeleted(event)
-
-layoutsCommited(event)
-
-blocksInserted(event, layoutId, columnId, blockId)
-
-blockDeleted(event, layoutId, columnId, blockId)
-
-blocksCommitted(event)
-
-blockMoved(event, oldLayoutId, oldColumnId, blockId, newLayoutId, newColumnId)
-
-# Plone-Intergration
-
-## Endpoints
-
-Saving: /sl-ajax-save-state-view
-Produces JSON.
+Use toolbox instance for initializing a simplelayout.
 
 ```javascript
-{
-  "layouts": [1, 2, 1],
-  "blocks": [{
-    "layoutPos": 0,
-    "columnPos": 0,
-    "blockPos": 0,
-    "uid": "fe0cd15feedb49469033e783d1340545"
-  }, {
-    "layoutPos": 1,
-    "columnPos": 0,
-    "blockPos": 0,
-    "uid": "35df1fc8aadb11e489d3123b93f75cba"
-  }, {
-    "layoutPos": 1,
-    "columnPos": 1,
-    "blockPos": 0,
-    "uid": "1951bb7caadb11e489d3123b93f75cba"
-  }, {
-    "layoutPos": 2,
-    "columnPos": 0,
-    "blockPos": 0,
-    "uid": "fe0cd15feedb49469033e783d1340545"
-  }]
-}
+var simplelayout = new Simplelayout({toolbox: toolbox});
 ```
 
-- The numbers in the layouts Array defines total columns.
-- uid represents the object in the database.
+#### Deserialize
 
-Loading: /sl-ajax-load-state-view
-Produces HTML.
+Use existing markup for deserializing the simplelayout state.
+
+Provided HTML Structure
 
 ```html
-<div id="simplelayout" class="sl-simplelayout ui-droppable ui-sortable" style="width:900px;">
+<div class="sl-simplelayout" id="slot1">
   <div class="sl-layout">
-    <div class="sl-column sl-col-1 ui-droppable ui-sortable">
-      <div data-type="textblock" data-uid="fe0cd15feedb49469033e783d1340545" class="sl-block">
-        <!-- Block content -->
+    <div class="sl-column">
+      <div class="sl-block" data-type="textblock">
+        <div class="sl-block-content"></div>
       </div>
     </div>
-  </div>
-  <div class="sl-layout">
-    <div class="sl-column sl-col-2 ui-droppable ui-sortable">
-      <div data-type="textblock" data-uid="35df1fc8aadb11e489d3123b93f75cba" class="sl-block">
-        <!-- Block content -->
+    <div class="sl-column">
+      <div class="sl-block" data-type="textblock">
+        <div class="sl-block-content"></div>
       </div>
     </div>
-    <div class="sl-column sl-col-2 ui-droppable ui-sortable">
-      <div data-type="textblock" data-uid="1951bb7caadb11e489d3123b93f75cba" class="sl-block">
-        <!-- Block content -->
+    <div class="sl-column">
+      <div class="sl-block" data-type="textblock">
+        <div class="sl-block-content">
+          <p>I am a textblock</p>
+        </div>
       </div>
     </div>
-  </div>
-  <div class="sl-layout">
-    <div class="sl-column sl-col-1 ui-droppable ui-sortable">
-      <div data-type="textblock" data-uid="fe0cd15feedb49469033e783d1340545" class="sl-block">
-        <!-- Block content -->
-      </div>
-    </div>
+    <div class="sl-column"></div>
   </div>
 </div>
 ```
 
-Loading Toolbox definition: /sl-ajax-addable-blocks-view
-Produces JSON
-```Javascript
-{
-  listingblock: {
-    title: "Listingblock",
-    description: "can list things",
-    contentType: "listingblock",
-    formUrl: "http://www.google.com",
-    actions: {
-      edit: {
-        // Custom key value pair will be rendered for the action
-        // i.e. "class": "edit edit-icon"
-      }
-    }
-  },
-  textblock: {
-    title: "Textblock",
-    description: "can show text",
-    contentType: "textblock",
-    formUrl: "http://www.bing.com",
-    actions: {
-      edit: {
-        class: "edit edit-icon",
-        title: "Edit this block"
-      },
-      download: {
-        class: "download download-icon",
-        title: "Download this content"
-      }
-  }
-}
+
+Make sure that each datatype in the structure is covered in the toolbox.
+
+### Events
+
+Attach events using the singleton instance of eventEmitter.
+
+```javascript
+var eventEmitter = require("app/simplelayout/EventEmitter");
+eventEmitter.on(eventType, callback);
 ```
 
-Deleting Blocks: /sl-ajax-delete-blocks-view
+#### Eventtypes
 
-blocks: A list of uids.
-confirmed: If true the blocks will be deleted otherwise not.
+blockInserted(block)
 
-Comsumes JSON
-```Javascript
-{
-  blocks: [
-    "41274c3ab9df4eb38e1fc12cff5df1e0",
-    "8dc61996b4bb42a8a2904b8c41f6c9d3",
-    "42d3b4c6f3984773b55fb4e9dfc93499"
-  ],
-  confirmed: false/true
-}
-```
+blockCommitted(block)
 
-Reload Block content: /sl-ajax-reload-block-view
+blockMoved(block)
 
-uid: Identifier for current block.
+blockDeleted()
 
-Comsumes JSON
-```Javascript
-{
-  uid: "41274c3ab9df4eb38e1fc12cff5df1e0",
-  //other dynmic configurations based on action
-}
-```
+layoutInserted(layout)
+
+layoutCommitted(layout)
+
+layoutMoved(newId)
+
+layoutDeleted()
+
+## Testing
+
+Create ``` test/something.test.js ```
+
+Attach file in ``` test/TestRunner.js ``` after the last ```require``` statement.
+
+### Fixtures
+
+Create ``` test/fixtures/fixture.html ```
+
+Use ``` fixtures.load("fixture.html") ```for loading the fixture as an iframe.
+
+Use ``` fixtures.read("fixture.html") ``` for getting the text content from the file.
