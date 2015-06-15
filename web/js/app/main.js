@@ -1,4 +1,4 @@
-define(["app/simplelayout/Simplelayout", "app/toolbox/Toolbox", "EventEmitter", "jquery", "jqueryui", "jsrender"], function(Simplelayout, Toolbox, EE) {
+define(["app/simplelayout/Simplelayout", "app/toolbox/Toolbox", "app/simplelayout/EventEmitter", "jquery", "jqueryui", "jsrender"], function(Simplelayout, Toolbox, eventEmitter) {
   $(document).ready(function() {
     var toolbox = new Toolbox({
       layouts: [1, 2, 4],
@@ -37,5 +37,8 @@ define(["app/simplelayout/Simplelayout", "app/toolbox/Toolbox", "EventEmitter", 
     toolbox.attachTo($("body"));
     var simplelayout = new Simplelayout({toolbox: toolbox});
     simplelayout.deserialize();
+    eventEmitter.on("blockMoved", function(block) {
+      console.log(block);
+    });
   });
 });
