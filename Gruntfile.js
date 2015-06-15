@@ -85,8 +85,7 @@ module.exports = function(grunt) {
       },
       test: {
         port: 8282,
-        host: "localhost",
-        runInBackground: true
+        host: "localhost"
       }
     }
   });
@@ -106,6 +105,6 @@ module.exports = function(grunt) {
   grunt.registerTask("dev", ["config:dev", "sass", "watch"]);
   grunt.registerTask("serve", ["shell:serve", "http-server:serve"]);
   grunt.registerTask("lint", ["eslint"]);
-  grunt.registerTask("prod", ["config:prod", "requirejs", "sass"]);
+  grunt.registerTask("prod", ["config:prod", "lint", "requirejs", "sass"]);
 
 };
