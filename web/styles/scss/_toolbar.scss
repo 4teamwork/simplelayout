@@ -39,7 +39,6 @@ ul[class^="sl-toolbar"] {
     right: -$editbar-height;
     top: 0;
     li {
-      float: none;
       &.delimiter {
         height: 1px;
         width: $editbar-height;
