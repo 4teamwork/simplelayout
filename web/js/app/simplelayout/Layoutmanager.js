@@ -131,6 +131,7 @@ define(["app/simplelayout/Layout", "app/simplelayout/EventEmitter"], function(La
         $(".sl-layout", this.element).each(function(idx, e) {
           e = $(e);
           var layout = self.insertLayout({ source: e });
+          layout.commit();
           layout.deserialize();
         });
       },

@@ -28,7 +28,7 @@ suite("Block", function() {
       return {tagName: blockNode.tagName, content: blockNode.innerHTML, type: blockNode.dataset.type};
     });
 
-    assert.deepEqual(node, [{tagName: "DIV", content: '<div class="sl-block-content"><p>Test</p></div>', type: "textblock"}]);
+    assert.deepEqual(node, [{tagName: "DIV", content: '<div class="iFrameFix"></div><div class="sl-block-content"><p>Test</p></div>', type: "textblock"}]);
   });
 
   test("can set block-content", function() {
@@ -38,7 +38,7 @@ suite("Block", function() {
       return {tagName: blockNode.tagName, content: blockNode.innerHTML, type: blockNode.dataset.type};
     });
 
-    assert.deepEqual(node, [{tagName: "DIV", content: '<div class="sl-block-content"><p>Hallo</p></div>', type: "textblock"}]);
+    assert.deepEqual(node, [{tagName: "DIV", content: '<div class="iFrameFix"></div><div class="sl-block-content"><p>Hallo</p></div>', type: "textblock"}]);
   });
 
   test("can attach a toolbar", function() {
@@ -49,15 +49,27 @@ suite("Block", function() {
       return {tagName: blockNode.tagName, content: blockNode.innerHTML, type: blockNode.dataset.type};
     });
 
-    assert.deepEqual(node, [{tagName: "DIV", content: '<div class="sl-block-content"><p>Test</p></div><ul class="sl-toolbar"></ul>', type: "textblock"}]);
+    assert.deepEqual(node, [{tagName: "DIV", content: '<div class="iFrameFix"></div><div class="sl-block-content"><p>Test</p></div><ul class="sl-toolbar"></ul>', type: "textblock"}]);
   });
 
-  test("triggers event on commit", function() {
-    // var eventBlock = new Block("I was triggered", "eventBlock");
-    // ee.on("blockCommitted", function(b) {
-    //   assert.equal(b.type, "eventBlock");
-    // });
-    // eventBlock.commit();
+  test("prepends frameFix", function() {
+    var frameFixElement = $.map($(".iFrameFix", block.element), function(frame) {
+      return { classes: frame.className, tagName: frame.tagName };
+    });
+    assert.deepEqual(frameFixElement, [{ classes: "iFrameFix", tagName: "DIV" }]);
+  });
+
+  test("can enable and disable frameFix", function() {
+    block.enableFrame();
+    var frameFixElement = $.map(block.frame, function(frame) {
+      return { display: frame.style.display };
+    });
+    assert.deepEqual(frameFixElement, [{ display: "block" }]);
+    block.disableFrame();
+    frameFixElement = $.map(block.frame, function(frame) {
+      return { display: frame.style.display };
+    });
+    assert.deepEqual(frameFixElement, [{ display: "none" }]);
   });
 
 });

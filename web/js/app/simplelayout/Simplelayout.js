@@ -44,7 +44,27 @@ define(["app/simplelayout/Layoutmanager", "app/simplelayout/Toolbar", "app/toolb
       eventEmitter.trigger("blockMoved", [block]);
     }
 
-    var TOOLBOX_COMPONENT_DRAGGABLE_SETTINGS = { helper: "clone", cursor: "pointer" };
+    var getCommittedBlocks = function() {
+      var committedBlocks = [];
+      for(var key in managers) {
+        committedBlocks = $.merge(managers[key].getCommittedBlocks(), committedBlocks);
+      }
+      return committedBlocks;
+    }
+
+    var disableFrames = function() {
+      $.each(getCommittedBlocks(), function(idx, block) {
+        block.disableFrame();
+      });
+    }
+
+    var enableFrames = function() {
+      $.each(getCommittedBlocks(), function(idx, block) {
+        block.enableFrame();
+      });
+    }
+
+    var TOOLBOX_COMPONENT_DRAGGABLE_SETTINGS = { helper: "clone", cursor: "pointer", start: enableFrames, stop: disableFrames };
 
     var sortableHelper = function(){ return $('<div class="draggableHelper"><div>'); };
 
@@ -97,10 +117,12 @@ define(["app/simplelayout/Layoutmanager", "app/simplelayout/Toolbar", "app/toolb
         originalLayout = managers[$(this).data("container")].layouts[ui.item.data("layoutId")];
       },
       start: function(event, ui) {
+        enableFrames();
         canMove = true;
         toggleActiveLayouts(event, ui);
       },
       stop: function(event, ui) {
+        disableFrames();
         animatedrop(ui);
         toggleActiveLayouts(event, ui);
         if(canMove) {
@@ -143,8 +165,12 @@ define(["app/simplelayout/Layoutmanager", "app/simplelayout/Toolbar", "app/toolb
         var itemData = ui.item.data();
         originalBlock = managers[itemData.container].getBlock(itemData.layoutId, itemData.columnId, itemData.blockId);
       },
-      start: function() { canMove = true; },
+      start: function() {
+        canMove = true;
+        enableFrames();
+      },
       stop: function(event, ui) {
+        disableFrames();
         animatedrop(ui);
         if(canMove) {
           var itemData = ui.item.data();
@@ -236,13 +262,7 @@ define(["app/simplelayout/Layoutmanager", "app/simplelayout/Toolbar", "app/toolb
         return manager;
       },
 
-      getCommittedBlocks: function() {
-        var committedBlocks = [];
-        for(var key in managers) {
-          committedBlocks = $.merge(managers[key].getCommittedBlocks(), committedBlocks);
-        }
-        return committedBlocks;
-      },
+      getCommittedBlocks: getCommittedBlocks,
 
       attachTo: function(target) {
         $.each(managers, function(idx, manager) {

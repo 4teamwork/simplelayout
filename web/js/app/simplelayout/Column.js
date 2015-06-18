@@ -66,7 +66,9 @@ define(["app/simplelayout/Block", "app/simplelayout/EventEmitter"], function(Blo
       deserialize: function() {
         var self = this;
         $(".sl-block", this.element).each(function(idx, e) {
-          self.insertBlock({ source: e });
+          var block = self.insertBlock({ source: e });
+          block.commit();
+          block.fixFrame();
         });
       },
 
