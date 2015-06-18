@@ -1,4 +1,7 @@
 define(["EventEmitter"], function(EE){
+
+  "use strict";
+
   var instance = null;
 
   function EventEmitter(){}

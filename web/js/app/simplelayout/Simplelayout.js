@@ -10,11 +10,9 @@ define(["app/simplelayout/Layoutmanager", "app/simplelayout/Toolbar", "app/toolb
 
     var options = $.extend({
       toolbox: new Toolbox({layouts: [1, 2, 4]})
-    },_options || {});
+    }, _options || {});
 
     var managers = {};
-
-    var toolbox = null;
 
     var currentBlock = null;
 
@@ -42,7 +40,7 @@ define(["app/simplelayout/Layoutmanager", "app/simplelayout/Toolbar", "app/toolb
       $.extend(block.element.data(), newData);
       newManager.setBlock(newLayoutId, newColumnId, nextBlockId, block);
       eventEmitter.trigger("blockMoved", [block]);
-    }
+    };
 
     var getCommittedBlocks = function() {
       var committedBlocks = [];
@@ -50,19 +48,19 @@ define(["app/simplelayout/Layoutmanager", "app/simplelayout/Toolbar", "app/toolb
         committedBlocks = $.merge(managers[key].getCommittedBlocks(), committedBlocks);
       }
       return committedBlocks;
-    }
+    };
 
     var disableFrames = function() {
       $.each(getCommittedBlocks(), function(idx, block) {
         block.disableFrame();
       });
-    }
+    };
 
     var enableFrames = function() {
       $.each(getCommittedBlocks(), function(idx, block) {
         block.enableFrame();
       });
-    }
+    };
 
     var TOOLBOX_COMPONENT_DRAGGABLE_SETTINGS = { helper: "clone", cursor: "pointer", start: enableFrames, stop: disableFrames };
 
@@ -145,14 +143,13 @@ define(["app/simplelayout/Layoutmanager", "app/simplelayout/Toolbar", "app/toolb
       tolerance: "pointer",
       receive: function(event, ui) {
         var manager = managers[$(this).data("container")];
+        var data = $(this).data();
         if(originalBlock) {
-          var data = $(this).data();
           moveBlock(originalBlock, data.container, data.layoutId, data.columnId);
           originalBlock = null;
         }
         else if(typeof ui.item.data("layoutId") === "undefined") {
           var item = $(this).find(".ui-draggable");
-          var data = $(this).data();
           var type = ui.item.data("type");
           var block = manager.insertBlock(data.layoutId, data.columnId, null, type);
           block.element.insertAfter(item);
