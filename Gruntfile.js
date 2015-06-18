@@ -70,7 +70,7 @@ module.exports = function(grunt) {
       }
     },
     eslint: {
-      target: ["Gruntfile.js", "test/**/*.js", "scripts/**/*.js"]
+      target: ["Gruntfile.js", "test/**/*.js", "web/js/*.js", "web/js/app/**/*.js"]
     },
     shell: {
       serve: {
