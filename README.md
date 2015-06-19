@@ -20,7 +20,7 @@ npm install
 ```
 ### Install Bower Dependencies
 ```bash
-bower install
+./node_modules/bower/bin/bower install
 ```
 ### Build Targets
 
