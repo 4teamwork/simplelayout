@@ -2,6 +2,7 @@ ul[class^="sl-toolbar"] {
   position: absolute;
   top: -$editbar-height;
   right: 0;
+  white-space: nowrap;
   height: $editbar-height;
   margin: 0;
   padding: 0;
@@ -11,7 +12,6 @@ ul[class^="sl-toolbar"] {
   opacity: 0;
   transition: opacity .25s ease-out;
   li {
-    float: left;
     text-align: center;
     a {
       display: inline-block;
@@ -39,6 +39,7 @@ ul[class^="sl-toolbar"] {
     right: -$editbar-height;
     top: 0;
     li {
+      float: left;
       &.delimiter {
         height: 1px;
         width: $editbar-height;
