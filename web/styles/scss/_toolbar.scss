@@ -14,6 +14,7 @@ ul[class^="sl-toolbar"] {
   transition: opacity .25s ease-out;
   li {
     text-align: center;
+    display: inline-block;
     a {
       display: inline-block;
       width: $editbar-height;
