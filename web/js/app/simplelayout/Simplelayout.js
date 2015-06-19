@@ -199,8 +199,8 @@ define(["app/simplelayout/Layoutmanager", "app/simplelayout/Toolbar", "app/toolb
       var data;
       $(".sl-simplelayout").sortable(LAYOUT_SORTABLE);
       $(".sl-column").sortable(BLOCK_SORTABLE);
-      on("layoutCommitted", function() {
-        $(".sl-column").sortable(BLOCK_SORTABLE);
+      on("layoutCommitted", function(layout) {
+        $(".sl-column", layout.element).sortable(BLOCK_SORTABLE);
       });
       $(".sl-simplelayout").on("mouseover", ".sl-block", function() {
           data = $(this).data();
