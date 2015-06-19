@@ -45,7 +45,8 @@ module.exports = function(grunt) {
           optimize: "<%= grunt.config.get('optimize') %>",
           mainConfigFile: "web/js/app.js",
           include: ["app", "jsrender"],
-          out: "<%= grunt.config.get('jsoutput') %>"
+          out: "<%= grunt.config.get('jsoutput') %>",
+          wrap: true
         }
       }
     },
