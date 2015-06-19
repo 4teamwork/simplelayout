@@ -21,6 +21,7 @@
         padding: 5px;
     }
     &:hover .sl-toolbar-layout {
+        visibility: visible;
         opacity: 1;
     }
     &.animated {
