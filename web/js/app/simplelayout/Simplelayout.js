@@ -50,6 +50,14 @@ define(["app/simplelayout/Layoutmanager", "app/simplelayout/Toolbar", "app/toolb
       return committedBlocks;
     };
 
+    var getInsertedBlocks = function() {
+      var insertedBlocks = [];
+      for(var key in managers) {
+        insertedBlocks = $.merge(managers[key].getInsertedBlocks(), insertedBlocks);
+      }
+      return insertedBlocks;
+    };
+
     var disableFrames = function() {
       $.each(getCommittedBlocks(), function(idx, block) {
         block.disableFrame();
@@ -107,7 +115,6 @@ define(["app/simplelayout/Layoutmanager", "app/simplelayout/Toolbar", "app/toolb
           var layout = manager.insertLayout({ columns: ui.item.data("columns") });
           layout.element.insertAfter(item);
           item.remove();
-          layout.commit();
         }
         canMove = false;
       },
@@ -154,7 +161,6 @@ define(["app/simplelayout/Layoutmanager", "app/simplelayout/Toolbar", "app/toolb
           var block = manager.insertBlock(data.layoutId, data.columnId, null, type);
           block.element.insertAfter(item);
           item.remove();
-          block.commit();
         }
         canMove = false;
       },
@@ -260,6 +266,8 @@ define(["app/simplelayout/Layoutmanager", "app/simplelayout/Toolbar", "app/toolb
       },
 
       getCommittedBlocks: getCommittedBlocks,
+
+      getInsertedBlocks: getInsertedBlocks,
 
       attachTo: function(target) {
         $.each(managers, function(idx, manager) {
