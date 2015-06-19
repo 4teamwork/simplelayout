@@ -124,6 +124,18 @@ suite("Simplelayout", function() {
       }), "should have one committed blocks.");
   });
 
+  test("can get inserted blocks", function() {
+    var layout = manager.insertLayout(4);
+    var block = layout.insertBlock(0, null, "textblock");
+    assert.deepEqual([false], $.map(simplelayout.getInsertedBlocks(), function(e) {
+        return e.committed;
+      }), "should have one committed block.");
+    block.commit();
+    assert.deepEqual([], $.map(simplelayout.getInsertedBlocks(), function(e) {
+        return e.committed;
+      }), "should have no inserted blocks.");
+  });
+
   test("can de- and serialize", function() {
     fixtures.load("simplelayout.html");
     simplelayout.deserialize($(fixtures.body()));
