@@ -202,20 +202,6 @@ define(["app/simplelayout/Layoutmanager", "app/simplelayout/Toolbar", "app/toolb
       on("layoutCommitted", function(layout) {
         $(".sl-column", layout.element).sortable(BLOCK_SORTABLE);
       });
-      $(".sl-simplelayout").on("mouseover", ".sl-block", function() {
-          data = $(this).data();
-          managerId = data.container;
-          layoutId = data.layoutId;
-          columnId = data.columnId;
-          blockId = data.blockId;
-          currentBlock = managers[managerId].getBlock(layoutId, columnId, blockId);
-      });
-      $(".sl-simplelayout").on("mouseover", ".sl-layout", function() {
-          data = $(this).data();
-          layoutId = data.layoutId;
-          managerId = data.container;
-          currentLayout = managers[managerId].layouts[layoutId];
-      });
     };
 
     bindLayoutEvents();
@@ -238,10 +224,6 @@ define(["app/simplelayout/Layoutmanager", "app/simplelayout/Toolbar", "app/toolb
       moveLayout: moveLayout,
 
       moveBlock: moveBlock,
-
-      getActiveBlock: function() { return currentBlock; },
-
-      getActiveLayout: function() { return currentLayout; },
 
       getManagers: function() { return managers; },
 
