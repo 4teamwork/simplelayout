@@ -14,10 +14,6 @@ define(["app/simplelayout/Layoutmanager", "app/simplelayout/Toolbar", "app/toolb
 
     var managers = {};
 
-    var currentBlock = null;
-
-    var currentLayout = null;
-
     var id = 0;
 
     var moveLayout = function(layout, newManagerId) {
@@ -192,11 +188,6 @@ define(["app/simplelayout/Layoutmanager", "app/simplelayout/Toolbar", "app/toolb
     };
 
     var bindLayoutEvents = function() {
-      var managerId;
-      var layoutId;
-      var columnId;
-      var blockId;
-      var data;
       $(".sl-simplelayout").sortable(LAYOUT_SORTABLE);
       $(".sl-column").sortable(BLOCK_SORTABLE);
       on("layoutCommitted", function(layout) {
