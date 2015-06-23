@@ -27,13 +27,6 @@ define([], function() {
       }
     };
 
-    var layouts = [];
-    $.each(options.layouts, function(i, el) {
-      layouts.push({
-        columns: el
-      });
-    });
-
     var template = $.templates(
       /*eslint no-multi-str: 0 */
       "<div id='sl-toolbox' class='sl-toolbox'> \
@@ -48,34 +41,24 @@ define([], function() {
                   {{/for}} \
                 </div> \
               <a class='sl-toolbox-header'>Layout</a> \
-                {{for layouts}} \
-                  <a class='sl-toolbox-layout' data-columns='{{:columns}}'> \
-                    <i class='icon-layout'></i>{{:columns}} - Spalten Layout \
+                {{props layouts}} \
+                  <a class='sl-toolbox-layout' data-columns='{{>prop}}'> \
+                    <i class='icon-layout'></i>{{>prop}} - Spalten Layout \
                   </a> \
-                 {{/for}} \
+                 {{/props}} \
             </div> \
             <a class='sl-toolbox-header sl-toolbox-handle'>Toolbox</a> \
           </div> \
         </div>");
-    var components = [];
-    $.each(options.components, function(key, value) {
-      components.push(value);
-    });
 
     var data = {
-      "components": components,
-      "layouts": layouts
+      "components": $.map(options.components, function(component) { return component; }),
+      "layouts": options.layouts
     };
 
     var element = $(template.render(data));
 
-    $(".sl-toolbox-component", element).each(function(i, el) {
-      $(el).data("actions", options.components[$(el).data("type")].actions);
-    });
-
-    $(".sl-toolbox-handle", element).on("click", function() {
-      $(".addables").toggleClass("close");
-    });
+    $(".sl-toolbox-handle", element).on("click", function() { $(".addables").toggleClass("close"); });
 
     return {
 
@@ -83,13 +66,9 @@ define([], function() {
 
       element: element,
 
-      disableComponents: function() {
-        $(".sl-toolbox-components", this.element).addClass("disabled");
-      },
+      disableComponents: function() { $(".sl-toolbox-components", this.element).addClass("disabled"); },
 
-      enableComponents: function() {
-        $(".sl-toolbox-components", this.element).removeClass("disabled");
-      },
+      enableComponents: function() { $(".sl-toolbox-components", this.element).removeClass("disabled"); },
 
       attachTo: function(target) {
         target.append(element);

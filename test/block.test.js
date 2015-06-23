@@ -45,11 +45,10 @@ suite("Block", function() {
     var toolbar = new Toolbar();
     block.attachToolbar(toolbar);
 
-    var node = $.map(block.element, function(blockNode) {
-      return {tagName: blockNode.tagName, content: blockNode.innerHTML, type: blockNode.dataset.type};
+    var node = $.map($(".sl-toolbar", block.element), function(toolbarNode) {
+      return { tagName: toolbarNode.tagName, classes: toolbarNode.className };
     });
-
-    assert.deepEqual(node, [{tagName: "DIV", content: '<div class="iFrameFix"></div><div class="sl-block-content"><p>Test</p></div><ul class="sl-toolbar"></ul>', type: "textblock"}]);
+    assert.deepEqual(node, [{tagName: "UL", classes: "sl-toolbar"}]);
   });
 
   test("prepends frameFix", function() {

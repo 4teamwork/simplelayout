@@ -19,8 +19,15 @@ define([], function() {
     });
 
     var template = $.templates(
-      "<ul class='sl-toolbar{{if type}}-{{:type}}{{/if}}{{if orientation}} {{:orientation}}{{/if}}'>{{for actions}}<li><a {{props}} {{>key}}='{{>prop}}' {{/props}}></a></li><li class='delimiter'></li>{{/for}}</ul>"
-    );
+      /*eslint no-multi-str: 0 */
+      "<ul class='sl-toolbar{{if type}}-{{:type}}{{/if}}{{if orientation}} {{:orientation}}{{/if}}'> \
+        {{for actions}} \
+          <li> \
+            <a {{props}} {{>key}}='{{>prop}}' {{/props}}></a> \
+          </li> \
+          <li class='delimiter'></li> \
+        {{/for}} \
+      </ul>");
 
     var element = $(template.render({
       actions: normalizedActions,
